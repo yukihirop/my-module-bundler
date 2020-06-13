@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`esm simple 1`] = `
-Array [
-  Array [
-    "hellow word!",
-  ],
-]
-`;

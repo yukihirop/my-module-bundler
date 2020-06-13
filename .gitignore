@@ -3,3 +3,5 @@ coverage
 yarn-error.log
 output
 !tests/output
+lerna-debug.log
+.vscode

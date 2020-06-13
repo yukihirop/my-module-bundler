@@ -1,32 +1,28 @@
 'use strict';
 
-const fs = require('fs'),
-  path = require('path'),
-  babylon = require('babylon'),
-  traverse = require('babel-traverse').default,
-  { transformFromAst } = require('babel-core'),
-  { mainTemplate, moduleTemlate } = require('./template'),
-  { js: beautify } = require('js-beautify'),
-  env = require('babel-preset-env');
+import fs from 'fs';
+import path from 'path';
+import * as babylon from 'babylon';
+import { default as traverse } from '@babel/traverse';
+import { transformFromAstSync } from '@babel/core';
+import { mainTemplate, moduleTemlate } from './template';
+import { js as beautify } from 'js-beautify';
+// TypeError: unknown: Cannot read property 'bindings' of null
+// https://stackoverflow.com/questions/52092739/upgrade-to-babel-7-cannot-read-property-bindings-of-null
+import env from '@babel/preset-env';
+import { Asset, Graph, BundlerParams } from './types';
 
 let moduleID = 0;
 
 /**
  * We create a function that will accept a path to a file, read
  * it's contents, and extract its dependencies.
- *
- * @param {string} filename - File name
- * @return {Object} result - Asset Object
- * @return {number} result.id - module ID
- * @return {string} result.filename - File name
- * @return {array} result.dependencies - This array will hold the relative paths of modules this module depends on.
- * @reutrn {Object} result.code - code transform from Ast
  * @access private
  *
  */
-function createAsset(filename) {
+function createAsset(filename: string): Asset {
   const content = fs.readFileSync(filename, 'utf-8');
-  const ast = babylon.parse(content, {
+  const ast: any = babylon.parse(content, {
     sourceType: 'module',
   });
 
@@ -43,7 +39,7 @@ function createAsset(filename) {
   // We also assign a unique identifier to this module by incrementing a simple counter.
   const id = moduleID++;
 
-  const { code } = transformFromAst(ast, null, {
+  const { code } = transformFromAstSync(ast, null, {
     presets: [env],
   });
 
@@ -57,12 +53,9 @@ function createAsset(filename) {
 
 /**
  * Extract the dependencies of the entry file
- *
- * @param {string} entry - Entry file
- * @return {array} result - Array of asset
  * @access private
  */
-function createGraph(entry) {
+function createGraph(entry: string): Graph {
   const mainAsset = createAsset(entry);
   const queue = [mainAsset];
 
@@ -92,10 +85,9 @@ function createGraph(entry) {
  * Our bundle will have just one self-invoking function:
  *
  * (function(){})()
- * @param {array} graph - Array of asset
  * @access private
  */
-function bundle(graph) {
+function bundle(graph: Graph): string {
   let modules = [];
 
   // Add a string of this format: `key: value,`.
@@ -107,12 +99,7 @@ function bundle(graph) {
   return mainTemplate(modules);
 }
 
-/**
- *
- * @param {string} input - input file path
- * @param {string} output - output file path
- */
-async function bundler({ input, output }) {
+async function bundler({ input, output }: BundlerParams) {
   const graph = createGraph(input),
     result = bundle(graph),
     formatted = beautify(result, {
@@ -123,4 +110,4 @@ async function bundler({ input, output }) {
   await fs.promises.writeFile(output, formatted);
 }
 
-module.exports = bundler;
+export default bundler;

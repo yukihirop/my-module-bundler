@@ -4,10 +4,10 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "bundler:dev": "node packages/bundler/src/index.js",
-    "fmt": "prettier --write **/src/**/*.js",
+    "bundler:dev": "ts-node packages/bundler/src/index.ts",
+    "fmt": "prettier --write **/src/**/*.ts",
     "test": "jest",
-    "test:debug": "node --inspect jest --runInBand"
+    "test:debug": "node --inspect -r ts-node/register ./node_modules/.bin/jest --runInBand"
   },
   "devDependencies": {
     "jest": "^26.0.1",

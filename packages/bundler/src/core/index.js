@@ -6,7 +6,8 @@ const fs = require('fs'),
   traverse = require('babel-traverse').default,
   { transformFromAst } = require('babel-core'),
   { mainTemplate, moduleTemlate } = require('./template'),
-  { js: beautify } = require('js-beautify');
+  { js: beautify } = require('js-beautify'),
+  env = require('babel-preset-env');
 
 let moduleID = 0;
 
@@ -43,7 +44,7 @@ function createAsset(filename) {
   const id = moduleID++;
 
   const { code } = transformFromAst(ast, null, {
-    presets: ['env'],
+    presets: [env],
   });
 
   return {

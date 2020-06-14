@@ -1,8 +1,7 @@
 node_modules
 coverage
 yarn-error.log
-output
-!tests/output
+dist
 lerna-debug.log
 .vscode
 lib

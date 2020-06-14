@@ -5,3 +5,4 @@ output
 !tests/output
 lerna-debug.log
 .vscode
+lib

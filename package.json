@@ -1,10 +1,13 @@
 {
-  "name": "my-module-bundler",
+  "name": "@yukihirop/my-module-bundler",
   "version": "1.0.0",
   "private": true,
   "license": "MIT",
   "scripts": {
+    "dev": "lerna run ts-node",
+    "build": "tsc -b packages/bundler packages/plugin-transform-arrow-functions",
     "bundler:dev": "ts-node packages/bundler/src/index.ts",
+    "bundler:build": "tsc -p packages/bundler",
     "fmt": "prettier --write **/src/**/*.ts",
     "test": "jest",
     "test:debug": "node --inspect -r ts-node/register ./node_modules/.bin/jest --runInBand"

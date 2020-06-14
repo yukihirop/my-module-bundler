@@ -1,0 +1,30 @@
+{
+  "name": "@yukihirop/plugin-transform-arrow-functions",
+  "version": "1.0.0",
+  "description": "> TODO: description",
+  "author": "yukihirop <te108186@gmail.com>",
+  "homepage": "https://github.com/yukihirop/my-module-bundler#readme",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "typings": "lid/index.d.ts",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yukihirop/my-module-bundler.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "devDependencies": {
+    "@babel/traverse": "^7.10.1",
+    "@babel/types": "^7.10.2",
+    "@types/babel-types": "^7.0.7",
+    "@types/babel__traverse": "^7.0.12"
+  }
+}

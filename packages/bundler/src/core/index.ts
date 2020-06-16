@@ -11,6 +11,9 @@ import { js as beautify } from 'js-beautify';
 // https://stackoverflow.com/questions/52092739/upgrade-to-babel-7-cannot-read-property-bindings-of-null
 import env from '@babel/preset-env';
 import { Asset, Graph, BundlerParams } from './types';
+import transformArrowFunctions from '@yukihirop/plugin-transform-arrow-functions';
+
+// TODO: Use Class
 
 let moduleID = 0;
 
@@ -40,7 +43,7 @@ function createAsset(filename: string): Asset {
   const id = moduleID++;
 
   const { code } = transformFromAstSync(ast, null, {
-    presets: [env],
+    plugins: [transformArrowFunctions],
   });
 
   return {
@@ -107,6 +110,8 @@ async function bundler({ input, output }: BundlerParams) {
       space_in_empty_paren: true,
     });
 
+  //　Initialize the globally defined moduleID
+  moduleID = 0;
   await fs.promises.writeFile(output, formatted);
 }
 

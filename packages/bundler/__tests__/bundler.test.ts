@@ -11,23 +11,23 @@ const fixtureBasePath = join(__dirname, 'fixtures')
   , ENTRY_FILE = 'entry.js'
   , BUNDLE_FILE = 'bundle.js';
 
-async function build(fixturePath: string, outputPath: string, type: string) {
+async function build(fixturePath: string, outputPath: string, type?: string) {
   await bundler({
-    input: join(fixturePath, type, ENTRY_FILE),
-    output: join(outputPath, type, BUNDLE_FILE)
+    input: join(fixturePath, type || "", ENTRY_FILE),
+    output: join(outputPath, type || "", BUNDLE_FILE)
   })
 }
 
-async function runGeneratedCodeInVM(outputPath: string, type: string) {
-  const code = await readFile(join(outputPath, type, BUNDLE_FILE), 'utf-8'),
+async function runGeneratedCodeInVM(outputPath: string, type?: string) {
+  const code = await readFile(join(outputPath, type || "", BUNDLE_FILE), 'utf-8'),
     sandbox = { console, process },
     ctx = createContext({ sandbox });
 
   runInContext(code, ctx);
 }
 
-async function createDir(base: string, dir: string) {
-  await mkdir(join(base, dir), { recursive: true });
+async function createDir(base: string, dir?: string) {
+  await mkdir(join(base, dir || ""), { recursive: true });
 }
 
 beforeEach(() => {
@@ -39,16 +39,22 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-describe('esm', () => {
-  const fixturePath = join(fixtureBasePath, 'esm');
-  const outputPath = join(outputBasePath, 'esm');
+describe('arrow-functions', () => {
+  const type = 'arrow-functions'
+  const fixturePath = join(fixtureBasePath, type)
+  const outputPath = join(outputBasePath, type)
 
   beforeAll(async () => {
     await createDir(outputPath, '');
-  });
+  })
 
   const dirs = [
-    'simple'
+    'basic',
+    'default-parameters',
+    'expression',
+    'nested',
+    'paran-insertion',
+    'spec-naming'
   ]
 
   for (const dir of dirs) {
@@ -62,4 +68,4 @@ describe('esm', () => {
       expect((console.log as jest.Mock).mock.calls).toMatchSnapshot();
     });
   }
-});
+})

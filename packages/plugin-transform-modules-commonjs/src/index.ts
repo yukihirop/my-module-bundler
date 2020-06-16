@@ -19,9 +19,19 @@ export default function ({ types: t }: BabelTypes) {
     name: 'transform-modules-commonjs',
     visitor: {
       ExportDefaultDeclaration(path: NodePath) {
-        const exportValueType = path.node["declaration"].type
-        const exportValue = path.node["declaration"].value
-        const expression = eval(`t.${functionize(exportValueType)}(${exportValue})`) as Expression
+        const declaration = path.node["declaration"]
+        const { value: exportValue, type: exportValueType } = declaration
+
+        let expression;
+        switch (exportValueType) {
+          case 'ObjectExpression':
+            expression = t.objectExpression(declaration.properties)
+            break;
+          default:
+            expression = eval(`t.${functionize(exportValueType)}(${exportValue})`) as Expression
+            break;
+        }
+
         const varStatement = t.variableDeclaration("var", [
           t.variableDeclarator(
             t.identifier("_default"),
@@ -31,24 +41,23 @@ export default function ({ types: t }: BabelTypes) {
 
         // e.g.)
         // 
-        // "use strict";
-        // 
         // Object.defineProperty(exports, "__esModule", {
         //   value: true
         // });
         // exports.default = void 0;
         // var _default = 1;
         // exports.default = _default;
-        const statements = [
-          useStrictStatement,
+        const beforeStatements = [
           define__esModuleStatement,
           exportsDefaultVoid0Statement,
-          varStatement,
-          exportsDefaultStatement
         ];
 
-        const program = t.program(statements);
-        path.parentPath.replaceWith(program)
+        const beforeProgram = t.program(beforeStatements);
+        const program = t.program([varStatement]);
+        const afterProgram = t.program([exportsDefaultStatement])
+        path.insertBefore(beforeProgram)
+        path.replaceWith(program)
+        path.insertAfter(afterProgram)
       }
     }
   }

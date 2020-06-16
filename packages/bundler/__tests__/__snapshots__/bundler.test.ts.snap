@@ -3,3 +3,5 @@
 exports[`arrow-functions basic 1`] = `Array []`;
 
 exports[`arrow-functions default-parameters 1`] = `Array []`;
+
+exports[`arrow-functions expression 1`] = `Array []`;

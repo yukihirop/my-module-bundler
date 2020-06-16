@@ -12,6 +12,8 @@ exports[`arrow-functions paran-insertion 1`] = `Array []`;
 
 exports[`arrow-functions spec-naming 1`] = `Array []`;
 
+exports[`modules-commonjs interop-loose export-default-ae 1`] = `Array []`;
+
 exports[`modules-commonjs interop-loose export-default-literal 1`] = `Array []`;
 
 exports[`modules-commonjs interop-loose export-default-oe 1`] = `Array []`;

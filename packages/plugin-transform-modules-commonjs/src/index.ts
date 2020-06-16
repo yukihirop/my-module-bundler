@@ -3,7 +3,6 @@ import { Expression } from '@babel/types';
 
 import { BabelTypes } from './types';
 import {
-  useStrictStatement,
   define__esModuleStatement,
   exportsDefaultVoid0Statement,
   exportsDefaultStatement
@@ -27,6 +26,9 @@ export default function ({ types: t }: BabelTypes) {
           case 'ObjectExpression':
             expression = t.objectExpression(declaration.properties)
             break;
+          case 'ArrayExpression':
+            expression = t.arrayExpression(declaration.elements)
+            break;
           default:
             expression = eval(`t.${functionize(exportValueType)}(${exportValue})`) as Expression
             break;
@@ -45,7 +47,7 @@ export default function ({ types: t }: BabelTypes) {
         //   value: true
         // });
         // exports.default = void 0;
-        // var _default = 1;
+        // var _default = <ArrayExpression | ObjectExpression | Literal>;
         // exports.default = _default;
         const beforeStatements = [
           define__esModuleStatement,

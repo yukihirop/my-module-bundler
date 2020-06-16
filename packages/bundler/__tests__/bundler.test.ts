@@ -83,7 +83,8 @@ describe('modules-commonjs', () => {
 
     const dirs = [
       'export-default-literal',
-      'export-default-oe'
+      'export-default-oe',
+      'export-default-ae'
     ]
 
     for (const dir of dirs) {

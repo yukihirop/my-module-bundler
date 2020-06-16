@@ -25,13 +25,23 @@ export default function ({ types: t }: BabelTypes) {
           replacement = t.functionExpression(id, params, body)
           path.replaceWith(replacement);
         } else {
-          // e.g.) var a = x => x * x
-          const variableName = path.container["id"].name;
-          replacement = t.variableDeclarator(
-            t.identifier(variableName),
-            t.functionExpression(id, params, body)
-          )
-          path.parentPath.replaceWith(replacement);
+          const containerType = path.container["type"]
+          switch (containerType) {
+            // e.g.) var a = x => x * x
+            case 'VariableDeclarator':
+              const variableName = path.container["id"].name;
+              replacement = t.variableDeclarator(
+                t.identifier(variableName),
+                t.functionExpression(id, params, body)
+              )
+              path.parentPath.replaceWith(replacement);
+              break;
+            // var a = { k: x => x }
+            case 'ObjectProperty':
+              replacement = t.functionExpression(id, params, body);
+              path.replaceWith(replacement);
+              break;
+          }
         }
       },
     },

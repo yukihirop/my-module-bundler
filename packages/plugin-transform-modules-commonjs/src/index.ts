@@ -1,5 +1,5 @@
 import { NodePath } from '@babel/traverse';
-import { Expression } from '@babel/types';
+import { Expression, decorator } from '@babel/types';
 
 import { BabelTypes } from './types';
 import {
@@ -21,7 +21,7 @@ export default function ({ types: t }: BabelTypes) {
         const declaration = path.node["declaration"]
         const { value: exportValue, type: exportValueType } = declaration
 
-        let expression;
+        let expression, nodeDeclaration;
         switch (exportValueType) {
           case 'ObjectExpression':
             expression = t.objectExpression(declaration.properties)
@@ -29,7 +29,15 @@ export default function ({ types: t }: BabelTypes) {
           case 'ArrayExpression':
             expression = t.arrayExpression(declaration.elements)
             break;
+          case 'FunctionDeclaration':
+            nodeDeclaration = t.functionDeclaration(
+              t.identifier("_default"),
+              declaration.params,
+              declaration.body
+            )
+            break;
           default:
+            debugger
             expression = eval(`t.${functionize(exportValueType)}(${exportValue})`) as Expression
             break;
         }
@@ -53,10 +61,16 @@ export default function ({ types: t }: BabelTypes) {
           define__esModuleStatement,
           exportsDefaultVoid0Statement,
         ];
-
         const beforeProgram = t.program(beforeStatements);
-        const program = t.program([varStatement]);
         const afterProgram = t.program([exportsDefaultStatement])
+
+        let program;
+        if (nodeDeclaration) {
+          program = t.program([nodeDeclaration]);
+        } else {
+          program = t.program([varStatement]);
+        }
+
         path.insertBefore(beforeProgram)
         path.replaceWith(program)
         path.insertAfter(afterProgram)

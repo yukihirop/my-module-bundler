@@ -1,5 +1,5 @@
 import { NodePath } from '@babel/traverse';
-import { Identifier, BlockStatement, CallExpression } from '@babel/types';
+import { Identifier, BlockStatement, CallExpression, BinaryExpression } from '@babel/types';
 
 import { BabelTypes } from './types'
 
@@ -15,6 +15,7 @@ export default function ({ types: t }: BabelTypes) {
         const params = path.node["params"] as Array<Identifier>;
         let body = t.blockStatement([]);
         const type = path.node["body"].type
+        let expression, res;
 
         switch (type) {
           // e.g.) var a = () => {};
@@ -23,14 +24,20 @@ export default function ({ types: t }: BabelTypes) {
             break;
           // e.g.) var a = (b) => b;
           case 'Identifier':
-            const res = t.returnStatement(t.identifier(path.node["body"]["name"]))
+            res = t.returnStatement(t.identifier(path.node["body"]["name"]))
             body = t.blockStatement([res])
             break;
           // e.g.) var b = (b) => console.log(b);
           case 'CallExpression':
             const callee = path.node["body"] as CallExpression
-            const expression = t.expressionStatement(callee)
+            expression = t.expressionStatement(callee)
             body = t.blockStatement([expression])
+            break;
+          // e.g.) var c = (a, b) => a + b
+          case 'BinaryExpression':
+            const binary = path.node["body"] as BinaryExpression
+            res = t.returnStatement(binary)
+            body = t.blockStatement([res])
             break;
         }
 

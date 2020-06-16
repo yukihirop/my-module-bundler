@@ -8,6 +8,8 @@ var a = () => { };
 var a = (b) => b;
 // bodyType: CallExpression
 var b = (b) => console.log(b);
+// bodyType: BinaryExpresion
+var c = (a, b) => a + b;
 
 
 /**
@@ -20,4 +22,6 @@ function a() {
   var a = (b) => b;
   // bodyType: CallExpression
   var b = (b) => console.log(b);
+  // bodyType: BinaryExpresion
+  var c = (a, b) => a + b;
 }

@@ -17,6 +17,23 @@ export default function ({ types: t }: BabelTypes) {
   return {
     name: 'transform-modules-commonjs',
     visitor: {
+      ExportNamedDeclaration(path: NodePath) {
+        const specifier = path.node["specifiers"][0]
+        const localName = specifier.local.name
+
+        const beforeStatements = [
+          define__esModuleStatement,
+          exportsDefaultVoid0Statement,
+        ];
+        const beforeProgram = t.program(beforeStatements);
+        const afterProgram = t.program([(exportsDefaultStatement(localName))])
+
+        path.insertBefore(beforeProgram)
+        path.insertAfter(afterProgram)
+        // If you do not call it at the end, you will get the following error
+        // SyntaxError: unknown: NodePath has been removed so is read-only.
+        path.remove()
+      },
       ExportDefaultDeclaration(path: NodePath) {
         const declaration = path.node["declaration"]
         const { value: exportValue, type: exportValueType } = declaration

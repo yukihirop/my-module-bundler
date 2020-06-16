@@ -11,23 +11,23 @@ const fixtureBasePath = join(__dirname, 'fixtures')
   , ENTRY_FILE = 'entry.js'
   , BUNDLE_FILE = 'bundle.js';
 
-async function build(fixturePath: string, outputPath: string, type: string) {
+async function build(fixturePath: string, outputPath: string, type?: string) {
   await bundler({
-    input: join(fixturePath, type, ENTRY_FILE),
-    output: join(outputPath, type, BUNDLE_FILE)
+    input: join(fixturePath, type || "", ENTRY_FILE),
+    output: join(outputPath, type || "", BUNDLE_FILE)
   })
 }
 
-async function runGeneratedCodeInVM(outputPath: string, type: string) {
-  const code = await readFile(join(outputPath, type, BUNDLE_FILE), 'utf-8'),
+async function runGeneratedCodeInVM(outputPath: string, type?: string) {
+  const code = await readFile(join(outputPath, type || "", BUNDLE_FILE), 'utf-8'),
     sandbox = { console, process },
     ctx = createContext({ sandbox });
 
   runInContext(code, ctx);
 }
 
-async function createDir(base: string, dir: string) {
-  await mkdir(join(base, dir), { recursive: true });
+async function createDir(base: string, dir?: string) {
+  await mkdir(join(base, dir || ""), { recursive: true });
 }
 
 beforeEach(() => {
@@ -39,27 +39,22 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-describe('esm', () => {
-  const fixturePath = join(fixtureBasePath, 'esm');
-  const outputPath = join(outputBasePath, 'esm');
+describe('arrow-functions', () => {
+  const type = 'arrow-functions'
+  const fixturePath = join(fixtureBasePath, type)
+  const outputPath = join(outputBasePath, type)
 
   beforeAll(async () => {
     await createDir(outputPath, '');
+  })
+
+  test('', async () => {
+    await createDir(outputPath);
+    await build(fixturePath, outputPath);
+    await runGeneratedCodeInVM(outputPath);
+
+    // https://stackoverflow.com/questions/52457575/jest-typescript-property-mock-does-not-exist-on-type
+    // I don't know why, but console.log executed in `vm` is not mocked
+    expect((console.log as jest.Mock).mock.calls).toMatchSnapshot();
   });
-
-  const dirs = [
-    'simple'
-  ]
-
-  for (const dir of dirs) {
-    test(dir, async () => {
-      await createDir(outputPath, dir);
-      await build(fixturePath, outputPath, dir);
-      await runGeneratedCodeInVM(outputPath, dir);
-
-      // https://stackoverflow.com/questions/52457575/jest-typescript-property-mock-does-not-exist-on-type
-      // I don't know why, but console.log executed in `vm` is not mocked
-      expect((console.log as jest.Mock).mock.calls).toMatchSnapshot();
-    });
-  }
-});
+})

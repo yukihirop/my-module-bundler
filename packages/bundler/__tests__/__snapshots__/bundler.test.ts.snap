@@ -14,6 +14,8 @@ exports[`arrow-functions spec-naming 1`] = `Array []`;
 
 exports[`modules-commonjs interop-loose export-default-ae 1`] = `Array []`;
 
+exports[`modules-commonjs interop-loose export-default-ce 1`] = `Array []`;
+
 exports[`modules-commonjs interop-loose export-default-fd 1`] = `Array []`;
 
 exports[`modules-commonjs interop-loose export-default-fd-id-name 1`] = `Array []`;

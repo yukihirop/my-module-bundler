@@ -54,6 +54,12 @@ export default function ({ types: t }: BabelTypes) {
               declaration.body
             )
             break;
+          case 'CallExpression':
+            expression = t.callExpression(
+              declaration.callee,
+              declaration.arguments
+            )
+            break;
           default:
             expression = eval(`t.${functionize(exportValueType)}(${exportValue})`) as Expression
             break;

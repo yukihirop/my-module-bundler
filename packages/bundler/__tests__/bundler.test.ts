@@ -87,7 +87,8 @@ describe('modules-commonjs', () => {
       'export-default-ae',
       'export-default-fd',
       'export-default-fd-id-name',
-      'export-name'
+      'export-name',
+      'export-default-ce'
     ]
 
     for (const dir of dirs) {

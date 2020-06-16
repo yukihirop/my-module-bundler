@@ -20,6 +20,7 @@ export default function ({ types: t }: BabelTypes) {
       ExportDefaultDeclaration(path: NodePath) {
         const declaration = path.node["declaration"]
         const { value: exportValue, type: exportValueType } = declaration
+        const idName = declaration.id ? declaration.id.name : "_default";
 
         let expression, nodeDeclaration;
         switch (exportValueType) {
@@ -31,13 +32,12 @@ export default function ({ types: t }: BabelTypes) {
             break;
           case 'FunctionDeclaration':
             nodeDeclaration = t.functionDeclaration(
-              t.identifier("_default"),
+              t.identifier(idName),
               declaration.params,
               declaration.body
             )
             break;
           default:
-            debugger
             expression = eval(`t.${functionize(exportValueType)}(${exportValue})`) as Expression
             break;
         }
@@ -62,7 +62,7 @@ export default function ({ types: t }: BabelTypes) {
           exportsDefaultVoid0Statement,
         ];
         const beforeProgram = t.program(beforeStatements);
-        const afterProgram = t.program([exportsDefaultStatement])
+        const afterProgram = t.program([(exportsDefaultStatement(idName))])
 
         let program;
         if (nodeDeclaration) {

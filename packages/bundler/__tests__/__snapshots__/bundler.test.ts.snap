@@ -16,6 +16,8 @@ exports[`modules-commonjs interop-loose export-default-ae 1`] = `Array []`;
 
 exports[`modules-commonjs interop-loose export-default-fd 1`] = `Array []`;
 
+exports[`modules-commonjs interop-loose export-default-fd-id-name 1`] = `Array []`;
+
 exports[`modules-commonjs interop-loose export-default-literal 1`] = `Array []`;
 
 exports[`modules-commonjs interop-loose export-default-oe 1`] = `Array []`;

@@ -47,7 +47,7 @@ export const exportsDefaultVoid0Statement = t.expressionStatement(
 )
 // e.g.)
 // exports.default = _default
-export const exportsDefaultStatement = t.expressionStatement(
+export const exportsDefaultStatement = (name = "_default") => t.expressionStatement(
   t.assignmentExpression(
     "=",
     t.memberExpression(
@@ -55,6 +55,6 @@ export const exportsDefaultStatement = t.expressionStatement(
       t.identifier("deafult"),
       false
     ),
-    t.identifier("_default")
+    t.identifier(name)
   )
 )

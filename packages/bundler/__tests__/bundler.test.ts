@@ -69,3 +69,32 @@ describe('arrow-functions', () => {
     });
   }
 })
+
+describe('modules-commonjs', () => {
+  describe('interop-loose', () => {
+    const type = 'modules-commonjs'
+    const subType = 'interop-loose'
+    const fixturePath = join(fixtureBasePath, type, subType)
+    const outputPath = join(outputBasePath, type, subType)
+
+    beforeAll(async () => {
+      await createDir(outputPath, '');
+    })
+
+    const dirs = [
+      'export-default-literal'
+    ]
+
+    for (const dir of dirs) {
+      test(dir, async () => {
+        await createDir(outputPath, dir);
+        await build(fixturePath, outputPath, dir);
+        await runGeneratedCodeInVM(outputPath, dir);
+
+        // https://stackoverflow.com/questions/52457575/jest-typescript-property-mock-does-not-exist-on-type
+        // I don't know why, but console.log executed in `vm` is not mocked
+        expect((console.log as jest.Mock).mock.calls).toMatchSnapshot();
+      });
+    }
+  })
+})

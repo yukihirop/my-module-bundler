@@ -1,11 +1,12 @@
 {
-  "name": "plugin-transform-modules-commonjs",
-  "version": "0.0.0",
+  "name": "@yukihirop/plugin-transform-modules-commonjs",
+  "version": "1.0.0",
   "description": "> TODO: description",
   "author": "yukihirop <te108186@gmail.com>",
   "homepage": "https://github.com/yukihirop/my-module-bundler#readme",
   "license": "ISC",
-  "main": "lib/plugin-transform-modules-commonjs.js",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "__tests__"
@@ -22,5 +23,11 @@
   },
   "bugs": {
     "url": "https://github.com/yukihirop/my-module-bundler/issues"
+  },
+  "devDependencies": {
+    "@babel/traverse": "^7.10.1",
+    "@babel/types": "^7.10.2",
+    "@types/babel-types": "^7.0.7",
+    "@types/babel__traverse": "^7.0.12"
   }
 }

@@ -12,6 +12,7 @@ import { js as beautify } from 'js-beautify';
 import env from '@babel/preset-env';
 import { Asset, Graph, BundlerParams } from './types';
 import transformArrowFunctions from '@yukihirop/plugin-transform-arrow-functions';
+import transformModulesCommonjs from '@yukihirop/plugin-transform-modules-commonjs';
 
 // TODO: Use Class
 
@@ -43,7 +44,10 @@ function createAsset(filename: string): Asset {
   const id = moduleID++;
 
   const { code } = transformFromAstSync(ast, null, {
-    plugins: [transformArrowFunctions],
+    plugins: [
+      transformArrowFunctions,
+      transformModulesCommonjs
+    ],
   });
 
   return {

@@ -13,6 +13,8 @@ import env from '@babel/preset-env';
 import { Asset, Graph, BundlerParams } from './types';
 import transformArrowFunctions from '@yukihirop/plugin-transform-arrow-functions'
 
+// TODO: Use Class
+
 let moduleID = 0;
 
 /**
@@ -108,6 +110,8 @@ async function bundler({ input, output }: BundlerParams) {
       space_in_empty_paren: true,
     });
 
+  //　Initialize the globally defined moduleID
+  moduleID = 0;
   await fs.promises.writeFile(output, formatted);
 }
 

@@ -49,7 +49,8 @@ describe('arrow-functions', () => {
   })
 
   const dirs = [
-    'basic'
+    'basic',
+    'default-parameters'
   ]
 
   for (const dir of dirs) {

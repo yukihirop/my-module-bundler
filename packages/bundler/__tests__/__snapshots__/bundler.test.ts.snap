@@ -1,3 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`arrow-functions basic 1`] = `Array []`;
+
+exports[`arrow-functions default-parameters 1`] = `Array []`;

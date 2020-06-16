@@ -9,26 +9,23 @@ export default (t: typeof bt, path: NodePath, type: string) => {
   switch (type) {
     // e.g.) var a = () => {};
     case 'BlockStatement':
-      statements = path.node["body"].body as Statement;
+      statements = path.node['body'].body as Statement;
       break;
     // e.g.) var a = (b) => b;
     case 'Identifier':
-      statements = [t.returnStatement(t.identifier(path.node["body"]["name"]))]
+      statements = [t.returnStatement(t.identifier(path.node['body']['name']))];
       break;
     // e.g.) var b = (b) => console.log(b);
     case 'CallExpression':
-      const callee = path.node["body"] as CallExpression
-      statements = [t.expressionStatement(callee)]
+      const callee = path.node['body'] as CallExpression;
+      statements = [t.expressionStatement(callee)];
       break;
     // e.g.) var c = (a, b) => a + b
     case 'BinaryExpression':
-      const binary = path.node["body"] as BinaryExpression
-      statements = [t.returnStatement(binary)]
-      break;
-    default:
-      debugger
+      const binary = path.node['body'] as BinaryExpression;
+      statements = [t.returnStatement(binary)];
       break;
   }
 
-  return statements
-}
+  return statements;
+};

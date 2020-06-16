@@ -48,13 +48,19 @@ describe('arrow-functions', () => {
     await createDir(outputPath, '');
   })
 
-  test('', async () => {
-    await createDir(outputPath);
-    await build(fixturePath, outputPath);
-    await runGeneratedCodeInVM(outputPath);
+  const dirs = [
+    'basic'
+  ]
 
-    // https://stackoverflow.com/questions/52457575/jest-typescript-property-mock-does-not-exist-on-type
-    // I don't know why, but console.log executed in `vm` is not mocked
-    expect((console.log as jest.Mock).mock.calls).toMatchSnapshot();
-  });
+  for (const dir of dirs) {
+    test(dir, async () => {
+      await createDir(outputPath, dir);
+      await build(fixturePath, outputPath, dir);
+      await runGeneratedCodeInVM(outputPath, dir);
+
+      // https://stackoverflow.com/questions/52457575/jest-typescript-property-mock-does-not-exist-on-type
+      // I don't know why, but console.log executed in `vm` is not mocked
+      expect((console.log as jest.Mock).mock.calls).toMatchSnapshot();
+    });
+  }
 })

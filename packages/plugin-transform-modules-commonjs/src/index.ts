@@ -60,6 +60,12 @@ export default function ({ types: t }: BabelTypes) {
               declaration.arguments
             )
             break;
+          case 'NewExpression':
+            expression = t.newExpression(
+              declaration.callee,
+              declaration.arguments
+            )
+            break;
           default:
             expression = eval(`t.${functionize(exportValueType)}(${exportValue})`) as Expression
             break;

@@ -19,10 +19,20 @@
 })({
   0: [
     function(require, module, exports) {
-      var a = function() {};
+      /**
+       * VariableDeclaration
+       */
+      // bodyType: BlockStatement
+      var a = function() {}; // bodyType: Identifier
+
 
       var a = function(b) {
         return b;
+      }; // bodyType: CallExpression
+
+
+      var b = function(b) {
+        console.log(b);
       };
     },
     {},

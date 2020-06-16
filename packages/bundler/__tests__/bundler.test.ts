@@ -52,7 +52,8 @@ describe('arrow-functions', () => {
     'basic',
     'default-parameters',
     'expression',
-    'nested'
+    'nested',
+    'paran-insertion'
   ]
 
   for (const dir of dirs) {

@@ -51,7 +51,8 @@ describe('arrow-functions', () => {
   const dirs = [
     'basic',
     'default-parameters',
-    'expression'
+    'expression',
+    'nested'
   ]
 
   for (const dir of dirs) {

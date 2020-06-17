@@ -19,10 +19,10 @@
 })({
   0: [
     function(require, module, exports) {
-      var a, b;
       Object.defineProperty(exports, "__esModule", {
         value: true
       });
+      var a, b;
       exports.a = void 0;
       exports.b = void 0;
 

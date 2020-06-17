@@ -100,7 +100,8 @@ describe('modules-commonjs', () => {
       'export-named-multi',
       'export-named-as',
       'export-named-as-default',
-      'export-named-as-mix'
+      'export-named-as-mix',
+      'export-variables'
     ]
 
     for (const dir of dirs) {

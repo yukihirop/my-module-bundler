@@ -1,5 +1,5 @@
 import { NodePath } from '@babel/traverse';
-import { Expression, ExportSpecifier, Statement } from '@babel/types';
+import { Expression, ExportSpecifier, Statement, Declaration } from '@babel/types';
 import { BabelTypes } from '../types';
 import {
   buildExportsVoid0Statement,
@@ -35,6 +35,7 @@ export default function ({ types: t }: BabelTypes) {
 
         const specifiers = path.node["specifiers"];
         const source = path.node["source"]
+        const declaration = path.node["declaration"]
 
         let afterProgram, beforeProgram;
         let beforeStatements = [] as Statement[];
@@ -43,7 +44,7 @@ export default function ({ types: t }: BabelTypes) {
         // e.g.)
         // export { a }
         // export { a, b }
-        if (specifiers && !source) {
+        if (specifiers.length > 0 && !source) {
           specifiers.forEach((specifier: ExportSpecifier) => {
             const exportedName = specifier.exported.name as string
             const moduleName = specifier.local.name as string
@@ -65,7 +66,7 @@ export default function ({ types: t }: BabelTypes) {
           // export { b as c } from './a.js'
           // export { b as default } from './a.js'
           // export { default as c } from './a.js'
-        } else if (specifiers && source) {
+        } else if (specifiers.length > 0 && source) {
           const sourceName = source.value
           const moduleName = basename(sourceName).split('.')[0]
           const requireType = judgeRequireType(specifiers)
@@ -82,6 +83,59 @@ export default function ({ types: t }: BabelTypes) {
           path.insertBefore(beforeStatements)
           path.replaceWith(requireStatement)
           path.insertAfter(afterStatements)
+
+          // TODO: There is no end if it is implemented separately for each case.
+          // e.g.)
+          // export var a = 1;
+          // export function a() { }
+          // export class A() {}
+        } else if (declaration) {
+          const bodyType = declaration["body"] ? declaration["body"].type : null
+          let statements = []
+
+          if (bodyType === 'BlockStatement') {
+            const exportedName = declaration["id"].name
+            const nodeDeclaration = t.functionDeclaration(
+              t.identifier(exportedName),
+              declaration.params,
+              declaration.body
+            )
+            statements.push(nodeDeclaration)
+            beforeStatements.push(buildExportsVoid0Statement(exportedName))
+            afterStatements.push(buildExportsStatement(exportedName, exportedName))
+          } else if (bodyType === 'ClassBody') {
+            const exportedName = declaration["id"].name
+            const nodeDeclaration = t.classDeclaration(
+              t.identifier(exportedName),
+              null,
+              declaration.body,
+              null
+            )
+            statements.push(nodeDeclaration)
+            beforeStatements.push(buildExportsVoid0Statement(exportedName))
+            afterStatements.push(buildExportsStatement(exportedName, exportedName))
+          } else {
+            declaration.declarations.forEach((child: Declaration) => {
+              const exportedName = child["id"].name
+              const statement = t.variableDeclaration("var", [
+                t.variableDeclarator(
+                  t.identifier(exportedName),
+                  child["init"]
+                )
+              ])
+
+              statements.push(statement)
+              beforeStatements.push(buildExportsVoid0Statement(exportedName))
+              afterStatements.push(buildExportsStatement(exportedName, exportedName))
+            })
+          }
+
+          const mainProgram = t.program(statements)
+          beforeProgram = t.program(beforeStatements);
+          afterProgram = t.program(afterStatements)
+          path.insertBefore(beforeProgram)
+          path.replaceWith(mainProgram)
+          path.insertAfter(afterProgram)
         }
       },
       ExportDefaultDeclaration(path: NodePath) {

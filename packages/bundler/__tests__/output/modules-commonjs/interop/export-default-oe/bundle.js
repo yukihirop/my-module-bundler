@@ -19,11 +19,11 @@
 })({
   0: [
     function(require, module, exports) {
-      // oe = object expression
-      var a, b;
       Object.defineProperty(exports, "__esModule", {
         value: true
       });
+      // oe = object expression
+      var a, b;
       exports.default = void 0;
 
       var _default = {

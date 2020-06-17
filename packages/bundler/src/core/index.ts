@@ -38,6 +38,10 @@ function createAsset(filename: string): Asset {
       // Every time we see an import into the dependencies array.
       dependencies.push(node.source.value);
     },
+    ExportAllDeclaration({ node }) {
+      // Every time we see an import into the dependencies array.
+      dependencies.push(node.source.value);
+    }
   });
 
   // We also assign a unique identifier to this module by incrementing a simple counter.

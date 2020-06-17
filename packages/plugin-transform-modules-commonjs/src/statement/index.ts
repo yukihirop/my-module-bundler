@@ -1,4 +1,5 @@
 import * as t from '@babel/types';
+import template from '@babel/template';
 
 export const useStrictStatement = t.expressionStatement(
   t.stringLiteral("use strict")
@@ -29,7 +30,7 @@ export const define__esModuleStatement = t.expressionStatement(
 
 // e.g.)
 // exports.default = void 0
-// 
+//
 // Since "undefined" is a value that can be overwritten, void 0 is used
 export const exportsDefaultVoid0Statement = t.expressionStatement(
   t.assignmentExpression(
@@ -58,3 +59,30 @@ export const exportsDefaultStatement = (name = "_default") => t.expressionStatem
     t.identifier(name)
   )
 )
+
+// e.g.)
+// Copy the imported module to its internal attributes and set it to exports
+// Object.keys(_foo).forEach(function (key) {
+//   if (key === "default" || key === "__esModule") return;
+//   Object.defineProperty(exports, key, {
+//     enumerable: true,
+//     get: function get() {
+//       return _foo[key];
+//     }
+//   });
+// });
+export const buildDefinePropertyExportsStatement = (moduleName: string) => {
+  return template.statement`
+    Object.keys(MODULE_NAME).forEach(function(key){
+      if(key === "default" || key === "__esModule") return;
+      Object.defineProperty(exports, key, {
+        enumerable: true,
+        get: function get(){
+          return MODULE_NAME[key]
+        }
+      })
+    })
+  `({
+    MODULE_NAME: `_${moduleName}`
+  })
+}

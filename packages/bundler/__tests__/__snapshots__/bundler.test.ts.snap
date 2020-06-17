@@ -26,4 +26,6 @@ exports[`modules-commonjs interop-loose export-default-ne 1`] = `Array []`;
 
 exports[`modules-commonjs interop-loose export-default-oe 1`] = `Array []`;
 
+exports[`modules-commonjs interop-loose export-from-all 1`] = `Array []`;
+
 exports[`modules-commonjs interop-loose export-name 1`] = `Array []`;

@@ -4,8 +4,10 @@ import { BabelTypes } from '../types';
 import {
   define__esModuleStatement,
   exportsDefaultVoid0Statement,
-  exportsDefaultStatement
+  exportsDefaultStatement,
+  buildDefinePropertyExportsStatement
 } from '../statement'
+import { basename } from 'path'
 
 const functionize = function (str: string): string {
   if (!str || typeof str !== 'string') return str;
@@ -15,6 +17,24 @@ const functionize = function (str: string): string {
 export default function ({ types: t }: BabelTypes) {
   return {
     visitor: {
+      ExportAllDeclaration(path: NodePath) {
+        const sourceValue = path.node["source"].value
+        const moduleName = basename(sourceValue).split('.')[0]
+        const requireStatement = t.variableDeclaration("var", [
+          t.variableDeclarator(
+            t.identifier(`_${moduleName}`),
+            t.callExpression(
+              t.identifier("require"),
+              [t.stringLiteral(sourceValue)]
+            )
+          )
+        ])
+        const reExportsStatement = buildDefinePropertyExportsStatement(moduleName)
+
+        path.insertBefore(define__esModuleStatement)
+        path.replaceWith(requireStatement)
+        path.insertAfter(reExportsStatement)
+      },
       ExportNamedDeclaration(path: NodePath) {
         const specifier = path.node["specifiers"][0]
         const localName = specifier.local.name
@@ -64,6 +84,9 @@ export default function ({ types: t }: BabelTypes) {
               declaration.arguments
             )
             break;
+          case 'Identifier':
+            expression = t.identifier(declaration.name)
+            break;
           default:
             expression = eval(`t.${functionize(exportValueType)}(${exportValue})`) as Expression
             break;
@@ -77,7 +100,7 @@ export default function ({ types: t }: BabelTypes) {
         )
 
         // e.g.)
-        // 
+        //
         // Object.defineProperty(exports, "__esModule", {
         //   value: true
         // });

@@ -71,9 +71,9 @@ describe('arrow-functions', () => {
 })
 
 describe('modules-commonjs', () => {
-  describe('interop-loose', () => {
+  describe('interop', () => {
     const type = 'modules-commonjs'
-    const subType = 'interop-loose'
+    const subType = 'interop'
     const fixturePath = join(fixtureBasePath, type, subType)
     const outputPath = join(outputBasePath, type, subType)
 

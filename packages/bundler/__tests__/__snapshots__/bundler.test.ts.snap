@@ -12,20 +12,20 @@ exports[`arrow-functions paran-insertion 1`] = `Array []`;
 
 exports[`arrow-functions spec-naming 1`] = `Array []`;
 
-exports[`modules-commonjs interop-loose export-default-ae 1`] = `Array []`;
+exports[`modules-commonjs interop export-default-ae 1`] = `Array []`;
 
-exports[`modules-commonjs interop-loose export-default-ce 1`] = `Array []`;
+exports[`modules-commonjs interop export-default-ce 1`] = `Array []`;
 
-exports[`modules-commonjs interop-loose export-default-fd 1`] = `Array []`;
+exports[`modules-commonjs interop export-default-fd 1`] = `Array []`;
 
-exports[`modules-commonjs interop-loose export-default-fd-id-name 1`] = `Array []`;
+exports[`modules-commonjs interop export-default-fd-id-name 1`] = `Array []`;
 
-exports[`modules-commonjs interop-loose export-default-literal 1`] = `Array []`;
+exports[`modules-commonjs interop export-default-literal 1`] = `Array []`;
 
-exports[`modules-commonjs interop-loose export-default-ne 1`] = `Array []`;
+exports[`modules-commonjs interop export-default-ne 1`] = `Array []`;
 
-exports[`modules-commonjs interop-loose export-default-oe 1`] = `Array []`;
+exports[`modules-commonjs interop export-default-oe 1`] = `Array []`;
 
-exports[`modules-commonjs interop-loose export-from-all 1`] = `Array []`;
+exports[`modules-commonjs interop export-from-all 1`] = `Array []`;
 
-exports[`modules-commonjs interop-loose export-name 1`] = `Array []`;
+exports[`modules-commonjs interop export-name 1`] = `Array []`;

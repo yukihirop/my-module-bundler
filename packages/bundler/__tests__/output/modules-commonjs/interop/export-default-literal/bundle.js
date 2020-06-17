@@ -26,7 +26,7 @@
 
       var _default = 1;
 
-      exports.deafult = _default;
+      exports.default = _default;
     },
     {},
   ]

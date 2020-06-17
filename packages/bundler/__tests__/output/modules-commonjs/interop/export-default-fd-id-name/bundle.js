@@ -30,7 +30,7 @@
         return a;
       }
 
-      exports.deafult = a;
+      exports.default = a;
     },
     {},
   ]

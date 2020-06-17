@@ -25,7 +25,7 @@
       });
       exports.default = void 0;
 
-      exports.deafult = a;
+      exports.default = a;
     },
     {},
   ]

@@ -87,7 +87,6 @@ describe('modules-commonjs', () => {
       'export-default-ae',
       'export-default-fd',
       'export-default-fd-id-name',
-      'export-name',
       'export-default-ce',
       'export-default-ne',
       'export-from-all',
@@ -96,7 +95,9 @@ describe('modules-commonjs', () => {
       'export-from-as',
       'export-from-as-default',
       'export-from-as-mix',
-      'export-from-default-as'
+      'export-from-default-as',
+      'export-name',
+      'export-named-multi'
     ]
 
     for (const dir of dirs) {

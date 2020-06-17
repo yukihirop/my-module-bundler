@@ -32,7 +32,7 @@
         k: function() {}
       };
 
-      exports.deafult = _default;
+      exports.default = _default;
     },
     {},
   ]

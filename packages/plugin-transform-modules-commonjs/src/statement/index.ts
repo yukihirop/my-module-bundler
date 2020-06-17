@@ -1,6 +1,5 @@
 import * as t from '@babel/types';
 import template from '@babel/template';
-import { basename } from 'path';
 
 export const useStrictStatement = t.expressionStatement(
   t.stringLiteral("use strict")
@@ -30,36 +29,16 @@ export const define__esModuleStatement = t.expressionStatement(
 )
 
 // e.g.)
+// exports.a = void 0
 // exports.default = void 0
-//
-// Since "undefined" is a value that can be overwritten, void 0 is used
-export const exportsDefaultVoid0Statement = t.expressionStatement(
-  t.assignmentExpression(
-    "=",
-    t.memberExpression(
-      t.identifier("exports"),
-      t.identifier("default"),
-      false
-    ),
-    t.unaryExpression(
-      "void",
-      t.numericLiteral(0)
-    )
-  )
-)
+export const buildExportsVoid0Statement = (key = "default"): t.ExpressionStatement =>
+  t.expressionStatement(template.expression`exports.KEY = void 0`({ KEY: key }))
+
 // e.g.)
 // exports.default = _default
-export const exportsDefaultStatement = (name = "_default") => t.expressionStatement(
-  t.assignmentExpression(
-    "=",
-    t.memberExpression(
-      t.identifier("exports"),
-      t.identifier("deafult"),
-      false
-    ),
-    t.identifier(name)
-  )
-)
+// exports.a = a
+export const buildExportsStatement = (key = "default", localName = "_default"): t.ExpressionStatement =>
+  t.expressionStatement(template.expression`exports.KEY = LOCAL_NAME`({ KEY: key, LOCAL_NAME: localName }))
 
 // e.g.)
 // Copy the imported module to its internal attributes and set it to exports
@@ -99,7 +78,7 @@ export const buildDefinePropertyExportsStatement = (moduleName: string) => {
 // });
 export const buildDefinePropertyExportNamedStatement = (moduleName: string, exportedName: string, localName?: string) => {
   localName = localName ? localName : exportedName;
-  
+
   return template.statement`
     Object.defineProperty(exports, "EXPORTED_NAME", {
       enumerable: true,

@@ -3,8 +3,8 @@ import { Expression, ExportSpecifier } from '@babel/types';
 import { BabelTypes } from '../types';
 import {
   define__esModuleStatement,
-  exportsDefaultVoid0Statement,
-  exportsDefaultStatement,
+  buildExportsVoid0Statement,
+  buildExportsStatement,
   buildDefinePropertyExportsStatement,
   buildDefinePropertyExportNamedStatement,
   buildRequireStatement,
@@ -16,8 +16,6 @@ import {
   INTEROP_REQUIRE_DEFAULT
 } from '../helper'
 import { basename } from 'path'
-
-
 
 export default function ({ types: t }: BabelTypes) {
   return {
@@ -38,15 +36,21 @@ export default function ({ types: t }: BabelTypes) {
 
         let afterProgram, beforeProgram;
         // e.g.)
-        // export default a
+        // export { a }
+        // export { a, b }
         if (specifiers && !source) {
-          const moduleName = specifiers[0].local.name
-          const beforeStatements = [
-            define__esModuleStatement,
-            exportsDefaultVoid0Statement,
-          ];
+          let beforeStatements = [define__esModuleStatement];
+          let afterStatements = [];
+          specifiers.forEach((specifier: ExportSpecifier) => {
+            const exportedName = specifier.exported.name as string
+            const moduleName = specifier.local.name as string
+
+            beforeStatements.push(buildExportsVoid0Statement(exportedName))
+            afterStatements.push(buildExportsStatement(exportedName, moduleName))
+          })
+
           beforeProgram = t.program(beforeStatements);
-          afterProgram = t.program([(exportsDefaultStatement(moduleName))])
+          afterProgram = t.program(afterStatements)
           path.insertBefore(beforeProgram)
           path.insertAfter(afterProgram)
           // If you do not call it at the end, you will get the following error
@@ -136,10 +140,13 @@ export default function ({ types: t }: BabelTypes) {
         // exports.default = _default;
         const beforeStatements = [
           define__esModuleStatement,
-          exportsDefaultVoid0Statement,
+          buildExportsVoid0Statement(),
         ];
+        const afterStatements = [
+          buildExportsStatement("default", idName)
+        ]
         const beforeProgram = t.program(beforeStatements);
-        const afterProgram = t.program([(exportsDefaultStatement(idName))])
+        const afterProgram = t.program(afterStatements);
 
         let program;
         if (nodeDeclaration) {

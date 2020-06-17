@@ -19,19 +19,15 @@
 })({
   0: [
     function(require, module, exports) {
-      // ae = array expression
-      var a = function() {};
-
-      var b = function() {};
-
+      var a, b;
       Object.defineProperty(exports, "__esModule", {
         value: true
       });
-      exports.default = void 0;
+      exports.a = void 0;
+      exports.b = void 0;
 
-      var _default = [a, b];
-
-      exports.default = _default;
+      exports.a = a;
+      exports.b = b;
     },
     {},
   ]

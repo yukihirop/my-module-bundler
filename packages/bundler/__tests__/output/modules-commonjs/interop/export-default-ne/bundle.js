@@ -31,7 +31,7 @@
 
       var _default = new A();
 
-      exports.deafult = _default;
+      exports.default = _default;
     },
     {},
   ]

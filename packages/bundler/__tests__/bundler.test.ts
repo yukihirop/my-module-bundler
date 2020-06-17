@@ -96,7 +96,7 @@ describe('modules-commonjs', () => {
       'export-from-as-default',
       'export-from-as-mix',
       'export-from-default-as',
-      'export-name',
+      'export-named',
       'export-named-multi',
       'export-named-as',
       'export-named-as-default',

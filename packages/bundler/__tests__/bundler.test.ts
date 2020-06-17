@@ -98,7 +98,8 @@ describe('modules-commonjs', () => {
       'export-from-default-as',
       'export-name',
       'export-named-multi',
-      'export-named-as'
+      'export-named-as',
+      'export-named-as-default'
     ]
 
     for (const dir of dirs) {

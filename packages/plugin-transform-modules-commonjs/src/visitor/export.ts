@@ -50,14 +50,17 @@ export default function ({ types: t }: BabelTypes) {
           path.remove()
 
           // export { b, c } from './a.js'
+          // export { b as c } from './a.js'
         } else if (specifiers && source) {
           const sourceName = source.value
           const moduleName = basename(sourceName).split('.')[0]
+
           let beforeStatements = [
             define__esModuleStatement,
             ...(specifiers.map((specifier: ExportSpecifier) => {
               const exportedName = specifier.exported.name
-              return buildDefinePropertyExportNamedStatement(moduleName, exportedName)
+              const localName = specifier.local ? specifier.local.name : null
+              return buildDefinePropertyExportNamedStatement(moduleName, exportedName, localName)
             }))
           ];
           const requireStatement = buildRequireStatement(moduleName, sourceName);

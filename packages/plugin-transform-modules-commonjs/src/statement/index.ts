@@ -97,17 +97,20 @@ export const buildDefinePropertyExportsStatement = (moduleName: string) => {
 //     return _foo.bar;
 //   }
 // });
-export const buildDefinePropertyExportNamedStatement = (moduleName: string, exportedName: string) => {
+export const buildDefinePropertyExportNamedStatement = (moduleName: string, exportedName: string, localName?: string) => {
+  localName = localName ? localName : exportedName;
+  
   return template.statement`
     Object.defineProperty(exports, "EXPORTED_NAME", {
       enumerable: true,
       get: function() {
-        return MODULE_NAME.EXPORTED_NAME
+        return MODULE_NAME.LOCALE_NAME
       }
     });
   `({
     MODULE_NAME: `_${moduleName}`,
-    EXPORTED_NAME: exportedName
+    EXPORTED_NAME: exportedName,
+    LOCALE_NAME: localName,
   })
 }
 

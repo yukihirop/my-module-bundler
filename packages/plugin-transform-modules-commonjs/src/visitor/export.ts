@@ -2,7 +2,6 @@ import { NodePath } from '@babel/traverse';
 import { Expression, ExportSpecifier, Statement } from '@babel/types';
 import { BabelTypes } from '../types';
 import {
-  define__esModuleStatement,
   buildExportsVoid0Statement,
   buildExportsStatement,
   buildDefinePropertyExportsStatement,
@@ -21,26 +20,30 @@ export default function ({ types: t }: BabelTypes) {
   return {
     visitor: {
       ExportAllDeclaration(path: NodePath) {
+        this.IsESModule = true
+
         const sourceName = path.node["source"].value
         const moduleName = basename(sourceName).split('.')[0]
         const requireStatement = buildRequireStatement(moduleName, sourceName)
         const reExportsStatement = buildDefinePropertyExportsStatement(moduleName)
 
-        path.insertBefore(define__esModuleStatement)
         path.replaceWith(requireStatement)
         path.insertAfter(reExportsStatement)
       },
       ExportNamedDeclaration(path: NodePath) {
+        this.IsESModule = true
+
         const specifiers = path.node["specifiers"];
         const source = path.node["source"]
 
         let afterProgram, beforeProgram;
+        let beforeStatements = [] as Statement[];
+        let afterStatements = [] as Statement[];
+
         // e.g.)
         // export { a }
         // export { a, b }
         if (specifiers && !source) {
-          let beforeStatements = [define__esModuleStatement];
-          let afterStatements = [];
           specifiers.forEach((specifier: ExportSpecifier) => {
             const exportedName = specifier.exported.name as string
             const moduleName = specifier.local.name as string
@@ -67,8 +70,6 @@ export default function ({ types: t }: BabelTypes) {
           const moduleName = basename(sourceName).split('.')[0]
           const requireType = judgeRequireType(specifiers)
 
-          let beforeStatements = [define__esModuleStatement];
-          let afterStatements = [] as Statement[];
           specifiers.forEach((specifier: ExportSpecifier) => {
             const exportedName = specifier.exported.name
             const localName = specifier.local ? specifier.local.name : null
@@ -84,6 +85,8 @@ export default function ({ types: t }: BabelTypes) {
         }
       },
       ExportDefaultDeclaration(path: NodePath) {
+        this.IsESModule = true
+
         const declaration = path.node["declaration"]
         const { value: exportValue, type: exportValueType } = declaration
         const idName = declaration.id ? declaration.id.name : "_default";
@@ -138,13 +141,8 @@ export default function ({ types: t }: BabelTypes) {
         // exports.default = void 0;
         // var _default = <ArrayExpression | ObjectExpression | Literal>;
         // exports.default = _default;
-        const beforeStatements = [
-          define__esModuleStatement,
-          buildExportsVoid0Statement(),
-        ];
-        const afterStatements = [
-          buildExportsStatement("default", idName)
-        ]
+        const beforeStatements = [buildExportsVoid0Statement()];
+        const afterStatements = [buildExportsStatement("default", idName)]
         const beforeProgram = t.program(beforeStatements);
         const afterProgram = t.program(afterStatements);
 
@@ -159,6 +157,6 @@ export default function ({ types: t }: BabelTypes) {
         path.replaceWith(program)
         path.insertAfter(afterProgram)
       }
-    }
+    },
   }
 }

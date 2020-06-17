@@ -1,5 +1,5 @@
 import { NodePath } from '@babel/traverse';
-import { Expression } from '@babel/types';
+import { Expression, ExportSpecifier } from '@babel/types';
 import { BabelTypes } from '../types';
 import {
   define__esModuleStatement,
@@ -30,12 +30,13 @@ export default function ({ types: t }: BabelTypes) {
         path.insertAfter(reExportsStatement)
       },
       ExportNamedDeclaration(path: NodePath) {
-        const specifier = path.node["specifiers"][0];
+        const specifiers = path.node["specifiers"];
         const source = path.node["source"]
 
         let afterProgram, beforeProgram;
-        if (specifier && !source) {
-          const moduleName = specifier.local.name
+        // export default a
+        if (specifiers && !source) {
+          const moduleName = specifiers[0].local.name
           const beforeStatements = [
             define__esModuleStatement,
             exportsDefaultVoid0Statement,
@@ -47,13 +48,17 @@ export default function ({ types: t }: BabelTypes) {
           // If you do not call it at the end, you will get the following error
           // SyntaxError: unknown: NodePath has been removed so is read-only.
           path.remove()
-        } else if (specifier && source) {
+
+          // export { b, c } from './a.js'
+        } else if (specifiers && source) {
           const sourceName = source.value
-          const exportedName = specifier.exported.name
           const moduleName = basename(sourceName).split('.')[0]
-          const beforeStatements = [
+          let beforeStatements = [
             define__esModuleStatement,
-            buildDefinePropertyExportNamedStatement(moduleName, exportedName)
+            ...(specifiers.map((specifier: ExportSpecifier) => {
+              const exportedName = specifier.exported.name
+              return buildDefinePropertyExportNamedStatement(moduleName, exportedName)
+            }))
           ];
           const requireStatement = buildRequireStatement(moduleName, sourceName);
           beforeProgram = t.program(beforeStatements);

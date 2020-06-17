@@ -7,14 +7,17 @@ import {
   exportsDefaultStatement,
   buildDefinePropertyExportsStatement,
   buildDefinePropertyExportNamedStatement,
-  buildRequireStatement
+  buildRequireStatement,
+  _interopRequireDefault
 } from '../statement'
+import {
+  functionize,
+  judgeRequireType,
+  INTEROP_REQUIRE_DEFAULT
+} from '../helper'
 import { basename } from 'path'
 
-const functionize = function (str: string): string {
-  if (!str || typeof str !== 'string') return str;
-  return str.charAt(0).toLowerCase() + str.slice(1);
-};
+
 
 export default function ({ types: t }: BabelTypes) {
   return {
@@ -54,10 +57,12 @@ export default function ({ types: t }: BabelTypes) {
           // export { b, c } from './a.js'
           // export { b as c } from './a.js'
           // export { b as default } from './a.js'
+          // export { default as c } from './a.js'
         } else if (specifiers && source) {
           const sourceName = source.value
           const moduleName = basename(sourceName).split('.')[0]
 
+          let requireType = judgeRequireType(specifiers)
           let beforeStatements = [
             define__esModuleStatement,
             ...(specifiers.map((specifier: ExportSpecifier) => {
@@ -66,11 +71,12 @@ export default function ({ types: t }: BabelTypes) {
               return buildDefinePropertyExportNamedStatement(moduleName, exportedName, localName)
             }))
           ];
-          const requireStatement = buildRequireStatement(moduleName, sourceName);
+          const requireStatement = buildRequireStatement(moduleName, sourceName, requireType);
           beforeProgram = t.program(beforeStatements);
 
           path.insertBefore(beforeStatements)
           path.replaceWith(requireStatement)
+          if (requireType === INTEROP_REQUIRE_DEFAULT) path.insertAfter(t.program([_interopRequireDefault]))
         }
       },
       ExportDefaultDeclaration(path: NodePath) {

@@ -114,9 +114,25 @@ export const buildDefinePropertyExportNamedStatement = (moduleName: string, expo
   })
 }
 
+export const buildRequireStatement = (moduleName: string, sourceName: string, requireType = 'require') => {
+  let statement;
+  switch (requireType) {
+    case 'require':
+      statement = buildNodeRequireStatement(moduleName, sourceName)
+      break;
+    case '_interopRequireDefault':
+      statement = build_InteropRequireDefaultStatement(moduleName, sourceName)
+      break;
+    default:
+      statement = buildNodeRequireStatement(moduleName, sourceName)
+      break;
+  }
+  return statement
+}
+
 // e.g.)
 // var _a = require("./a.js");
-export const buildRequireStatement = (moduleName: string, sourceName: string) => {
+export const buildNodeRequireStatement = (moduleName: string, sourceName: string) => {
   return template.statement`
     var VARIABLE_NAME = require("SOURCE_NAME");
   `({
@@ -124,3 +140,19 @@ export const buildRequireStatement = (moduleName: string, sourceName: string) =>
     SOURCE_NAME: sourceName
   })
 }
+
+// e.g.)
+// var _a = _interopRequireDefault(require("./a.js"))
+export const build_InteropRequireDefaultStatement = (moduleName: string, sourceName) => {
+  return template.statement`
+    var VARIABLE_NAME = _interopRequireDefault(require("SOURCE_NAME"))
+  `({
+    VARIABLE_NAME: `_${moduleName}`,
+    SOURCE_NAME: sourceName
+  })
+}
+
+export const _interopRequireDefault =
+  template.statement`
+    function _interopRequireDefault(obj){ return obj && obj.__esModule ? obj : { default: obj}; }
+  `()

@@ -34,6 +34,7 @@ export default function ({ types: t }: BabelTypes) {
         const source = path.node["source"]
 
         let afterProgram, beforeProgram;
+        // e.g.)
         // export default a
         if (specifiers && !source) {
           const moduleName = specifiers[0].local.name
@@ -49,8 +50,10 @@ export default function ({ types: t }: BabelTypes) {
           // SyntaxError: unknown: NodePath has been removed so is read-only.
           path.remove()
 
+          // e.g.)
           // export { b, c } from './a.js'
           // export { b as c } from './a.js'
+          // export { b as default } from './a.js'
         } else if (specifiers && source) {
           const sourceName = source.value
           const moduleName = basename(sourceName).split('.')[0]

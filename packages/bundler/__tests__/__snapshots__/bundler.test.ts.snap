@@ -30,6 +30,10 @@ exports[`modules-commonjs interop export-from-all 1`] = `Array []`;
 
 exports[`modules-commonjs interop export-from-as 1`] = `Array []`;
 
+exports[`modules-commonjs interop export-from-as-default 1`] = `Array []`;
+
+exports[`modules-commonjs interop export-from-as-mix 1`] = `Array []`;
+
 exports[`modules-commonjs interop export-from-named 1`] = `Array []`;
 
 exports[`modules-commonjs interop export-from-named-multi 1`] = `Array []`;

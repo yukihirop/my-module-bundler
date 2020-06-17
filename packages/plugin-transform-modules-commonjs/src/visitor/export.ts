@@ -5,7 +5,9 @@ import {
   define__esModuleStatement,
   exportsDefaultVoid0Statement,
   exportsDefaultStatement,
-  buildDefinePropertyExportsStatement
+  buildDefinePropertyExportsStatement,
+  buildDefinePropertyExportNamedStatement,
+  buildRequireStatement
 } from '../statement'
 import { basename } from 'path'
 
@@ -18,17 +20,9 @@ export default function ({ types: t }: BabelTypes) {
   return {
     visitor: {
       ExportAllDeclaration(path: NodePath) {
-        const sourceValue = path.node["source"].value
-        const moduleName = basename(sourceValue).split('.')[0]
-        const requireStatement = t.variableDeclaration("var", [
-          t.variableDeclarator(
-            t.identifier(`_${moduleName}`),
-            t.callExpression(
-              t.identifier("require"),
-              [t.stringLiteral(sourceValue)]
-            )
-          )
-        ])
+        const sourceName = path.node["source"].value
+        const moduleName = basename(sourceName).split('.')[0]
+        const requireStatement = buildRequireStatement(moduleName, sourceName)
         const reExportsStatement = buildDefinePropertyExportsStatement(moduleName)
 
         path.insertBefore(define__esModuleStatement)
@@ -36,21 +30,37 @@ export default function ({ types: t }: BabelTypes) {
         path.insertAfter(reExportsStatement)
       },
       ExportNamedDeclaration(path: NodePath) {
-        const specifier = path.node["specifiers"][0]
-        const localName = specifier.local.name
+        const specifier = path.node["specifiers"][0];
+        const source = path.node["source"]
 
-        const beforeStatements = [
-          define__esModuleStatement,
-          exportsDefaultVoid0Statement,
-        ];
-        const beforeProgram = t.program(beforeStatements);
-        const afterProgram = t.program([(exportsDefaultStatement(localName))])
+        let afterProgram, beforeProgram;
+        if (specifier && !source) {
+          const moduleName = specifier.local.name
+          const beforeStatements = [
+            define__esModuleStatement,
+            exportsDefaultVoid0Statement,
+          ];
+          beforeProgram = t.program(beforeStatements);
+          afterProgram = t.program([(exportsDefaultStatement(moduleName))])
+          path.insertBefore(beforeProgram)
+          path.insertAfter(afterProgram)
+          // If you do not call it at the end, you will get the following error
+          // SyntaxError: unknown: NodePath has been removed so is read-only.
+          path.remove()
+        } else if (specifier && source) {
+          const sourceName = source.value
+          const exportedName = specifier.exported.name
+          const moduleName = basename(sourceName).split('.')[0]
+          const beforeStatements = [
+            define__esModuleStatement,
+            buildDefinePropertyExportNamedStatement(moduleName, exportedName)
+          ];
+          const requireStatement = buildRequireStatement(moduleName, sourceName);
+          beforeProgram = t.program(beforeStatements);
 
-        path.insertBefore(beforeProgram)
-        path.insertAfter(afterProgram)
-        // If you do not call it at the end, you will get the following error
-        // SyntaxError: unknown: NodePath has been removed so is read-only.
-        path.remove()
+          path.insertBefore(beforeStatements)
+          path.replaceWith(requireStatement)
+        }
       },
       ExportDefaultDeclaration(path: NodePath) {
         const declaration = path.node["declaration"]

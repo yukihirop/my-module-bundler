@@ -1,5 +1,6 @@
 import * as t from '@babel/types';
 import template from '@babel/template';
+import { basename } from 'path';
 
 export const useStrictStatement = t.expressionStatement(
   t.stringLiteral("use strict")
@@ -72,17 +73,51 @@ export const exportsDefaultStatement = (name = "_default") => t.expressionStatem
 //   });
 // });
 export const buildDefinePropertyExportsStatement = (moduleName: string) => {
+  // __esModule is not listed in Object.keys, so it should be possible to exclude it from the judgment conditions
   return template.statement`
     Object.keys(MODULE_NAME).forEach(function(key){
       if(key === "default" || key === "__esModule") return;
       Object.defineProperty(exports, key, {
         enumerable: true,
-        get: function get(){
+        get: function (){
           return MODULE_NAME[key]
         }
       })
     })
   `({
     MODULE_NAME: `_${moduleName}`
+  })
+}
+
+// e.g.)
+//
+// Object.defineProperty(exports, "bar", {
+//   enumerable: true,
+//   get: function () {
+//     return _foo.bar;
+//   }
+// });
+export const buildDefinePropertyExportNamedStatement = (moduleName: string, exportedName: string) => {
+  return template.statement`
+    Object.defineProperty(exports, "EXPORTED_NAME", {
+      enumerable: true,
+      get: function() {
+        return MODULE_NAME.EXPORTED_NAME
+      }
+    });
+  `({
+    MODULE_NAME: `_${moduleName}`,
+    EXPORTED_NAME: exportedName
+  })
+}
+
+// e.g.)
+// var _a = require("./a.js");
+export const buildRequireStatement = (moduleName: string, sourceName: string) => {
+  return template.statement`
+    var VARIABLE_NAME = require("SOURCE_NAME");
+  `({
+    VARIABLE_NAME: `_${moduleName}`,
+    SOURCE_NAME: sourceName
   })
 }

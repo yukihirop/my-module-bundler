@@ -41,6 +41,12 @@ function createAsset(filename: string): Asset {
     ExportAllDeclaration({ node }) {
       // Every time we see an import into the dependencies array.
       dependencies.push(node.source.value);
+    },
+    ExportNamedDeclaration({ node }) {
+      // Every time we see an import into the dependencies array.
+      if (node.source) {
+        dependencies.push(node.source.value);
+      }
     }
   });
 

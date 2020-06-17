@@ -1,5 +1,5 @@
 import { NodePath } from '@babel/traverse';
-import { Expression, ExportSpecifier } from '@babel/types';
+import { Expression, ExportSpecifier, Statement } from '@babel/types';
 import { BabelTypes } from '../types';
 import {
   define__esModuleStatement,
@@ -65,22 +65,22 @@ export default function ({ types: t }: BabelTypes) {
         } else if (specifiers && source) {
           const sourceName = source.value
           const moduleName = basename(sourceName).split('.')[0]
+          const requireType = judgeRequireType(specifiers)
 
-          let requireType = judgeRequireType(specifiers)
-          let beforeStatements = [
-            define__esModuleStatement,
-            ...(specifiers.map((specifier: ExportSpecifier) => {
-              const exportedName = specifier.exported.name
-              const localName = specifier.local ? specifier.local.name : null
-              return buildDefinePropertyExportNamedStatement(moduleName, exportedName, localName)
-            }))
-          ];
+          let beforeStatements = [define__esModuleStatement];
+          let afterStatements = [] as Statement[];
+          specifiers.forEach((specifier: ExportSpecifier) => {
+            const exportedName = specifier.exported.name
+            const localName = specifier.local ? specifier.local.name : null
+
+            beforeStatements.push(buildDefinePropertyExportNamedStatement(moduleName, exportedName, localName))
+            if (requireType === INTEROP_REQUIRE_DEFAULT) afterStatements.push(_interopRequireDefault)
+          })
           const requireStatement = buildRequireStatement(moduleName, sourceName, requireType);
-          beforeProgram = t.program(beforeStatements);
 
           path.insertBefore(beforeStatements)
           path.replaceWith(requireStatement)
-          if (requireType === INTEROP_REQUIRE_DEFAULT) path.insertAfter(t.program([_interopRequireDefault]))
+          path.insertAfter(afterStatements)
         }
       },
       ExportDefaultDeclaration(path: NodePath) {

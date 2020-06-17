@@ -76,21 +76,22 @@ export const buildDefinePropertyExportsStatement = (moduleName: string) => {
 //     return _foo.bar;
 //   }
 // });
-export const buildDefinePropertyExportNamedStatement = (moduleName: string, exportedName: string, localName?: string) => {
+export const buildDefinePropertyExportNamedStatement = (moduleName: string, exportedName: string, localName?: string): t.ExpressionStatement => {
   localName = localName ? localName : exportedName;
-
-  return template.statement`
+  const expression = template.expression`
     Object.defineProperty(exports, "EXPORTED_NAME", {
       enumerable: true,
       get: function() {
         return MODULE_NAME.LOCALE_NAME
       }
-    });
-  `({
-    MODULE_NAME: `_${moduleName}`,
-    EXPORTED_NAME: exportedName,
-    LOCALE_NAME: localName,
-  })
+    })`
+    ({
+      MODULE_NAME: `_${moduleName}`,
+      EXPORTED_NAME: exportedName,
+      LOCALE_NAME: localName,
+    })
+
+  return t.expressionStatement(expression)
 }
 
 export const buildRequireStatement = (moduleName: string, sourceName: string, requireType = 'require') => {

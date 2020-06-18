@@ -107,7 +107,8 @@ describe('modules-commonjs', () => {
       'import-wildcard-as',
       'import-as-mix',
       'import-named',
-      'import-named-multi'
+      'import-named-multi',
+      'import-named-as-mix'
     ]
 
     for (const dir of dirs) {

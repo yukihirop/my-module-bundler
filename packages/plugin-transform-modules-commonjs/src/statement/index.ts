@@ -105,6 +105,9 @@ export const buildRequireStatement = (
     case '_interopRequireDefault':
       statement = build_InteropRequireDefaultStatement(moduleName, sourceName);
       break;
+    case '_interopRequireWildcard':
+      statement = build_InteropRequireWildcardStatement(moduleName, sourceName);
+      break;
     default:
       statement = buildNodeRequireStatement(moduleName, sourceName);
       break;
@@ -125,7 +128,7 @@ export const buildNodeRequireStatement = (moduleName: string, sourceName: string
 
 // e.g.)
 // var _a = _interopRequireDefault(require("./a.js"))
-export const build_InteropRequireDefaultStatement = (moduleName: string, sourceName) => {
+export const build_InteropRequireDefaultStatement = (moduleName: string, sourceName: string) => {
   return template.statement`
     var VARIABLE_NAME = _interopRequireDefault(require("SOURCE_NAME"))
   `({
@@ -134,6 +137,94 @@ export const build_InteropRequireDefaultStatement = (moduleName: string, sourceN
   });
 };
 
+// e.g.)
+// var b = _interopRequireWildcard(require("./a.js"))
+export const build_InteropRequireWildcardStatement = (localName: string, sourceName: string) => {
+  return template.statement`
+    var VARIABLE_NAME = _interopRequireWildcard(require("SOURCE_NAME"))
+  `({
+    VARIABLE_NAME: localName,
+    SOURCE_NAME: sourceName
+  });
+}
+
 export const _interopRequireDefault = template.statement`
     function _interopRequireDefault(obj){ return obj && obj.__esModule ? obj : { default: obj}; }
   `();
+
+
+// e.g.)
+// function _interopRequireWildcard(obj) {
+//   if (obj && obj.__esModule) { return obj; }
+//   if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; }
+//   var cache = _getRequireWildcardCache();
+//   if (cache && cache.has(obj)) {
+//     return cache.get(obj);
+//   }
+
+//   var newObj = {};
+//   var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
+//   for (var key in obj) {
+//     if (Object.prototype.hasOwnProperty.call(obj, key)) {
+//       var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
+//       if (desc && (desc.get || desc.set)) {
+//         Object.defineProperty(newObj, key, desc);
+//       } else {
+//         newObj[key] = obj[key];
+//       }
+//     }
+//   }
+//   newObj.default = obj;
+//   if (cache) {
+//     cache.set(obj, newObj);
+//   }
+//   return newObj;
+// }
+export const _interopRequireWildcard = template.statement`
+function _interopRequireWildcard(obj) {
+  if (obj && obj.__esModule) { return obj; }
+  if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; }
+  var cache = _getRequireWildcardCache();
+  if (cache && cache.has(obj)) {
+    return cache.get(obj);
+  }
+
+  var newObj = {};
+  var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
+  for (var key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
+      if (desc && (desc.get || desc.set)) {
+        Object.defineProperty(newObj, key, desc);
+      } else {
+        newObj[key] = obj[key];
+      }
+    }
+  }
+  newObj.default = obj;
+  if (cache) {
+    cache.set(obj, newObj);
+  }
+  return newObj;
+}
+`()
+
+// e.g.)
+// function _getRequireWildcardCache() {
+//   if (typeof WeakMap !== "function") return null;
+//   var cache = new WeakMap();
+//   _getRequireWildcardCache = function () {
+//     return cache;
+//   };
+//   return cache;
+// }
+export const _getRequireWildcardCache = template.statement`
+function _getRequireWildcardCache() {
+  if (typeof WeakMap !== "function") return null;
+  var cache = new WeakMap();
+  _getRequireWildcardCache = function () {
+    return cache;
+  };
+  return cache;
+}
+`()

@@ -105,7 +105,8 @@ describe('modules-commonjs', () => {
       'import-default-literal',
       'import-default-as',
       'import-wildcard-as',
-      'import-as-mix'
+      'import-as-mix',
+      'import-named'
     ]
 
     for (const dir of dirs) {

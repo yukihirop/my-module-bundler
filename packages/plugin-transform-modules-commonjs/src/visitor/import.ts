@@ -9,7 +9,7 @@ import {
   _interopRequireWildcard,
 } from '../statement';
 
-import { judgeRequireType, createImportedMap, INTEROP_REQUIRE_DEFAULT, INTEROP_REQUIRE_WILDCARD } from '../helper';
+import { judgeRequireType, createImportedMap, INTEROP_REQUIRE_DEFAULT, INTEROP_REQUIRE_WILDCARD, REQUIRE } from '../helper';
 import { basename } from 'path';
 
 const IGNORE_REFERENCED_LIST = ['require', 'module', 'exports']
@@ -36,7 +36,7 @@ export default function ({ types: t }: BabelTypes) {
 
         const idName = localBinding.identifier.name
         const { localName, key } = this.importedMap.get(idName)
-        
+
         if (key) {
           const statement = t.expressionStatement(
             t.memberExpression(
@@ -50,8 +50,6 @@ export default function ({ types: t }: BabelTypes) {
         }
       },
       ImportDeclaration(path: NodePath) {
-        this.IsESModule = true
-
         const specifiers = path.node['specifiers'];
         const source = path.node['source'];
 
@@ -68,7 +66,14 @@ export default function ({ types: t }: BabelTypes) {
           let statement, localName;
 
           switch (requireType) {
+            case REQUIRE:
+              localName = `_${moduleName}`
+
+              statement = buildRequireStatement(moduleName, sourceName, requireType);
+              statements.push(statement)
+              break;
             case INTEROP_REQUIRE_DEFAULT:
+              this.IsESModule = true
               localName = `_${moduleName}`
 
               statement = buildRequireStatement(moduleName, sourceName, requireType);
@@ -76,6 +81,7 @@ export default function ({ types: t }: BabelTypes) {
               afterStatements.push(_interopRequireDefault);
               break;
             case INTEROP_REQUIRE_WILDCARD:
+              this.IsESModule = true
               if (specifiers.length > 1) {
                 localName = `_${moduleName}`
               } else {

@@ -1130,6 +1130,46 @@ exports[`modules-commonjs interop import-default-literal 1`] = `
 })"
 `;
 
+exports[`modules-commonjs interop import-named 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      var _a = require(\\"./a.js\\");
+
+      _a.b;
+    },
+    {
+      \\"./a.js\\": 1
+    },
+  ],
+  1: [
+    function(require, module, exports) {
+      var b;
+      exports.b = b;
+    },
+    {},
+  ]
+})"
+`;
+
 exports[`modules-commonjs interop import-wildcard-as 1`] = `
 "(function(modules) {
   function require(id) {

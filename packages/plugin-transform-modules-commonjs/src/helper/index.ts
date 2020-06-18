@@ -8,6 +8,7 @@ export const functionize = (str: string): string => {
 
 export const INTEROP_REQUIRE_DEFAULT = '_interopRequireDefault';
 export const INTEROP_REQUIRE_WILDCARD = '_interopRequireWildcard';
+export const REQUIRE = 'require'
 
 export const judgeRequireType = <T = ExportSpecifier | ImportNamespaceSpecifier | ImportDefaultSpecifier | ImportSpecifier>(specifiers: T[], type: "import" | "export"): string => {
   if (type === "import") {
@@ -69,8 +70,12 @@ export const createImportedMap = (localName: string, specifiers: ImportNamespace
       } else if (specType === 'ImportNamespaceSpecifier') {
         return [specLocalName, { localName, key: null }]
       }
-    } else if (specImportedName && specType === 'ImportSpecifier') {
-      return [specLocalName, { localName, key: specImportedName }]
+    } else if (specType === 'ImportSpecifier') {
+      if (specImportedName) {
+        return [specLocalName, { localName, key: specImportedName }]
+      } else {
+        return [specLocalName, { localName, key: specLocalName }]
+      }
     }
   }) as Array<[string, any]>
   return new Map<string, any>(mapData)

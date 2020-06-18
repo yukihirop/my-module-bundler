@@ -9,7 +9,7 @@ import {
   buildRequireStatement,
   _interopRequireDefault,
 } from '../statement';
-import { functionize, judgeRequireType, INTEROP_REQUIRE_DEFAULT } from '../helper';
+import { functionize, judgeRequireType, INTEROP_REQUIRE_DEFAULT, ES_MODULE } from '../helper';
 import { basename } from 'path';
 
 export default function ({ types: t }: BabelTypes) {
@@ -44,6 +44,8 @@ export default function ({ types: t }: BabelTypes) {
           specifiers.forEach((specifier: ExportSpecifier) => {
             const exportedName = specifier.exported.name as string;
             const moduleName = specifier.local.name as string;
+
+            if (exportedName === ES_MODULE) throw new Error(`Illegal export "${ES_MODULE}"`)
 
             beforeStatements.push(buildExportsVoid0Statement(exportedName));
             afterStatements.push(buildExportsStatement(exportedName, moduleName));

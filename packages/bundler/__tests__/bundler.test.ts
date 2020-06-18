@@ -125,5 +125,11 @@ describe('modules-commonjs', () => {
         expect(code).toMatchSnapshot();
       });
     }
+
+    const dir = 'export-illegal'
+    test(dir, async () => {
+      await createDir(outputPath, dir);
+      await expect(build(fixturePath, outputPath, dir)).rejects.toThrow(new Error('unknown: Illegal export "__esModule"'))
+    })
   })
 })

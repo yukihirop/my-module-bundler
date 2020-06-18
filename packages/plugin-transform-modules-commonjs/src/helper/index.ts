@@ -9,6 +9,7 @@ export const functionize = (str: string): string => {
 export const INTEROP_REQUIRE_DEFAULT = '_interopRequireDefault';
 export const INTEROP_REQUIRE_WILDCARD = '_interopRequireWildcard';
 export const REQUIRE = 'require'
+export const ES_MODULE = '__esModule'
 
 export const judgeRequireType = <T = ExportSpecifier | ImportNamespaceSpecifier | ImportDefaultSpecifier | ImportSpecifier>(specifiers: T[], type: "import" | "export"): string => {
   if (type === "import") {

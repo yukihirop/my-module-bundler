@@ -1,2 +1,3 @@
 import exportVisitor from './export';
-export { exportVisitor };
+import importVisitor from './import';
+export { exportVisitor, importVisitor };

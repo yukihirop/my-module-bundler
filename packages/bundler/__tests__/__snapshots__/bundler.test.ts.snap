@@ -51,3 +51,5 @@ exports[`modules-commonjs interop export-named-as-mix 1`] = `Array []`;
 exports[`modules-commonjs interop export-named-multi 1`] = `Array []`;
 
 exports[`modules-commonjs interop export-variables 1`] = `Array []`;
+
+exports[`modules-commonjs interop import-default-literal 1`] = `Array []`;

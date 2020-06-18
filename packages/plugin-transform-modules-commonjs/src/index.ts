@@ -1,5 +1,5 @@
 import { BabelTypes } from './types';
-import { exportVisitor } from './visitor';
+import { exportVisitor, importVisitor } from './visitor';
 
 import { define__esModuleStatement } from './statement';
 
@@ -16,6 +16,7 @@ export default function ({ types: t }: BabelTypes) {
     },
     visitor: {
       ...exportVisitor({ types: t }).visitor,
+      ...importVisitor({ types: t }).visitor
     },
   };
 }

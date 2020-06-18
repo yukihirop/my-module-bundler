@@ -100,7 +100,7 @@ export const buildRequireStatement = (
   let statement;
   switch (requireType) {
     case 'require':
-      statement = buildNodeRequireStatement(moduleName, sourceName);
+      statement = buildNodeRequireStatement(sourceName, moduleName);
       break;
     case '_interopRequireDefault':
       statement = build_InteropRequireDefaultStatement(moduleName, sourceName);
@@ -109,7 +109,7 @@ export const buildRequireStatement = (
       statement = build_InteropRequireWildcardStatement(moduleName, sourceName);
       break;
     default:
-      statement = buildNodeRequireStatement(moduleName, sourceName);
+      statement = buildNodeRequireStatement(sourceName, moduleName);
       break;
   }
   return statement;
@@ -117,13 +117,20 @@ export const buildRequireStatement = (
 
 // e.g.)
 // var _a = require("./a.js");
-export const buildNodeRequireStatement = (moduleName: string, sourceName: string) => {
-  return template.statement`
-    var VARIABLE_NAME = require("SOURCE_NAME");
-  `({
-    VARIABLE_NAME: `_${moduleName}`,
-    SOURCE_NAME: sourceName,
-  });
+export const buildNodeRequireStatement = (sourceName: string, moduleName?: string) => {
+  return moduleName ?
+    template.statement`
+      var VARIABLE_NAME = require("SOURCE_NAME");
+    `({
+      VARIABLE_NAME: `_${moduleName}`,
+      SOURCE_NAME: sourceName,
+    })
+    :
+    template.statement`
+      require("SOURCE_NAME");
+    `({
+      SOURCE_NAME: sourceName
+    })
 };
 
 // e.g.)

@@ -1,4 +1,4 @@
-import { NodePath, Binding } from '@babel/traverse';
+import { NodePath } from '@babel/traverse';
 import { BabelTypes } from '../types';
 import { Statement } from '@babel/types';
 
@@ -58,8 +58,18 @@ export default function ({ types: t }: BabelTypes) {
         let statements = [] as Statement[];
 
         // e.g.)
-        // import b from './a.js';
-        if (specifiers.length > 0 && source) {
+        // import './spec/a.js'
+        if (specifiers.length === 0 && source) {
+          const sourceName = source.value;
+
+          const statement = buildRequireStatement(null, sourceName, 'require');
+          statements.push(statement)
+          const mainProgram = t.program(statements)
+          path.replaceWith(mainProgram);
+
+          // e.g.)
+          // import b from './a.js';
+        } else if (specifiers.length > 0 && source) {
           const sourceName = source.value;
           const moduleName = basename(sourceName).split('.')[0];
           const requireType = judgeRequireType(specifiers, "import");

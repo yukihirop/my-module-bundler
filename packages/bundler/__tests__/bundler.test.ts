@@ -108,7 +108,8 @@ describe('modules-commonjs', () => {
       'import-as-mix',
       'import-named',
       'import-named-multi',
-      'import-named-as-mix'
+      'import-named-as-mix',
+      'import-basic'
     ]
 
     for (const dir of dirs) {

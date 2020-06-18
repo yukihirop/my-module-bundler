@@ -1,4 +1,2 @@
-import exportVisitor from './export'
-export {
-  exportVisitor
-}
+import exportVisitor from './export';
+export { exportVisitor };

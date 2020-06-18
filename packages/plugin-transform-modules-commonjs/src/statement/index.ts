@@ -1,9 +1,7 @@
 import * as t from '@babel/types';
 import template from '@babel/template';
 
-export const useStrictStatement = t.expressionStatement(
-  t.stringLiteral("use strict")
-)
+export const useStrictStatement = t.expressionStatement(t.stringLiteral('use strict'));
 
 // e.g.)
 // Object.defineProperty(exports, "__esModule", {
@@ -11,34 +9,31 @@ export const useStrictStatement = t.expressionStatement(
 // });
 export const define__esModuleStatement = t.expressionStatement(
   t.callExpression(
-    t.memberExpression(
-      t.identifier("Object"),
-      t.identifier("defineProperty"),
-      false
-    ),
+    t.memberExpression(t.identifier('Object'), t.identifier('defineProperty'), false),
     [
-      t.identifier("exports"),
-      t.stringLiteral("__esModule"),
-      t.objectExpression(
-        [
-          t.objectProperty(t.identifier("value"), t.booleanLiteral(true))
-        ]
-      )
+      t.identifier('exports'),
+      t.stringLiteral('__esModule'),
+      t.objectExpression([t.objectProperty(t.identifier('value'), t.booleanLiteral(true))]),
     ]
   )
-)
+);
 
 // e.g.)
 // exports.a = void 0
 // exports.default = void 0
-export const buildExportsVoid0Statement = (key = "default"): t.ExpressionStatement =>
-  t.expressionStatement(template.expression`exports.KEY = void 0`({ KEY: key }))
+export const buildExportsVoid0Statement = (key = 'default'): t.ExpressionStatement =>
+  t.expressionStatement(template.expression`exports.KEY = void 0`({ KEY: key }));
 
 // e.g.)
 // exports.default = _default
 // exports.a = a
-export const buildExportsStatement = (key = "default", localName = "_default"): t.ExpressionStatement =>
-  t.expressionStatement(template.expression`exports.KEY = LOCAL_NAME`({ KEY: key, LOCAL_NAME: localName }))
+export const buildExportsStatement = (
+  key = 'default',
+  localName = '_default'
+): t.ExpressionStatement =>
+  t.expressionStatement(
+    template.expression`exports.KEY = LOCAL_NAME`({ KEY: key, LOCAL_NAME: localName })
+  );
 
 // e.g.)
 // Copy the imported module to its internal attributes and set it to exports
@@ -64,9 +59,9 @@ export const buildDefinePropertyExportsStatement = (moduleName: string) => {
       })
     })
   `({
-    MODULE_NAME: `_${moduleName}`
-  })
-}
+    MODULE_NAME: `_${moduleName}`,
+  });
+};
 
 // e.g.)
 //
@@ -76,7 +71,11 @@ export const buildDefinePropertyExportsStatement = (moduleName: string) => {
 //     return _foo.bar;
 //   }
 // });
-export const buildDefinePropertyExportNamedStatement = (moduleName: string, exportedName: string, localName?: string): t.ExpressionStatement => {
+export const buildDefinePropertyExportNamedStatement = (
+  moduleName: string,
+  exportedName: string,
+  localName?: string
+): t.ExpressionStatement => {
   localName = localName ? localName : exportedName;
   const expression = template.expression`
     Object.defineProperty(exports, "EXPORTED_NAME", {
@@ -84,31 +83,34 @@ export const buildDefinePropertyExportNamedStatement = (moduleName: string, expo
       get: function() {
         return MODULE_NAME.LOCALE_NAME
       }
-    })`
-    ({
-      MODULE_NAME: `_${moduleName}`,
-      EXPORTED_NAME: exportedName,
-      LOCALE_NAME: localName,
-    })
+    })`({
+    MODULE_NAME: `_${moduleName}`,
+    EXPORTED_NAME: exportedName,
+    LOCALE_NAME: localName,
+  });
 
-  return t.expressionStatement(expression)
-}
+  return t.expressionStatement(expression);
+};
 
-export const buildRequireStatement = (moduleName: string, sourceName: string, requireType = 'require') => {
+export const buildRequireStatement = (
+  moduleName: string,
+  sourceName: string,
+  requireType = 'require'
+) => {
   let statement;
   switch (requireType) {
     case 'require':
-      statement = buildNodeRequireStatement(moduleName, sourceName)
+      statement = buildNodeRequireStatement(moduleName, sourceName);
       break;
     case '_interopRequireDefault':
-      statement = build_InteropRequireDefaultStatement(moduleName, sourceName)
+      statement = build_InteropRequireDefaultStatement(moduleName, sourceName);
       break;
     default:
-      statement = buildNodeRequireStatement(moduleName, sourceName)
+      statement = buildNodeRequireStatement(moduleName, sourceName);
       break;
   }
-  return statement
-}
+  return statement;
+};
 
 // e.g.)
 // var _a = require("./a.js");
@@ -117,9 +119,9 @@ export const buildNodeRequireStatement = (moduleName: string, sourceName: string
     var VARIABLE_NAME = require("SOURCE_NAME");
   `({
     VARIABLE_NAME: `_${moduleName}`,
-    SOURCE_NAME: sourceName
-  })
-}
+    SOURCE_NAME: sourceName,
+  });
+};
 
 // e.g.)
 // var _a = _interopRequireDefault(require("./a.js"))
@@ -128,11 +130,10 @@ export const build_InteropRequireDefaultStatement = (moduleName: string, sourceN
     var VARIABLE_NAME = _interopRequireDefault(require("SOURCE_NAME"))
   `({
     VARIABLE_NAME: `_${moduleName}`,
-    SOURCE_NAME: sourceName
-  })
-}
+    SOURCE_NAME: sourceName,
+  });
+};
 
-export const _interopRequireDefault =
-  template.statement`
+export const _interopRequireDefault = template.statement`
     function _interopRequireDefault(obj){ return obj && obj.__esModule ? obj : { default: obj}; }
-  `()
+  `();

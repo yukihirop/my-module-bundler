@@ -47,17 +47,14 @@ function createAsset(filename: string): Asset {
       if (node.source) {
         dependencies.push(node.source.value);
       }
-    }
+    },
   });
 
   // We also assign a unique identifier to this module by incrementing a simple counter.
   const id = moduleID++;
 
   const { code } = transformFromAstSync(ast, null, {
-    plugins: [
-      transformArrowFunctions,
-      transformModulesCommonjs
-    ],
+    plugins: [transformArrowFunctions, transformModulesCommonjs],
   });
 
   return {

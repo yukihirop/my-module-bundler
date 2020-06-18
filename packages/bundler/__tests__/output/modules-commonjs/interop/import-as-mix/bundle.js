@@ -77,8 +77,8 @@
         return newObj;
       }
 
-      _a.c;
-      _a.d;
+      _a.default;
+      _a.b;
     },
     {
       "./a.js": 1

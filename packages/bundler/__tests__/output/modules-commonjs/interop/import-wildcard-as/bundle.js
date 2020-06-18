@@ -76,6 +76,8 @@
 
         return newObj;
       }
+
+      d;
     },
     {
       "./a.js": 1

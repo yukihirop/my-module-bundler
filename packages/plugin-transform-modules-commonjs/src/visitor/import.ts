@@ -35,16 +35,19 @@ export default function ({ types: t }: BabelTypes) {
         if (!localBinding || localBinding.kind !== 'module') return;
 
         const idName = localBinding.identifier.name
-        const localName = this.importedMap.get(idName)
-        const statement = t.expressionStatement(
-          t.memberExpression(
-            t.identifier(localName),
-            t.identifier(idName),
-            false
+        const { localName, key } = this.importedMap.get(idName)
+        
+        if (key) {
+          const statement = t.expressionStatement(
+            t.memberExpression(
+              t.identifier(localName),
+              t.identifier(key),
+              false
+            )
           )
-        )
 
-        path.replaceWith(statement)
+          path.replaceWith(statement)
+        }
       },
       ImportDeclaration(path: NodePath) {
         this.IsESModule = true
@@ -62,32 +65,32 @@ export default function ({ types: t }: BabelTypes) {
           const sourceName = source.value;
           const moduleName = basename(sourceName).split('.')[0];
           const requireType = judgeRequireType(specifiers, "import");
-          let statement;
+          let statement, localName;
 
           switch (requireType) {
             case INTEROP_REQUIRE_DEFAULT:
+              localName = `_${moduleName}`
+
               statement = buildRequireStatement(moduleName, sourceName, requireType);
               statements.push(statement)
               afterStatements.push(_interopRequireDefault);
               break;
             case INTEROP_REQUIRE_WILDCARD:
-              let localName;
-
               if (specifiers.length > 1) {
                 localName = `_${moduleName}`
               } else {
                 localName = specifiers.map(s => s["local"] ? s["local"].name : undefined).filter(Boolean)[0]
               }
 
-              this.importedMap = createImportedMap(localName, specifiers)
-
               statement = buildRequireStatement(localName, sourceName, requireType);
               statements.push(statement)
               afterStatements.push(_getRequireWildcardCache, _interopRequireWildcard);
               break;
           }
-          const mainProgram = t.program(statements)
 
+          this.importedMap = createImportedMap(localName, specifiers)
+
+          const mainProgram = t.program(statements)
           path.insertBefore(beforeStatements);
           path.replaceWith(mainProgram);
           path.insertAfter(afterStatements);

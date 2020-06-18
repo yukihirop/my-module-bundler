@@ -30,6 +30,8 @@
           default: obj
         };
       }
+
+      _a.default;
     },
     {
       "./a.js": 1

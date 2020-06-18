@@ -1012,8 +1012,8 @@ exports[`modules-commonjs interop import-as-mix 1`] = `
         return newObj;
       }
 
-      _a.c;
-      _a.d;
+      _a.default;
+      _a.b;
     },
     {
       \\"./a.js\\": 1
@@ -1063,6 +1063,8 @@ exports[`modules-commonjs interop import-default-as 1`] = `
           default: obj
         };
       }
+
+      _a.default;
     },
     {
       \\"./a.js\\": 1
@@ -1111,6 +1113,8 @@ exports[`modules-commonjs interop import-default-literal 1`] = `
           default: obj
         };
       }
+
+      _a.default;
     },
     {
       \\"./a.js\\": 1
@@ -1205,6 +1209,8 @@ exports[`modules-commonjs interop import-wildcard-as 1`] = `
 
         return newObj;
       }
+
+      d;
     },
     {
       \\"./a.js\\": 1

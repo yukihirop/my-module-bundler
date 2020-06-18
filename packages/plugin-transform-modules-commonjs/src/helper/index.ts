@@ -57,7 +57,21 @@ const judgeRequireTypeAtExport = <T = ExportSpecifier>(specifiers: T[]): string 
   return requireType;
 }
 
-export const createImportedMap = (localName: string, specifiers: ImportNamespaceSpecifier[] | ImportDefaultSpecifier[] | ImportSpecifier[]): Map<string, string> => {
-  const mapData = (specifiers as any[]).map((s: ImportNamespaceSpecifier | ImportDefaultSpecifier | ImportSpecifier) => [s["local"].name, localName]) as Array<[string, string]>
-  return new Map<string, string>(mapData)
+export const createImportedMap = (localName: string, specifiers: ImportNamespaceSpecifier[] | ImportDefaultSpecifier[] | ImportSpecifier[]): Map<string, any> => {
+  const mapData = (specifiers as any[]).map((s: ImportNamespaceSpecifier | ImportDefaultSpecifier | ImportSpecifier) => {
+    const specLocalName = s["local"].name
+    const specImportedName = s["imported"] ? s["imported"].name : null
+    const specType = s["type"]
+
+    if (!specImportedName) {
+      if (specType === 'ImportDefaultSpecifier') {
+        return [specLocalName, { localName, key: "default" }]
+      } else if (specType === 'ImportNamespaceSpecifier') {
+        return [specLocalName, { localName, key: null }]
+      }
+    } else if (specImportedName && specType === 'ImportSpecifier') {
+      return [specLocalName, { localName, key: specImportedName }]
+    }
+  }) as Array<[string, any]>
+  return new Map<string, any>(mapData)
 }

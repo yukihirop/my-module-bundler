@@ -23,7 +23,6 @@
         value: true
       });
       exports.default = void 0;
-
       // fd = function declaration
 
       function _default(a) {

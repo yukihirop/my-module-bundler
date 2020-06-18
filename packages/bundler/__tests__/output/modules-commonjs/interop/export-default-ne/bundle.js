@@ -22,13 +22,12 @@
       Object.defineProperty(exports, "__esModule", {
         value: true
       });
+      exports.default = void 0;
 
       // ne = new expression
       function A() {
         this.a = "a";
       }
-
-      exports.default = void 0;
 
       var _default = new A();
 

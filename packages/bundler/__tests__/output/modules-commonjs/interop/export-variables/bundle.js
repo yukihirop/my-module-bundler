@@ -23,57 +23,43 @@
         value: true
       });
       exports.a = void 0;
-
+      exports.b = void 0;
+      exports.d = void 0;
+      exports.e = void 0;
+      exports.f = void 0;
+      exports.g = void 0;
+      exports.h = void 0;
+      exports.i = i;
+      exports.j = void 0;
       var a = 1;
 
       exports.a = a;
 
-      exports.b = void 0;
-      exports.c = void 0;
-
       var b = 1;
-      var c = 2;
 
       exports.b = b;
-      exports.c = c;
-
-      exports.d = void 0;
 
       var d = function() {};
 
       exports.d = d;
 
-      exports.e = void 0;
-
       var e;
 
       exports.e = e;
-
-      exports.f = void 0;
 
       var f = 2;
 
       exports.f = f;
 
-      exports.g = void 0;
-
       var g;
 
       exports.g = g;
-
-      exports.h = void 0;
 
       var h = 3;
 
       exports.h = h;
 
-      exports.i = void 0;
-
       function i() {}
-
-      exports.i = i;
-
-      exports.j = void 0;
 
       class j {}
 

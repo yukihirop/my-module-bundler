@@ -23,7 +23,6 @@
         value: true
       });
       exports.default = void 0;
-
       // ce = call expression
 
       var _default = function() {

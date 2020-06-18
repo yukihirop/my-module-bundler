@@ -22,16 +22,21 @@
       Object.defineProperty(exports, "__esModule", {
         value: true
       });
-      exports.default = void 0;
-      // oe = object expression
-      var a, b;
-      var _default = {
-        a: a,
-        b: b,
-        k: function() {}
+      exports.hoist = hoist;
+      exports.not_hoist_1 = void 0;
+      // Function Declaration should be hoisted
+
+      function hoist() {
+        return null;
+      }
+
+      // Function Expression is not hoisted
+
+      var not_hoist_1 = function not_hoist_1() {
+        return null;
       };
 
-      exports.default = _default;
+      exports.not_hoist_1 = not_hoist_1;
     },
     {},
   ]

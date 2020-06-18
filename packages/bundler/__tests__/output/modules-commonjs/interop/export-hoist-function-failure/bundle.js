@@ -22,16 +22,30 @@
       Object.defineProperty(exports, "__esModule", {
         value: true
       });
-      exports.default = void 0;
-      // oe = object expression
-      var a, b;
-      var _default = {
-        a: a,
-        b: b,
-        k: function() {}
+      exports.hoist = hoist;
+      exports.not_hoist_1 = void 0;
+      exports.not_hoist_2 = void 0;
+      hoist();
+
+      function hoist() {
+        return null;
+      }
+
+      var not_hoist_1 = function not_hoist_1() {
+        not_hoist_2();
       };
 
-      exports.default = _default;
+      // Error
+
+      exports.not_hoist_1 = not_hoist_1;
+
+      not_hoist_1();
+
+      var not_hoist_2 = function not_hoist_2() {
+        return null;
+      };
+
+      exports.not_hoist_2 = not_hoist_2;
     },
     {},
   ]

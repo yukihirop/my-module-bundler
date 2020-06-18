@@ -23,7 +23,6 @@
         value: true
       });
       exports.default = void 0;
-
       // fd-id-name = function declaration && id.name exists
 
       function a(a) {

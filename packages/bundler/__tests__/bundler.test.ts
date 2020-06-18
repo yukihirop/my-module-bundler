@@ -109,7 +109,8 @@ describe('modules-commonjs', () => {
       'import-named',
       'import-named-multi',
       'import-named-as-mix',
-      'import-basic'
+      'import-basic',
+      'export-hoist-function-success'
     ]
 
     for (const dir of dirs) {
@@ -126,10 +127,21 @@ describe('modules-commonjs', () => {
       });
     }
 
-    const dir = 'export-illegal'
+    let dir = 'export-illegal'
     test(dir, async () => {
       await createDir(outputPath, dir);
       await expect(build(fixturePath, outputPath, dir)).rejects.toThrow(new Error('unknown: Illegal export "__esModule"'))
+    })
+
+    dir = 'export-hoist-function-failure'
+    test(dir, async () => {
+      await createDir(outputPath, dir);
+      await build(fixturePath, outputPath, dir);
+
+      const code = await readFile(join(outputPath, dir, BUNDLE_FILE), 'utf-8')
+      expect(code).toMatchSnapshot();
+
+      await expect(await runGeneratedCodeInVM(outputPath, dir)).rejects.toThrow(new Error(""))
     })
   })
 })

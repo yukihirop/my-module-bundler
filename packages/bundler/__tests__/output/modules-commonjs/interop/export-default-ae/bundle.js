@@ -22,13 +22,12 @@
       Object.defineProperty(exports, "__esModule", {
         value: true
       });
+      exports.default = void 0;
 
       // ae = array expression
       var a = function() {};
 
       var b = function() {};
-
-      exports.default = void 0;
 
       var _default = [a, b];
 

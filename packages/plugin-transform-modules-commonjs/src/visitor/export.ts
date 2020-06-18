@@ -1,6 +1,6 @@
 import { NodePath } from '@babel/traverse';
-import { Expression, ExportSpecifier, Statement, Declaration } from '@babel/types';
-import { BabelTypes } from '../types';
+import { Expression, ExportSpecifier, Statement } from '@babel/types';
+import { BabelTypes, VariableKindType } from '../types';
 import {
   buildExportsVoid0Statement,
   buildExportsStatement,
@@ -32,11 +32,25 @@ export default function ({ types: t }: BabelTypes) {
         const specifiers = path.node['specifiers'];
         const source = path.node['source'];
         const declaration = path.node['declaration'];
+        const nodeType = path.node['type'];
 
-        let afterProgram, beforeProgram;
-        let beforeStatements = [] as Statement[];
+        //　use in case3. Preprocessing
+        let isFunctionExpression = true;
+        let variableKind = 'var' as VariableKindType;
+        switch (nodeType) {
+          case 'FunctionDeclaration':
+            isFunctionExpression = declaration['expression'];
+            break;
+          case 'VariableDeclaration':
+            variableKind = declaration['kind'];
+            break;
+        }
+
+        let afterProgram;
         let afterStatements = [] as Statement[];
 
+        // CASE 1
+        //
         // e.g.)
         // export { a }
         // export { a, b }
@@ -47,18 +61,18 @@ export default function ({ types: t }: BabelTypes) {
 
             if (exportedName === ES_MODULE) throw new Error(`Illegal export "${ES_MODULE}"`)
 
-            beforeStatements.push(buildExportsVoid0Statement(exportedName));
+            this.beforeStatements.push(buildExportsVoid0Statement(exportedName));
             afterStatements.push(buildExportsStatement(exportedName, moduleName));
           });
 
-          beforeProgram = t.program(beforeStatements);
           afterProgram = t.program(afterStatements);
-          path.insertBefore(beforeProgram);
           path.insertAfter(afterProgram);
           // If you do not call it at the end, you will get the following error
           // SyntaxError: unknown: NodePath has been removed so is read-only.
           path.remove();
 
+          // CASE 2
+          //
           // e.g.)
           // export { b, c } from './a.js'
           // export { b as c } from './a.js'
@@ -73,7 +87,7 @@ export default function ({ types: t }: BabelTypes) {
             const exportedName = specifier.exported.name;
             const localName = specifier.local ? specifier.local.name : null;
 
-            beforeStatements.push(
+            this.beforeStatements.push(
               buildDefinePropertyExportNamedStatement(moduleName, exportedName, localName)
             );
             if (requireType === INTEROP_REQUIRE_DEFAULT)
@@ -81,57 +95,93 @@ export default function ({ types: t }: BabelTypes) {
           });
           const requireStatement = buildRequireStatement(moduleName, sourceName, requireType);
 
-          path.insertBefore(beforeStatements);
           path.replaceWith(requireStatement);
           path.insertAfter(afterStatements);
 
+          // CASE 3
+          //
           // TODO: There is no end if it is implemented separately for each case.
           // e.g.)
-          // export var a = 1;
-          // export function a() { }
-          // export class A() {}
+          // ○: FunctionDeclaration: export function a() {}
+          // ○: FunctionExpression:  export var a = function(){};
+          // ○: ClassDeclaration:    export class A{}
+          // x: ClassExpression?:    export var a = calss A{}
         } else if (declaration) {
-          const bodyType = declaration['body'] ? declaration['body'].type : null;
+          const declarationType = declaration.type
           let statements = [];
+          let exportedName = 'default';
+          let childDeclaration, statement;
 
-          if (bodyType === 'BlockStatement') {
-            const exportedName = declaration['id'].name;
-            const nodeDeclaration = t.functionDeclaration(
-              t.identifier(exportedName),
-              declaration.params,
-              declaration.body
-            );
-            statements.push(nodeDeclaration);
-            beforeStatements.push(buildExportsVoid0Statement(exportedName));
-            afterStatements.push(buildExportsStatement(exportedName, exportedName));
-          } else if (bodyType === 'ClassBody') {
-            const exportedName = declaration['id'].name;
-            const nodeDeclaration = t.classDeclaration(
-              t.identifier(exportedName),
-              null,
-              declaration.body,
-              null
-            );
-            statements.push(nodeDeclaration);
-            beforeStatements.push(buildExportsVoid0Statement(exportedName));
-            afterStatements.push(buildExportsStatement(exportedName, exportedName));
-          } else {
-            declaration.declarations.forEach((child: Declaration) => {
-              const exportedName = child['id'].name;
-              const statement = t.variableDeclaration('var', [
-                t.variableDeclarator(t.identifier(exportedName), child['init']),
+          switch (declarationType) {
+            // CASE 3.1
+            //
+            // e.g.)
+            // export function a() {}
+            case 'FunctionDeclaration':
+              exportedName = declaration['id'].name;
+              statement = t.functionDeclaration(
+                t.identifier(exportedName),
+                declaration.params,
+                declaration.body
+              )
+              statements.push(statement);
+              // Function Declaration should be hoisting
+              //
+              // e.g.)
+              //
+              // exports.hoist = hoist
+              this.beforeStatements.push(buildExportsStatement(exportedName, exportedName));
+
+              break;
+
+            // CASE 3.2
+            //
+            // e.g.)
+            // export var a = function(){}
+            case 'VariableDeclaration':
+              childDeclaration = declaration.declarations[0]
+              exportedName = childDeclaration['id'].name;
+              statement = t.variableDeclaration(variableKind, [
+                t.variableDeclarator(t.identifier(exportedName), childDeclaration['init']),
               ]);
 
               statements.push(statement);
-              beforeStatements.push(buildExportsVoid0Statement(exportedName));
+
+              //　Function Expression is not hoisted
+              //
+              // e.g.)
+              //
+              // exports.not_hoist = void 0
+              //
+              // var not_hoist = function(){}
+              //
+              // exports.not_hoist = not_hoist
+              if (isFunctionExpression) {
+                this.beforeStatements.push(buildExportsVoid0Statement(exportedName));
+                afterStatements.push(buildExportsStatement(exportedName, exportedName));
+              }
+              break;
+
+            // CASE 3.3
+            //
+            // e.g.)
+            // export class A{}
+            case 'ClassDeclaration':
+              exportedName = declaration['id'].name;
+              const nodeDeclaration = t.classDeclaration(
+                t.identifier(exportedName),
+                null,
+                declaration.body,
+                null
+              );
+              statements.push(nodeDeclaration);
+              this.beforeStatements.push(buildExportsVoid0Statement(exportedName));
               afterStatements.push(buildExportsStatement(exportedName, exportedName));
-            });
+              break;
           }
 
           const mainProgram = t.program(statements);
-          beforeProgram = t.program(beforeStatements);
           afterProgram = t.program(afterStatements);
-          path.insertBefore(beforeProgram);
           path.replaceWith(mainProgram);
           path.insertAfter(afterProgram);
         }
@@ -184,9 +234,8 @@ export default function ({ types: t }: BabelTypes) {
         // exports.default = void 0;
         // var _default = <ArrayExpression | ObjectExpression | Literal>;
         // exports.default = _default;
-        const beforeStatements = [buildExportsVoid0Statement()];
+        this.beforeStatements.push(buildExportsVoid0Statement());
         const afterStatements = [buildExportsStatement('default', idName)];
-        const beforeProgram = t.program(beforeStatements);
         const afterProgram = t.program(afterStatements);
 
         let program;
@@ -196,7 +245,6 @@ export default function ({ types: t }: BabelTypes) {
           program = t.program([varStatement]);
         }
 
-        path.insertBefore(beforeProgram);
         path.replaceWith(program);
         path.insertAfter(afterProgram);
       },

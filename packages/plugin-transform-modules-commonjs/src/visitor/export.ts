@@ -65,7 +65,7 @@ export default function ({ types: t }: BabelTypes) {
         } else if (specifiers.length > 0 && source) {
           const sourceName = source.value;
           const moduleName = basename(sourceName).split('.')[0];
-          const requireType = judgeRequireType(specifiers);
+          const requireType = judgeRequireType(specifiers, "export");
 
           specifiers.forEach((specifier: ExportSpecifier) => {
             const exportedName = specifier.exported.name;

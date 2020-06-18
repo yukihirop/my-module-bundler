@@ -8,6 +8,7 @@ export default function ({ types: t }: BabelTypes) {
     name: 'transform-modules-commonjs',
     pre(state) {
       this.IsESModule = false;
+      this.importedMap = new Map()
     },
     post({ path }) {
       if (this.IsESModule) {

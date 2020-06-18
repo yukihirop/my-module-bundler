@@ -12,8 +12,13 @@ export const judgeRequireType = (specifiers: ExportSpecifier[] | ImportDefaultSp
 
   specifiers.forEach((specifier: any) => {
     const localName = specifier.local ? specifier.local.name : null;
-    if (localName === 'default') requireType = INTEROP_REQUIRE_DEFAULT;
-    if (specifier.type === 'ImportDefaultSpecifier') requireType = INTEROP_REQUIRE_DEFAULT;
+    const importedName = specifier.imported ? specifier.imported.name : null;
+    const condition =
+      (localName === 'default') ||
+      (specifier.type === 'ImportDefaultSpecifier') ||
+      (importedName === 'default')
+
+    if (condition) requireType = INTEROP_REQUIRE_DEFAULT;
   });
 
   return requireType;

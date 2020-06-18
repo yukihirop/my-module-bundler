@@ -1,6 +1,6 @@
 import { NodePath } from '@babel/traverse';
 import { BabelTypes } from '../types';
-import { Statement, ImportDefaultSpecifier } from '@babel/types';
+import { Statement, ImportDefaultSpecifier, ImportSpecifier } from '@babel/types';
 
 import {
   buildRequireStatement,
@@ -8,6 +8,8 @@ import {
 } from '../statement';
 
 import { judgeRequireType, INTEROP_REQUIRE_DEFAULT } from '../helper';
+
+import { basename } from 'path';
 
 export default function ({ types: t }: BabelTypes) {
   return {
@@ -26,12 +28,11 @@ export default function ({ types: t }: BabelTypes) {
         // import b from './a.js';
         if (specifiers.length > 0 && source) {
           const sourceName = source.value;
+          const moduleName = basename(sourceName).split('.')[0];
           const requireType = judgeRequireType(specifiers);
 
-          specifiers.forEach((specifier: ImportDefaultSpecifier) => {
-            const localName = specifier.local ? specifier.local.name : null;
-
-            const statement = buildRequireStatement(localName, sourceName, requireType);
+          specifiers.forEach((specifier: ImportDefaultSpecifier | ImportSpecifier) => {
+            const statement = buildRequireStatement(moduleName, sourceName, requireType);
             statements.push(statement)
             if (requireType === INTEROP_REQUIRE_DEFAULT) afterStatements.push(_interopRequireDefault);
           });

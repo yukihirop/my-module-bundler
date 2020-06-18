@@ -109,11 +109,13 @@ describe('modules-commonjs', () => {
       test(dir, async () => {
         await createDir(outputPath, dir);
         await build(fixturePath, outputPath, dir);
+
+        // Actually execute the bundled file with vm
+        // OK if no error occurs
         await runGeneratedCodeInVM(outputPath, dir);
 
-        // https://stackoverflow.com/questions/52457575/jest-typescript-property-mock-does-not-exist-on-type
-        // I don't know why, but console.log executed in `vm` is not mocked
-        expect((console.log as jest.Mock).mock.calls).toMatchSnapshot();
+        const code = await readFile(join(outputPath, dir, BUNDLE_FILE), 'utf-8')
+        expect(code).toMatchSnapshot();
       });
     }
   })

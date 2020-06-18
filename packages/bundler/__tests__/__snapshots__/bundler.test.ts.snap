@@ -12,44 +12,970 @@ exports[`arrow-functions paran-insertion 1`] = `Array []`;
 
 exports[`arrow-functions spec-naming 1`] = `Array []`;
 
-exports[`modules-commonjs interop export-default-ae 1`] = `Array []`;
+exports[`modules-commonjs interop export-default-ae 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
 
-exports[`modules-commonjs interop export-default-ce 1`] = `Array []`;
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
 
-exports[`modules-commonjs interop export-default-fd 1`] = `Array []`;
+    const module = {
+      exports: {}
+    };
 
-exports[`modules-commonjs interop export-default-fd-id-name 1`] = `Array []`;
+    fn(localRequire, module, module.exports);
 
-exports[`modules-commonjs interop export-default-literal 1`] = `Array []`;
+    return module.exports;
+  }
 
-exports[`modules-commonjs interop export-default-ne 1`] = `Array []`;
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      Object.defineProperty(exports, \\"__esModule\\", {
+        value: true
+      });
 
-exports[`modules-commonjs interop export-default-oe 1`] = `Array []`;
+      // ae = array expression
+      var a = function() {};
 
-exports[`modules-commonjs interop export-from-all 1`] = `Array []`;
+      var b = function() {};
 
-exports[`modules-commonjs interop export-from-as 1`] = `Array []`;
+      exports.default = void 0;
 
-exports[`modules-commonjs interop export-from-as-default 1`] = `Array []`;
+      var _default = [a, b];
 
-exports[`modules-commonjs interop export-from-as-mix 1`] = `Array []`;
+      exports.default = _default;
+    },
+    {},
+  ]
+})"
+`;
 
-exports[`modules-commonjs interop export-from-default-as 1`] = `Array []`;
+exports[`modules-commonjs interop export-default-ce 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
 
-exports[`modules-commonjs interop export-from-named 1`] = `Array []`;
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
 
-exports[`modules-commonjs interop export-from-named-multi 1`] = `Array []`;
+    const module = {
+      exports: {}
+    };
 
-exports[`modules-commonjs interop export-named 1`] = `Array []`;
+    fn(localRequire, module, module.exports);
 
-exports[`modules-commonjs interop export-named-as 1`] = `Array []`;
+    return module.exports;
+  }
 
-exports[`modules-commonjs interop export-named-as-default 1`] = `Array []`;
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      Object.defineProperty(exports, \\"__esModule\\", {
+        value: true
+      });
+      exports.default = void 0;
 
-exports[`modules-commonjs interop export-named-as-mix 1`] = `Array []`;
+      // ce = call expression
 
-exports[`modules-commonjs interop export-named-multi 1`] = `Array []`;
+      var _default = function() {
+        return \\"a\\";
+      }();
 
-exports[`modules-commonjs interop export-variables 1`] = `Array []`;
+      exports.default = _default;
+    },
+    {},
+  ]
+})"
+`;
 
-exports[`modules-commonjs interop import-default-literal 1`] = `Array []`;
+exports[`modules-commonjs interop export-default-fd 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      Object.defineProperty(exports, \\"__esModule\\", {
+        value: true
+      });
+      exports.default = void 0;
+
+      // fd = function declaration
+
+      function _default(a) {
+        return a;
+      }
+
+      exports.default = _default;
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`modules-commonjs interop export-default-fd-id-name 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      Object.defineProperty(exports, \\"__esModule\\", {
+        value: true
+      });
+      exports.default = void 0;
+
+      // fd-id-name = function declaration && id.name exists
+
+      function a(a) {
+        return a;
+      }
+
+      exports.default = a;
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`modules-commonjs interop export-default-literal 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      Object.defineProperty(exports, \\"__esModule\\", {
+        value: true
+      });
+      exports.default = void 0;
+
+      var _default = 1;
+
+      exports.default = _default;
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`modules-commonjs interop export-default-ne 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      Object.defineProperty(exports, \\"__esModule\\", {
+        value: true
+      });
+
+      // ne = new expression
+      function A() {
+        this.a = \\"a\\";
+      }
+
+      exports.default = void 0;
+
+      var _default = new A();
+
+      exports.default = _default;
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`modules-commonjs interop export-default-oe 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      Object.defineProperty(exports, \\"__esModule\\", {
+        value: true
+      });
+      // oe = object expression
+      var a, b;
+      exports.default = void 0;
+
+      var _default = {
+        a: a,
+        b: b,
+        k: function() {}
+      };
+
+      exports.default = _default;
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`modules-commonjs interop export-from-all 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      Object.defineProperty(exports, \\"__esModule\\", {
+        value: true
+      });
+
+      var _a = require(\\"./a.js\\");
+
+      Object.keys(_a).forEach(function(key) {
+        if (key === \\"default\\" || key === \\"__esModule\\") return;
+        Object.defineProperty(exports, key, {
+          enumerable: true,
+          get: function() {
+            return _a[key];
+          }
+        });
+      });
+    },
+    {
+      \\"./a.js\\": 1
+    },
+  ],
+  1: [
+    function(require, module, exports) {
+      var b, c;
+      module.exports = {
+        b,
+        c
+      };
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`modules-commonjs interop export-from-as 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      Object.defineProperty(exports, \\"__esModule\\", {
+        value: true
+      });
+      Object.defineProperty(exports, \\"c\\", {
+        enumerable: true,
+        get: function() {
+          return _a.b;
+        }
+      });
+
+      var _a = require(\\"./a.js\\");
+    },
+    {
+      \\"./a.js\\": 1
+    },
+  ],
+  1: [
+    function(require, module, exports) {
+      var b;
+      module.exports = {
+        b
+      };
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`modules-commonjs interop export-from-as-default 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      Object.defineProperty(exports, \\"__esModule\\", {
+        value: true
+      });
+      Object.defineProperty(exports, \\"default\\", {
+        enumerable: true,
+        get: function() {
+          return _a.b;
+        }
+      });
+
+      var _a = require(\\"./a.js\\");
+    },
+    {
+      \\"./a.js\\": 1
+    },
+  ],
+  1: [
+    function(require, module, exports) {
+      var b;
+      module.exports = {
+        b
+      };
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`modules-commonjs interop export-from-as-mix 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      Object.defineProperty(exports, \\"__esModule\\", {
+        value: true
+      });
+      Object.defineProperty(exports, \\"default\\", {
+        enumerable: true,
+        get: function() {
+          return _a.b;
+        }
+      });
+      Object.defineProperty(exports, \\"c\\", {
+        enumerable: true,
+        get: function() {
+          return _a.c;
+        }
+      });
+
+      var _a = require(\\"./a.js\\");
+    },
+    {
+      \\"./a.js\\": 1
+    },
+  ],
+  1: [
+    function(require, module, exports) {
+      var b, c;
+      module.exports = {
+        b,
+        c
+      };
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`modules-commonjs interop export-from-default-as 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      Object.defineProperty(exports, \\"__esModule\\", {
+        value: true
+      });
+      Object.defineProperty(exports, \\"c\\", {
+        enumerable: true,
+        get: function() {
+          return _a.default;
+        }
+      });
+
+      var _a = _interopRequireDefault(require(\\"./a.js\\"));
+
+      function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+          default: obj
+        };
+      }
+    },
+    {
+      \\"./a.js\\": 1
+    },
+  ],
+  1: [
+    function(require, module, exports) {
+      var b;
+      module.exports = {
+        default: b
+      };
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`modules-commonjs interop export-from-named 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      Object.defineProperty(exports, \\"__esModule\\", {
+        value: true
+      });
+      Object.defineProperty(exports, \\"b\\", {
+        enumerable: true,
+        get: function() {
+          return _a.b;
+        }
+      });
+
+      var _a = require(\\"./a.js\\");
+    },
+    {
+      \\"./a.js\\": 1
+    },
+  ],
+  1: [
+    function(require, module, exports) {
+      exports.b = function() {};
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`modules-commonjs interop export-from-named-multi 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      Object.defineProperty(exports, \\"__esModule\\", {
+        value: true
+      });
+      Object.defineProperty(exports, \\"b\\", {
+        enumerable: true,
+        get: function() {
+          return _a.b;
+        }
+      });
+      Object.defineProperty(exports, \\"c\\", {
+        enumerable: true,
+        get: function() {
+          return _a.c;
+        }
+      });
+
+      var _a = require(\\"./a.js\\");
+    },
+    {
+      \\"./a.js\\": 1
+    },
+  ],
+  1: [
+    function(require, module, exports) {
+      var b, c;
+      module.exports = {
+        b,
+        c
+      };
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`modules-commonjs interop export-named 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      Object.defineProperty(exports, \\"__esModule\\", {
+        value: true
+      });
+      var a;
+      exports.a = void 0;
+
+      exports.a = a;
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`modules-commonjs interop export-named-as 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      Object.defineProperty(exports, \\"__esModule\\", {
+        value: true
+      });
+      var a;
+      exports.b = void 0;
+
+      exports.b = a;
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`modules-commonjs interop export-named-as-default 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      Object.defineProperty(exports, \\"__esModule\\", {
+        value: true
+      });
+      var a;
+      exports.default = void 0;
+
+      exports.default = a;
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`modules-commonjs interop export-named-as-mix 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      Object.defineProperty(exports, \\"__esModule\\", {
+        value: true
+      });
+      var a, b;
+      exports.default = void 0;
+      exports.b = void 0;
+
+      exports.default = a;
+      exports.b = b;
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`modules-commonjs interop export-named-multi 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      Object.defineProperty(exports, \\"__esModule\\", {
+        value: true
+      });
+      var a, b;
+      exports.a = void 0;
+      exports.b = void 0;
+
+      exports.a = a;
+      exports.b = b;
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`modules-commonjs interop export-variables 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      Object.defineProperty(exports, \\"__esModule\\", {
+        value: true
+      });
+      exports.a = void 0;
+
+      var a = 1;
+
+      exports.a = a;
+
+      exports.b = void 0;
+      exports.c = void 0;
+
+      var b = 1;
+      var c = 2;
+
+      exports.b = b;
+      exports.c = c;
+
+      exports.d = void 0;
+
+      var d = function() {};
+
+      exports.d = d;
+
+      exports.e = void 0;
+
+      var e;
+
+      exports.e = e;
+
+      exports.f = void 0;
+
+      var f = 2;
+
+      exports.f = f;
+
+      exports.g = void 0;
+
+      var g;
+
+      exports.g = g;
+
+      exports.h = void 0;
+
+      var h = 3;
+
+      exports.h = h;
+
+      exports.i = void 0;
+
+      function i() {}
+
+      exports.i = i;
+
+      exports.j = void 0;
+
+      class j {}
+
+      exports.j = j;
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`modules-commonjs interop import-default-literal 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      Object.defineProperty(exports, \\"__esModule\\", {
+        value: true
+      });
+
+      var _b = _interopRequireDefault(require(\\"./a.js\\"));
+
+      function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+          default: obj
+        };
+      }
+    },
+    {
+      \\"./a.js\\": 1
+    },
+  ],
+  1: [
+    function(require, module, exports) {
+      var b;
+      module.exports = b;
+    },
+    {},
+  ]
+})"
+`;

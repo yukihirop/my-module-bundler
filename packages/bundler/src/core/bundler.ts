@@ -16,17 +16,17 @@ import transformModulesCommonjs from '@yukihirop/plugin-transform-modules-common
 
 // TODO: Use Class
 class Bunlder {
-  public moduleId: number
+  public moduleId: number;
 
   constructor() {
-    this.moduleId = 0
+    this.moduleId = 0;
   }
 
   /**
- * We create a function that will accept a path to a file, read
- * it's contents, and extract its dependencies.
- *
- */
+   * We create a function that will accept a path to a file, read
+   * it's contents, and extract its dependencies.
+   *
+   */
   private createAsset(filename: string): Asset {
     const content = fs.readFileSync(filename, 'utf-8');
     const ast: any = babylon.parse(content, {
@@ -69,8 +69,8 @@ class Bunlder {
   }
 
   /**
- * Extract the dependencies of the entry file
- */
+   * Extract the dependencies of the entry file
+   */
   private createGraph(entry: string): Graph {
     const mainAsset = this.createAsset(entry);
     const queue = [mainAsset];
@@ -95,14 +95,14 @@ class Bunlder {
   }
 
   /**
- * Define a function that will use our graph and return a bundle that
- * We can run in the browser
- *
- * Our bundle will have just one self-invoking function:
- *
- * (function(){})()
- * @access private
- */
+   * Define a function that will use our graph and return a bundle that
+   * We can run in the browser
+   *
+   * Our bundle will have just one self-invoking function:
+   *
+   * (function(){})()
+   * @access private
+   */
   private bundle(graph: Graph): string {
     let modules = [];
 
@@ -125,7 +125,6 @@ class Bunlder {
 
     await fs.promises.writeFile(output, formatted);
   }
-
 }
 
 export default Bunlder;

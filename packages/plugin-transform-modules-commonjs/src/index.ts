@@ -9,8 +9,8 @@ export default function ({ types: t }: BabelTypes) {
     name: 'transform-modules-commonjs',
     pre(state) {
       this.IsESModule = false;
-      this.importedMap = new Map()
-      this.beforeStatements = [] as Statement[]
+      this.importedMap = new Map();
+      this.beforeStatements = [] as Statement[];
     },
     post({ path }) {
       if (this.IsESModule) {
@@ -20,7 +20,7 @@ export default function ({ types: t }: BabelTypes) {
     },
     visitor: {
       ...exportVisitor({ types: t }).visitor,
-      ...importVisitor({ types: t }).visitor
+      ...importVisitor({ types: t }).visitor,
     },
   };
 }

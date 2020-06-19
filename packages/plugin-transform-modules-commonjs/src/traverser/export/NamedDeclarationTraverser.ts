@@ -1,8 +1,8 @@
 import { NodePath } from '@babel/traverse';
-import * as t from '@babel/types'
-import { basename } from 'path'
+import * as t from '@babel/types';
+import { basename } from 'path';
 
-import { NodeType, VariableKindType, GlobalThisType } from '../../types'
+import { NodeType, VariableKindType, GlobalThisType } from '../../types';
 import BaseTraverser from '../BaseTraverser';
 
 import {
@@ -10,37 +10,37 @@ import {
   buildExportsStatement,
   buildDefinePropertyExportNamedStatement,
   buildRequireStatement,
-  _interopRequireDefault
+  _interopRequireDefault,
 } from '../../statement';
 
 import { judgeRequireType, INTEROP_REQUIRE_DEFAULT, ES_MODULE } from '../../helper';
 
 export default class NamedDeclarationTraverser extends BaseTraverser {
-  public globalThis: GlobalThisType
-  public specifiers: t.ExportSpecifier[]
-  public source?: any
-  public declaration?: t.FunctionDeclaration | t.VariableDeclaration | t.ClassDeclaration
-  public nodeType: NodeType
-  public variableKind: VariableKindType
-  public isFunctionExpression: boolean
-  public beforeStatements: t.Statement[]
-  public afterStatements: t.Statement[]
+  public globalThis: GlobalThisType;
+  public specifiers: t.ExportSpecifier[];
+  public source?: any;
+  public declaration?: t.FunctionDeclaration | t.VariableDeclaration | t.ClassDeclaration;
+  public nodeType: NodeType;
+  public variableKind: VariableKindType;
+  public isFunctionExpression: boolean;
+  public beforeStatements: t.Statement[];
+  public afterStatements: t.Statement[];
 
   constructor(path: NodePath, globalThis: GlobalThisType) {
-    super(path)
-    this.globalThis = globalThis
-    this.specifiers = path.node['specifiers']
-    this.source = path.node['source']
-    this.declaration = path.node['declaration']
-    this.nodeType = path.node['type'] as NodeType
-    this.variableKind = 'var' as VariableKindType
-    this.isFunctionExpression = true
-    this.beforeStatements = [] as t.Statement[]
-    this.afterStatements = [] as t.Statement[]
+    super(path);
+    this.globalThis = globalThis;
+    this.specifiers = path.node['specifiers'];
+    this.source = path.node['source'];
+    this.declaration = path.node['declaration'];
+    this.nodeType = path.node['type'] as NodeType;
+    this.variableKind = 'var' as VariableKindType;
+    this.isFunctionExpression = true;
+    this.beforeStatements = [] as t.Statement[];
+    this.afterStatements = [] as t.Statement[];
   }
 
   public beforeProcess(): void {
-    const { nodeType, declaration } = this
+    const { nodeType, declaration } = this;
 
     switch (nodeType) {
       case 'FunctionDeclaration':
@@ -56,16 +56,9 @@ export default class NamedDeclarationTraverser extends BaseTraverser {
    * @override
    */
   public run(): void {
-    const {
-      globalThis,
-      path,
-      specifiers,
-      source,
-      afterStatements,
-      declaration,
-    } = this
+    const { globalThis, path, specifiers, source, afterStatements, declaration } = this;
 
-    this.beforeProcess()
+    this.beforeProcess();
 
     // CASE 1
     //
@@ -76,11 +69,11 @@ export default class NamedDeclarationTraverser extends BaseTraverser {
       specifiers.forEach((specifier: t.ExportSpecifier) => {
         const exportedName = specifier.exported.name as string;
         const moduleName = specifier.local.name as string;
-        if (exportedName === ES_MODULE) throw new Error(`Illegal export "${ES_MODULE}"`)
+        if (exportedName === ES_MODULE) throw new Error(`Illegal export "${ES_MODULE}"`);
 
         globalThis.beforeStatements.push(buildExportsVoid0Statement(exportedName));
         afterStatements.push(buildExportsStatement(exportedName, moduleName));
-      })
+      });
 
       const afterProgram = t.program(afterStatements);
       path.insertAfter(afterProgram);
@@ -98,7 +91,7 @@ export default class NamedDeclarationTraverser extends BaseTraverser {
     } else if (specifiers.length > 0 && source) {
       const sourceName = source.value;
       const moduleName = basename(sourceName).split('.')[0];
-      const requireType = judgeRequireType(specifiers, "export");
+      const requireType = judgeRequireType(specifiers, 'export');
 
       specifiers.forEach((specifier: t.ExportSpecifier) => {
         const exportedName = specifier.exported.name;
@@ -123,7 +116,7 @@ export default class NamedDeclarationTraverser extends BaseTraverser {
       // ○: ClassDeclaration:    export class A{}
       // x: ClassExpression?:    export var a = calss A{}
     } else if (declaration) {
-      const declarationType = declaration.type
+      const declarationType = declaration.type;
       let statements = [];
       let exportedName = 'default';
       let childDeclaration, statement;
@@ -139,7 +132,7 @@ export default class NamedDeclarationTraverser extends BaseTraverser {
             t.identifier(exportedName),
             (declaration as t.FunctionDeclaration).params,
             (declaration as t.FunctionDeclaration).body
-          )
+          );
           statements.push(statement);
           // Function Declaration should be hoisting
           //
@@ -155,8 +148,8 @@ export default class NamedDeclarationTraverser extends BaseTraverser {
         // e.g.)
         // export var a = function(){}
         case 'VariableDeclaration':
-          const { isFunctionExpression, variableKind } = this
-          childDeclaration = (declaration as t.VariableDeclaration).declarations[0]
+          const { isFunctionExpression, variableKind } = this;
+          childDeclaration = (declaration as t.VariableDeclaration).declarations[0];
           exportedName = childDeclaration['id'].name;
           statement = t.variableDeclaration(variableKind, [
             t.variableDeclarator(t.identifier(exportedName), childDeclaration['init']),

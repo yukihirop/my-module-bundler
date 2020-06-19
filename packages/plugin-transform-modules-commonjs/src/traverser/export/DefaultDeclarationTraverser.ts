@@ -1,44 +1,49 @@
 import { GlobalThisType } from './../../types';
 import { NodePath } from '@babel/traverse';
 import BaseTraverser from '../BaseTraverser';
-import * as t from '@babel/types'
+import * as t from '@babel/types';
 
-import {
-  buildExportsVoid0Statement,
-  buildExportsStatement
-} from '../../statement';
+import { buildExportsVoid0Statement, buildExportsStatement } from '../../statement';
 
 import { functionize } from '../../helper';
 
 export default class DefaultDeclarationTraverser extends BaseTraverser {
-  public globalThis: GlobalThisType
-  public declaration: t.ObjectExpression | t.ArrayExpression | t.FunctionDeclaration | t.CallExpression | t.NewExpression | t.Identifier
-  public exportValueType: string
-  public exportValue: string
-  public idName: string
-  public nodeExpression?: t.ObjectExpression | t.ArrayExpression | t.CallExpression | t.NewExpression | t.Identifier | t.Expression
-  public nodeDeclaration?: t.FunctionDeclaration
+  public globalThis: GlobalThisType;
+  public declaration:
+    | t.ObjectExpression
+    | t.ArrayExpression
+    | t.FunctionDeclaration
+    | t.CallExpression
+    | t.NewExpression
+    | t.Identifier;
+  public exportValueType: string;
+  public exportValue: string;
+  public idName: string;
+  public nodeExpression?:
+    | t.ObjectExpression
+    | t.ArrayExpression
+    | t.CallExpression
+    | t.NewExpression
+    | t.Identifier
+    | t.Expression;
+  public nodeDeclaration?: t.FunctionDeclaration;
 
   constructor(path: NodePath, globalThis: GlobalThisType) {
-    super(path)
-    this.globalThis = globalThis
+    super(path);
+    this.globalThis = globalThis;
     this.declaration = path.node['declaration'];
     this.exportValue = this.declaration['value'];
     this.exportValueType = this.declaration['type'];
     this.idName = this.declaration['id'] ? this.declaration['id'].name : '_default';
-    this.nodeExpression = null
-    this.nodeDeclaration = null
+    this.nodeExpression = null;
+    this.nodeDeclaration = null;
   }
 
   /**
    * @override
    */
   public beforeProcess() {
-    const {
-      declaration,
-      exportValue,
-      exportValueType
-    } = this
+    const { declaration, exportValue, exportValueType } = this;
 
     switch (exportValueType) {
       // e.g.)
@@ -54,7 +59,7 @@ export default class DefaultDeclarationTraverser extends BaseTraverser {
       // e.g.)
       // export default function (a) { return a }
       case 'FunctionDeclaration':
-        const { idName } = this
+        const { idName } = this;
         this.nodeDeclaration = t.functionDeclaration(
           t.identifier(idName),
           (declaration as t.FunctionDeclaration).params,
@@ -86,7 +91,9 @@ export default class DefaultDeclarationTraverser extends BaseTraverser {
       // export default true
       // export default 1
       default:
-        this.nodeExpression = eval(`t.${functionize(exportValueType)}(${exportValue})`) as t.Expression;
+        this.nodeExpression = eval(
+          `t.${functionize(exportValueType)}(${exportValue})`
+        ) as t.Expression;
         break;
     }
   }
@@ -95,7 +102,7 @@ export default class DefaultDeclarationTraverser extends BaseTraverser {
    * @override
    */
   public insertBefore(): void {
-    const { globalThis } = this
+    const { globalThis } = this;
     // e.g.)
     //
     // Object.defineProperty(exports, "__esModule", {
@@ -130,7 +137,7 @@ export default class DefaultDeclarationTraverser extends BaseTraverser {
    * @override
    */
   public insertAfter(): void {
-    const { path, idName } = this
+    const { path, idName } = this;
     const afterStatements = [buildExportsStatement('default', idName)];
     const afterProgram = t.program(afterStatements);
     path.insertAfter(afterProgram);

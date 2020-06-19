@@ -118,19 +118,18 @@ export const buildRequireStatement = (
 // e.g.)
 // var _a = require("./a.js");
 export const buildNodeRequireStatement = (sourceName: string, moduleName?: string) => {
-  return moduleName ?
-    template.statement`
+  return moduleName
+    ? template.statement`
       var VARIABLE_NAME = require("SOURCE_NAME");
     `({
-      VARIABLE_NAME: `_${moduleName}`,
-      SOURCE_NAME: sourceName,
-    })
-    :
-    template.statement`
+        VARIABLE_NAME: `_${moduleName}`,
+        SOURCE_NAME: sourceName,
+      })
+    : template.statement`
       require("SOURCE_NAME");
     `({
-      SOURCE_NAME: sourceName
-    })
+        SOURCE_NAME: sourceName,
+      });
 };
 
 // e.g.)
@@ -151,14 +150,13 @@ export const build_InteropRequireWildcardStatement = (localName: string, sourceN
     var VARIABLE_NAME = _interopRequireWildcard(require("SOURCE_NAME"))
   `({
     VARIABLE_NAME: localName,
-    SOURCE_NAME: sourceName
+    SOURCE_NAME: sourceName,
   });
-}
+};
 
 export const _interopRequireDefault = template.statement`
     function _interopRequireDefault(obj){ return obj && obj.__esModule ? obj : { default: obj}; }
   `();
-
 
 // e.g.)
 // function _interopRequireWildcard(obj) {
@@ -214,7 +212,7 @@ function _interopRequireWildcard(obj) {
   }
   return newObj;
 }
-`()
+`();
 
 // e.g.)
 // function _getRequireWildcardCache() {
@@ -234,4 +232,4 @@ function _getRequireWildcardCache() {
   };
   return cache;
 }
-`()
+`();

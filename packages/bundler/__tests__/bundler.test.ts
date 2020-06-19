@@ -3,7 +3,7 @@
 import { promises } from 'fs';
 import { runInContext, createContext } from 'vm';
 import { join } from 'path';
-import bundler from '../src/core';
+import Bundler from '../src/core/bundler';
 
 const { readFile, mkdir } = promises;
 const fixtureBasePath = join(__dirname, 'fixtures')
@@ -12,7 +12,7 @@ const fixtureBasePath = join(__dirname, 'fixtures')
   , BUNDLE_FILE = 'bundle.js';
 
 async function build(fixturePath: string, outputPath: string, type?: string) {
-  await bundler({
+  await new Bundler().write({
     input: join(fixturePath, type || "", ENTRY_FILE),
     output: join(outputPath, type || "", BUNDLE_FILE)
   })
@@ -127,21 +127,23 @@ describe('modules-commonjs', () => {
       });
     }
 
-    let dir = 'export-illegal'
-    test(dir, async () => {
+    test('export-illegal', async () => {
+      const dir = 'export-illegal'
       await createDir(outputPath, dir);
       await expect(build(fixturePath, outputPath, dir)).rejects.toThrow(new Error('unknown: Illegal export "__esModule"'))
     })
 
-    dir = 'export-hoist-function-failure'
-    test(dir, async () => {
+    test('export-hoist-function-failure', async () => {
+      const dir = 'export-hoist-function-failure'
       await createDir(outputPath, dir);
       await build(fixturePath, outputPath, dir);
+
+      debugger
 
       const code = await readFile(join(outputPath, dir, BUNDLE_FILE), 'utf-8')
       expect(code).toMatchSnapshot();
 
-      await expect(await runGeneratedCodeInVM(outputPath, dir)).rejects.toThrow(new Error(""))
+      await expect(runGeneratedCodeInVM(outputPath, dir)).rejects.toThrow(new Error("not_hoist_2 is not a function"))
     })
   })
 })

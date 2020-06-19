@@ -1,7 +1,8 @@
 'use strict';
 
-import bundler from './core';
+import Bundler from './core/bundler';
 const input = process.argv[2],
   output = process.argv[3];
 
-bundler({ input, output });
+const bundler = new Bundler()
+bundler.write({ input, output });

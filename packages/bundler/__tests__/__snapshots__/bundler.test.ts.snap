@@ -37,13 +37,12 @@ exports[`modules-commonjs interop export-default-ae 1`] = `
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
+      exports.default = void 0;
 
       // ae = array expression
       var a = function() {};
 
       var b = function() {};
-
-      exports.default = void 0;
 
       var _default = [a, b];
 
@@ -80,7 +79,6 @@ exports[`modules-commonjs interop export-default-ce 1`] = `
         value: true
       });
       exports.default = void 0;
-
       // ce = call expression
 
       var _default = function() {
@@ -120,7 +118,6 @@ exports[`modules-commonjs interop export-default-fd 1`] = `
         value: true
       });
       exports.default = void 0;
-
       // fd = function declaration
 
       function _default(a) {
@@ -160,7 +157,6 @@ exports[`modules-commonjs interop export-default-fd-id-name 1`] = `
         value: true
       });
       exports.default = void 0;
-
       // fd-id-name = function declaration && id.name exists
 
       function a(a) {
@@ -200,7 +196,6 @@ exports[`modules-commonjs interop export-default-literal 1`] = `
         value: true
       });
       exports.default = void 0;
-
       var _default = 1;
 
       exports.default = _default;
@@ -235,13 +230,12 @@ exports[`modules-commonjs interop export-default-ne 1`] = `
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
+      exports.default = void 0;
 
       // ne = new expression
       function A() {
         this.a = \\"a\\";
       }
-
-      exports.default = void 0;
 
       var _default = new A();
 
@@ -277,10 +271,9 @@ exports[`modules-commonjs interop export-default-oe 1`] = `
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
+      exports.default = void 0;
       // oe = object expression
       var a, b;
-      exports.default = void 0;
-
       var _default = {
         a: a,
         b: b,
@@ -697,7 +690,7 @@ exports[`modules-commonjs interop export-hoist-function-failure 1`] = `
       hoist();
 
       function hoist() {
-        return nil;
+        return null;
       }
 
       var not_hoist_1 = function not_hoist_1() {
@@ -792,9 +785,8 @@ exports[`modules-commonjs interop export-named 1`] = `
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
-      var a;
       exports.a = void 0;
-
+      var a;
       exports.a = a;
     },
     {},
@@ -827,9 +819,8 @@ exports[`modules-commonjs interop export-named-as 1`] = `
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
-      var a;
       exports.b = void 0;
-
+      var a;
       exports.b = a;
     },
     {},
@@ -862,9 +853,8 @@ exports[`modules-commonjs interop export-named-as-default 1`] = `
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
-      var a;
       exports.default = void 0;
-
+      var a;
       exports.default = a;
     },
     {},
@@ -897,10 +887,9 @@ exports[`modules-commonjs interop export-named-as-mix 1`] = `
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
-      var a, b;
       exports.default = void 0;
       exports.b = void 0;
-
+      var a, b;
       exports.default = a;
       exports.b = b;
     },
@@ -934,10 +923,9 @@ exports[`modules-commonjs interop export-named-multi 1`] = `
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
-      var a, b;
       exports.a = void 0;
       exports.b = void 0;
-
+      var a, b;
       exports.a = a;
       exports.b = b;
     },
@@ -972,57 +960,43 @@ exports[`modules-commonjs interop export-variables 1`] = `
         value: true
       });
       exports.a = void 0;
-
+      exports.b = void 0;
+      exports.d = void 0;
+      exports.e = void 0;
+      exports.f = void 0;
+      exports.g = void 0;
+      exports.h = void 0;
+      exports.i = i;
+      exports.j = void 0;
       var a = 1;
 
       exports.a = a;
 
-      exports.b = void 0;
-      exports.c = void 0;
-
       var b = 1;
-      var c = 2;
 
       exports.b = b;
-      exports.c = c;
-
-      exports.d = void 0;
 
       var d = function() {};
 
       exports.d = d;
 
-      exports.e = void 0;
-
       var e;
 
       exports.e = e;
-
-      exports.f = void 0;
 
       var f = 2;
 
       exports.f = f;
 
-      exports.g = void 0;
-
       var g;
 
       exports.g = g;
-
-      exports.h = void 0;
 
       var h = 3;
 
       exports.h = h;
 
-      exports.i = void 0;
-
       function i() {}
-
-      exports.i = i;
-
-      exports.j = void 0;
 
       class j {}
 

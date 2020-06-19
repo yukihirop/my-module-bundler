@@ -11,19 +11,16 @@ export default function ({ types: t }: BabelTypes) {
     visitor: {
       ExportAllDeclaration(path: NodePath) {
         this.IsESModule = true;
-
         const traverser = new ExportAllDeclarationTraverser(path)
         traverser.run()
       },
       ExportNamedDeclaration(path: NodePath) {
         this.IsESModule = true;
-
         const traverser = new ExportNamedDeclarationTraverser(path, this)
         traverser.run()
       },
       ExportDefaultDeclaration(path: NodePath) {
         this.IsESModule = true;
-
         const traverser = new ExportDefaultDeclarationTraverser(path, this)
         traverser.run()
       }

@@ -1,5 +1,4 @@
-import { ExportSpecifier, ImportNamespaceSpecifier, ImportDefaultSpecifier, ImportSpecifier } from '@babel/types';
-import ts from 'typescript'
+import * as t from '@babel/types'
 
 export const functionize = (str: string): string => {
   if (!str || typeof str !== 'string') return str;
@@ -11,7 +10,7 @@ export const INTEROP_REQUIRE_WILDCARD = '_interopRequireWildcard';
 export const REQUIRE = 'require'
 export const ES_MODULE = '__esModule'
 
-export const judgeRequireType = <T = ExportSpecifier | ImportNamespaceSpecifier | ImportDefaultSpecifier | ImportSpecifier>(specifiers: T[], type: "import" | "export"): string => {
+export const judgeRequireType = <T>(specifiers: T[], type: "import" | "export"): string => {
   if (type === "import") {
     return judgeRequireTypeAtImport(specifiers)
   } else if (type === "export") {
@@ -19,7 +18,7 @@ export const judgeRequireType = <T = ExportSpecifier | ImportNamespaceSpecifier 
   }
 }
 
-const judgeRequireTypeAtImport = <T = ImportNamespaceSpecifier | ImportDefaultSpecifier | ImportSpecifier>(specifiers: T[]): string => {
+const judgeRequireTypeAtImport = <T = t.ImportNamespaceSpecifier | t.ImportDefaultSpecifier | t.ImportSpecifier>(specifiers: T[]): string => {
   let requireType = 'require';
   const specifierTypes = specifiers.map((s: T) => s["type"])
 
@@ -45,7 +44,7 @@ const judgeRequireTypeAtImport = <T = ImportNamespaceSpecifier | ImportDefaultSp
   return requireType
 };
 
-const judgeRequireTypeAtExport = <T = ExportSpecifier>(specifiers: T[]): string => {
+const judgeRequireTypeAtExport = <T = t.ExportSpecifier>(specifiers: T[]): string => {
   let requireType = 'require';
 
   specifiers.forEach((specifier: T) => {
@@ -59,8 +58,8 @@ const judgeRequireTypeAtExport = <T = ExportSpecifier>(specifiers: T[]): string 
   return requireType;
 }
 
-export const createImportedMap = (localName: string, specifiers: ImportNamespaceSpecifier[] | ImportDefaultSpecifier[] | ImportSpecifier[]): Map<string, any> => {
-  const mapData = (specifiers as any[]).map((s: ImportNamespaceSpecifier | ImportDefaultSpecifier | ImportSpecifier) => {
+export const createImportedMap = (localName: string, specifiers: t.ImportNamespaceSpecifier[] | t.ImportDefaultSpecifier[] | t.ImportSpecifier[]): Map<string, any> => {
+  const mapData = (specifiers as any[]).map((s: t.ImportNamespaceSpecifier | t.ImportDefaultSpecifier | t.ImportSpecifier) => {
     const specLocalName = s["local"].name
     const specImportedName = s["imported"] ? s["imported"].name : null
     const specType = s["type"]

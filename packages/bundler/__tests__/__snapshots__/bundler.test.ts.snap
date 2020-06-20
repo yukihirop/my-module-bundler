@@ -1548,3 +1548,101 @@ exports[`modules-commonjs interop import-wildcard-as 1`] = `
   ]
 })"
 `;
+
+exports[`modules-commonjs interop import-wildcard-as-hoist 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      var d = _interopRequireWildcard(require(\\"./a.js\\"));
+
+      function _getRequireWildcardCache() {
+        if (typeof WeakMap !== \\"function\\") return null;
+        var cache = new WeakMap();
+
+        _getRequireWildcardCache = function() {
+          return cache;
+        };
+
+        return cache;
+      }
+
+      function _interopRequireWildcard(obj) {
+        if (obj && obj.__esModule) {
+          return obj;
+        }
+
+        if (obj === null || typeof obj !== \\"object\\" && typeof obj !== \\"function\\") {
+          return {
+            default: obj
+          };
+        }
+
+        var cache = _getRequireWildcardCache();
+
+        if (cache && cache.has(obj)) {
+          return cache.get(obj);
+        }
+
+        var newObj = {};
+        var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
+
+        for (var key in obj) {
+          if (Object.prototype.hasOwnProperty.call(obj, key)) {
+            var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
+
+            if (desc && (desc.get || desc.set)) {
+              Object.defineProperty(newObj, key, desc);
+            } else {
+              newObj[key] = obj[key];
+            }
+          }
+        }
+
+        newObj.default = obj;
+
+        if (cache) {
+          cache.set(obj, newObj);
+        }
+
+        return newObj;
+      }
+
+      d;
+      d.b;
+      d.b();
+    },
+    {
+      \\"./a.js\\": 1
+    },
+  ],
+  1: [
+    function(require, module, exports) {
+      function b() {}
+
+      function c() {}
+
+      exports.b = b;
+      exports.c = c;
+    },
+    {},
+  ]
+})"
+`;

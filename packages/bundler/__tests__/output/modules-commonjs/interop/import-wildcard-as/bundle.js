@@ -76,6 +76,10 @@
 
         return newObj;
       }
+
+      d;
+      d.b;
+      d.b();
     },
     {
       "./a.js": 1
@@ -83,7 +87,10 @@
   ],
   1: [
     function(require, module, exports) {
-      var b, c;
+      function b() {}
+
+      function c() {}
+
       exports.b = b;
       exports.c = c;
     },

@@ -1,3 +1,4 @@
-var b, c
+function b() { }
+function c() { }
 exports.b = b
 exports.c = c

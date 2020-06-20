@@ -154,10 +154,8 @@ export const build_InteropRequireWildcardStatement = (localName: string, sourceN
   });
 };
 
-export const buildSequenceExpressionOrNot = (path: NodePath, globalThis: GlobalThisType): StatementWithConditionType | null => {
-  const localBinding = path.scope.getBinding(path.node['name']);
-  const idName = localBinding.identifier.name;
-  const mapValue = globalThis.importedMap.get(idName);
+export const buildSequenceExpressionOrNot = (path: NodePath, localBindingIdName: string, globalThis: GlobalThisType): StatementWithConditionType | null => {
+  const mapValue = globalThis.importedMap.get(localBindingIdName);
   let statement;
 
   if (mapValue) {
@@ -166,23 +164,40 @@ export const buildSequenceExpressionOrNot = (path: NodePath, globalThis: GlobalT
 
     // e.g.)
     // For unbind this, Convert from _a.b(args) to (0, _a.b)(args) because _a.b is global variable.
-    if (args !== undefined) {
-      statement = t.expressionStatement(
-        t.callExpression(
-          t.sequenceExpression(
-            [
-              t.numericLiteral(0),
-              t.memberExpression(t.identifier(localName), t.identifier(key), false)
-            ]
-          ),
-          args
+    if (key) {
+      if (args !== undefined) {
+        statement = t.expressionStatement(
+          t.callExpression(
+            t.sequenceExpression(
+              [
+                t.numericLiteral(0),
+                t.memberExpression(t.identifier(localName), t.identifier(key), false)
+              ]
+            ),
+            args
+          )
         )
-      )
-      return { statement, isSequenceExpression: true }
+        return { statement, isSequenceExpression: true }
+      } else {
+        statement = t.expressionStatement(
+          t.memberExpression(t.identifier(localName), t.identifier(key), false)
+        );
+        return { statement, isSequenceExpression: false }
+      }
+      // e.g.)
+      // when 「import * as b from './a.js'」
+      // b => b
+      // b(n) => b(n)
     } else {
-      statement = t.expressionStatement(
-        t.memberExpression(t.identifier(localName), t.identifier(key), false)
-      );
+      // b(n) => b(n)
+      if (args !== undefined) {
+        statement = t.expressionStatement(
+          t.callExpression(t.identifier(localName), args)
+        )
+        // b => b
+      } else {
+        statement = t.expressionStatement(t.identifier(localName))
+      }
       return { statement, isSequenceExpression: false }
     }
   } else {

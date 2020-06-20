@@ -40,21 +40,26 @@ export default class ReferencedIdentifierTraverser extends BaseTraverser {
    */
   public replaceWith(): void {
     const { globalThis, path, localBinding } = this;
-    const idName = localBinding.identifier.name;
-    const mapValue = globalThis.importedMap.get(idName);
+    const localBindingIdName: string = localBinding.identifier.name;
+    const mapValue = globalThis.importedMap.get(localBindingIdName);
 
     if (mapValue) {
-      const { statement, isSequenceExpression } = buildSequenceExpressionOrNot(path, globalThis)
+      const buildData = buildSequenceExpressionOrNot(path, localBindingIdName, globalThis)
+      if (buildData) {
+        const { statement, isSequenceExpression } = buildData
 
-      if (isSequenceExpression) {
-        path.parentPath.replaceWith(statement);
-      } else {
-        path.replaceWith(statement);
+        if (isSequenceExpression) {
+          path.parentPath.replaceWith(statement);
+        } else {
+          const { key } = mapValue
+          // If you replace something you don't need to replace, you end up in an endless loop with ReferencedIdentifier
+          if (key) path.replaceWith(statement);
+        }
       }
     } else {
       // Unwind unreferenced statement at runtime
       // That is, lazy evaluation
-      globalThis.UnwindingStatement.push(path)
+      globalThis.UnwindingStatement.push({ path, localBindingIdName })
     }
   }
 }

@@ -25,6 +25,20 @@ export default function ({ types: t }: BabelTypes) {
     visitor: {
       ...exportVisitor({ types: t }).visitor,
       ...importVisitor({ types: t }).visitor,
+      Program: {
+        enter(path, state) {
+          const { sourceType } = path.node;
+          if (sourceType !== 'module' && sourceType !== 'script') {
+            throw new Error(`Unknown sourceType "${sourceType}", cannot transform.`)
+          }
+          // Rename for reserved words
+          path.scope.rename('exports');
+          path.scope.rename('module');
+          path.scope.rename('require');
+          path.scope.rename('__filename');
+          path.scope.rename('__dirname');
+        }
+      }
     },
   };
 }

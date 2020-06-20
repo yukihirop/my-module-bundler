@@ -67,11 +67,18 @@ export default class NamedDeclarationTraverser extends BaseTraverser {
     if (specifiers.length > 0 && !source) {
       specifiers.forEach((specifier: t.ExportSpecifier) => {
         const exportedName = specifier.exported.name as string;
-        const moduleName = specifier.local.name as string;
+        const localName = specifier.local.name as string;
+        const localBinding = path.scope.getBinding(localName)
         if (exportedName === ES_MODULE) throw new Error(`Illegal export "${ES_MODULE}"`);
 
-        globalThis.ExportsVoid0Statement.push(exportedName);
-        afterStatements.push(buildExportsStatement(exportedName, moduleName));
+        // Use toString() to workaround Error:
+        // This condition will always return 'true' since the types '"var" | "const" | "let" | "module"' and '"kind"' have no overlap.ts(2367)
+        if (localBinding['kind'].toString() === 'hoisted') {
+          globalThis.beforeStatements.push(buildExportsStatement(exportedName, localName));
+        } else {
+          globalThis.ExportsVoid0Statement.push(exportedName);
+          afterStatements.push(buildExportsStatement(exportedName, localName));
+        }
       });
 
       const afterProgram = t.program(afterStatements);

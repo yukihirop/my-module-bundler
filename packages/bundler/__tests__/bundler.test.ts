@@ -113,7 +113,8 @@ describe('modules-commonjs', () => {
       'import-hoist',
       'import-global-variable-unbind',
       'import-wildcard-as-hoist',
-      'export-hoist-function-success'
+      'export-hoist-function-success',
+      'export-rename-hoist'
     ]
 
     for (const dir of dirs) {

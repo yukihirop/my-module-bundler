@@ -1,11 +1,11 @@
 import { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
-import { GlobalThisType } from './../types';
+import { GlobalThisType } from '../types';
 import { buildSequenceExpressionOrNot } from './index';
 
 type NodePathDataType = { path: NodePath, localBindingIdName: string }
 
-export default class UnwindingStatement {
+export default class LazyEvaluateStatement {
   public globalThis: GlobalThisType
   public data: NodePathDataType[]
 

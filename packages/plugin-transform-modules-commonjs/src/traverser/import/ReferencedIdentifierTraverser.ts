@@ -59,7 +59,7 @@ export default class ReferencedIdentifierTraverser extends BaseTraverser {
     } else {
       // Unwind unreferenced statement at runtime
       // That is, lazy evaluation
-      globalThis.UnwindingStatement.push({ path, localBindingIdName })
+      globalThis.LazyEvaluateStatement.push({ path, localBindingIdName })
     }
   }
 }

@@ -4,8 +4,8 @@ import template from '@babel/template';
 
 import { GlobalThisType, StatementWithConditionType } from './../types';
 import ExportsVoid0Statement from './ExportsVoid0Statement'
-import UnwindingStatement from './UnwindingStatement'
-export { ExportsVoid0Statement, UnwindingStatement }
+import LazyEvaluateStatement from './LazyEvaluateStatement'
+export { ExportsVoid0Statement, LazyEvaluateStatement }
 
 export const useStrictStatement = t.expressionStatement(t.stringLiteral('use strict'));
 

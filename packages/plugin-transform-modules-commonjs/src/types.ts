@@ -1,5 +1,5 @@
 import * as t from '@babel/types';
-import { ExportsVoid0Statement, UnwindingStatement } from './statement'
+import { ExportsVoid0Statement, LazyEvaluateStatement } from './statement'
 
 export type BabelTypes = {
   types: typeof t;
@@ -17,7 +17,7 @@ export type GlobalThisType = {
   importedMap?: Map<string, MapValueType>;
   beforeStatements: t.Statement[];
   ExportsVoid0Statement: ExportsVoid0Statement;
-  UnwindingStatement: UnwindingStatement
+  LazyEvaluateStatement: LazyEvaluateStatement
 };
 
 export type StatementWithConditionType = { statement: t.Statement, isSequenceExpression: boolean }

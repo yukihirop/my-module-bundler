@@ -1,7 +1,7 @@
 import * as t from '@babel/types';
 import { BabelTypes } from './types';
 import { exportVisitor, importVisitor } from './visitor';
-import { define__esModuleStatement, ExportsVoid0Statement, UnwindingStatement } from './statement';
+import { define__esModuleStatement, ExportsVoid0Statement, LazyEvaluateStatement } from './statement';
 
 export default function ({ types: t }: BabelTypes) {
   return {
@@ -11,10 +11,10 @@ export default function ({ types: t }: BabelTypes) {
       this.importedMap = new Map();
       this.beforeStatements = [] as t.Statement[];
       this.ExportsVoid0Statement = new ExportsVoid0Statement();
-      this.UnwindingStatement = new UnwindingStatement(this);
+      this.LazyEvaluateStatement = new LazyEvaluateStatement(this);
     },
     post({ path }) {
-      this.UnwindingStatement.buildStatements().forEach((statement: t.Statement) => {
+      this.LazyEvaluateStatement.buildStatements().forEach((statement: t.Statement) => {
         path.node['body'].push(statement)
       });
       path.node['body'].unshift(this.ExportsVoid0Statement.build());

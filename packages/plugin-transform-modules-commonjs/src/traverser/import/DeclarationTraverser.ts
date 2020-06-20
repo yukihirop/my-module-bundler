@@ -74,7 +74,6 @@ export default class DeclarationTraverser extends BaseTraverser {
           statements.push(statement);
           break;
         case INTEROP_REQUIRE_DEFAULT:
-          this.globalThis.IsESModule = true;
           localName = `_${moduleName}`;
 
           statement = buildRequireStatement(moduleName, sourceName, requireType);
@@ -82,7 +81,6 @@ export default class DeclarationTraverser extends BaseTraverser {
           afterStatements.push(_interopRequireDefault);
           break;
         case INTEROP_REQUIRE_WILDCARD:
-          this.globalThis.IsESModule = true;
           if (specifiers.length > 1) {
             localName = `_${moduleName}`;
           } else {

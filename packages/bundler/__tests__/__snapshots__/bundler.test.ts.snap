@@ -1019,10 +1019,6 @@ exports[`modules-commonjs interop import-as-mix 1`] = `
 })({
   0: [
     function(require, module, exports) {
-      Object.defineProperty(exports, \\"__esModule\\", {
-        value: true
-      });
-
       var _a = _interopRequireWildcard(require(\\"./a.js\\"));
 
       function _getRequireWildcardCache() {
@@ -1155,10 +1151,6 @@ exports[`modules-commonjs interop import-default-as 1`] = `
 })({
   0: [
     function(require, module, exports) {
-      Object.defineProperty(exports, \\"__esModule\\", {
-        value: true
-      });
-
       var _a = _interopRequireDefault(require(\\"./a.js\\"));
 
       function _interopRequireDefault(obj) {
@@ -1205,10 +1197,6 @@ exports[`modules-commonjs interop import-default-literal 1`] = `
 })({
   0: [
     function(require, module, exports) {
-      Object.defineProperty(exports, \\"__esModule\\", {
-        value: true
-      });
-
       var _a = _interopRequireDefault(require(\\"./a.js\\"));
 
       function _interopRequireDefault(obj) {
@@ -1485,10 +1473,6 @@ exports[`modules-commonjs interop import-wildcard-as 1`] = `
 })({
   0: [
     function(require, module, exports) {
-      Object.defineProperty(exports, \\"__esModule\\", {
-        value: true
-      });
-
       var d = _interopRequireWildcard(require(\\"./a.js\\"));
 
       function _getRequireWildcardCache() {
@@ -1542,6 +1526,10 @@ exports[`modules-commonjs interop import-wildcard-as 1`] = `
 
         return newObj;
       }
+
+      d;
+      d.b;
+      d.b();
     },
     {
       \\"./a.js\\": 1
@@ -1549,7 +1537,10 @@ exports[`modules-commonjs interop import-wildcard-as 1`] = `
   ],
   1: [
     function(require, module, exports) {
-      var b, c;
+      function b() {}
+
+      function c() {}
+
       exports.b = b;
       exports.c = c;
     },

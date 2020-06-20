@@ -19,10 +19,6 @@
 })({
   0: [
     function(require, module, exports) {
-      Object.defineProperty(exports, "__esModule", {
-        value: true
-      });
-
       var _a = _interopRequireWildcard(require("./a.js"));
 
       function _getRequireWildcardCache() {

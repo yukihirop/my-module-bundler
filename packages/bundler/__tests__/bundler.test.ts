@@ -110,6 +110,7 @@ describe('modules-commonjs', () => {
       'import-named-multi',
       'import-named-as-mix',
       'import-basic',
+      'import-global-variable-unbind',
       'export-hoist-function-success'
     ]
 

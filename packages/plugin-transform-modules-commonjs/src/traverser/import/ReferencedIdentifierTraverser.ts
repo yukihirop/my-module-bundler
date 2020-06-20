@@ -45,11 +45,32 @@ export default class ReferencedIdentifierTraverser extends BaseTraverser {
     const { localName, key } = globalThis.importedMap.get(idName);
 
     if (key) {
-      const statement = t.expressionStatement(
-        t.memberExpression(t.identifier(localName), t.identifier(key), false)
-      );
+      // e.g.)
+      // For unbind this, Convert from _a.b(args) to (0, _a.b)(args) because _a.b is global variable.
+      const args = path.parent['arguments']
+      let statement;
 
-      path.replaceWith(statement);
+      if (args !== undefined) {
+        statement = t.expressionStatement(
+          t.callExpression(
+            t.sequenceExpression(
+              [
+                t.numericLiteral(0),
+                t.memberExpression(t.identifier(localName), t.identifier(key), false)
+              ]
+            ),
+            args
+          )
+        )
+
+        path.parentPath.replaceWith(statement);
+      } else {
+        statement = t.expressionStatement(
+          t.memberExpression(t.identifier(localName), t.identifier(key), false)
+        );
+
+        path.replaceWith(statement);
+      }
     }
   }
 }

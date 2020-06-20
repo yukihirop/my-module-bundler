@@ -1,8 +1,8 @@
 import { NodePath, Binding } from '@babel/traverse';
-import * as t from '@babel/types';
 import BaseTraverser from '../BaseTraverser';
 
 import { GlobalThisType } from './../../types';
+import { buildSequenceExpressionOrNot } from '../../statement'
 
 export default class ReferencedIdentifierTraverser extends BaseTraverser {
   private IGNORE_REFERENCED_LIST = ['require', 'module', 'exports'];
@@ -13,7 +13,6 @@ export default class ReferencedIdentifierTraverser extends BaseTraverser {
   constructor(path: NodePath, globalThis: GlobalThisType) {
     super(path);
     this.globalThis = globalThis;
-    this.path = path;
     this.nodeName = path.node['name'];
     this.localBinding = path.scope.getBinding(this.nodeName);
   }
@@ -42,35 +41,20 @@ export default class ReferencedIdentifierTraverser extends BaseTraverser {
   public replaceWith(): void {
     const { globalThis, path, localBinding } = this;
     const idName = localBinding.identifier.name;
-    const { localName, key } = globalThis.importedMap.get(idName);
+    const mapValue = globalThis.importedMap.get(idName);
 
-    if (key) {
-      // e.g.)
-      // For unbind this, Convert from _a.b(args) to (0, _a.b)(args) because _a.b is global variable.
-      const args = path.parent['arguments']
-      let statement;
+    if (mapValue) {
+      const { statement, isSequenceExpression } = buildSequenceExpressionOrNot(path, globalThis)
 
-      if (args !== undefined) {
-        statement = t.expressionStatement(
-          t.callExpression(
-            t.sequenceExpression(
-              [
-                t.numericLiteral(0),
-                t.memberExpression(t.identifier(localName), t.identifier(key), false)
-              ]
-            ),
-            args
-          )
-        )
-
+      if (isSequenceExpression) {
         path.parentPath.replaceWith(statement);
       } else {
-        statement = t.expressionStatement(
-          t.memberExpression(t.identifier(localName), t.identifier(key), false)
-        );
-
         path.replaceWith(statement);
       }
+    } else {
+      // Unwind unreferenced statement at runtime
+      // That is, lazy evaluation
+      globalThis.UnwindingStatement.push(path)
     }
   }
 }

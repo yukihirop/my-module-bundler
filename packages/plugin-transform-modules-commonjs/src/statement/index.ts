@@ -1,7 +1,11 @@
+import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import template from '@babel/template';
+
+import { GlobalThisType, StatementWithConditionType } from './../types';
 import ExportsVoid0Statement from './ExportsVoid0Statement'
-export { ExportsVoid0Statement }
+import UnwindingStatement from './UnwindingStatement'
+export { ExportsVoid0Statement, UnwindingStatement }
 
 export const useStrictStatement = t.expressionStatement(t.stringLiteral('use strict'));
 
@@ -118,14 +122,14 @@ export const buildNodeRequireStatement = (sourceName: string, moduleName?: strin
     ? template.statement`
       var VARIABLE_NAME = require("SOURCE_NAME");
     `({
-        VARIABLE_NAME: `_${moduleName}`,
-        SOURCE_NAME: sourceName,
-      })
+      VARIABLE_NAME: `_${moduleName}`,
+      SOURCE_NAME: sourceName,
+    })
     : template.statement`
       require("SOURCE_NAME");
     `({
-        SOURCE_NAME: sourceName,
-      });
+      SOURCE_NAME: sourceName,
+    });
 };
 
 // e.g.)
@@ -149,6 +153,42 @@ export const build_InteropRequireWildcardStatement = (localName: string, sourceN
     SOURCE_NAME: sourceName,
   });
 };
+
+export const buildSequenceExpressionOrNot = (path: NodePath, globalThis: GlobalThisType): StatementWithConditionType | null => {
+  const localBinding = path.scope.getBinding(path.node['name']);
+  const idName = localBinding.identifier.name;
+  const mapValue = globalThis.importedMap.get(idName);
+  let statement;
+
+  if (mapValue) {
+    const { localName, key } = mapValue
+    const args = path.parent['arguments'];
+
+    // e.g.)
+    // For unbind this, Convert from _a.b(args) to (0, _a.b)(args) because _a.b is global variable.
+    if (args !== undefined) {
+      statement = t.expressionStatement(
+        t.callExpression(
+          t.sequenceExpression(
+            [
+              t.numericLiteral(0),
+              t.memberExpression(t.identifier(localName), t.identifier(key), false)
+            ]
+          ),
+          args
+        )
+      )
+      return { statement, isSequenceExpression: true }
+    } else {
+      statement = t.expressionStatement(
+        t.memberExpression(t.identifier(localName), t.identifier(key), false)
+      );
+      return { statement, isSequenceExpression: false }
+    }
+  } else {
+    return null
+  }
+}
 
 export const _interopRequireDefault = template.statement`
     function _interopRequireDefault(obj){ return obj && obj.__esModule ? obj : { default: obj}; }

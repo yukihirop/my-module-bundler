@@ -3,7 +3,7 @@ import * as t from '@babel/types';
 import BaseTraverser from '../BaseTraverser';
 import { basename } from 'path';
 
-import { GlobalThisType } from './../../types';
+import { GlobalThisType, MapValueType } from './../../types';
 import {
   buildRequireStatement,
   _interopRequireDefault,
@@ -12,7 +12,7 @@ import {
 } from '../../statement';
 import {
   judgeRequireType,
-  createImportedMap,
+  createImportedMapData,
   REQUIRE,
   INTEROP_REQUIRE_DEFAULT,
   INTEROP_REQUIRE_WILDCARD,
@@ -97,7 +97,9 @@ export default class DeclarationTraverser extends BaseTraverser {
           break;
       }
 
-      this.globalThis.importedMap = createImportedMap(localName, specifiers);
+      createImportedMapData(localName, specifiers).forEach((data: [string, MapValueType]) => {
+        this.globalThis.importedMap.set(...data)
+      });
 
       const mainProgram = t.program(statements);
       path.replaceWith(mainProgram);

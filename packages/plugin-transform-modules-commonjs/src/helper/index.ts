@@ -1,4 +1,5 @@
 import * as t from '@babel/types';
+import { MapValueType } from '../types'
 
 export const functionize = (str: string): string => {
   if (!str || typeof str !== 'string') return str;
@@ -61,10 +62,10 @@ const judgeRequireTypeAtExport = <T = t.ExportSpecifier>(specifiers: T[]): strin
   return requireType;
 };
 
-export const createImportedMap = (
+export const createImportedMapData = (
   localName: string,
   specifiers: t.ImportNamespaceSpecifier[] | t.ImportDefaultSpecifier[] | t.ImportSpecifier[]
-): Map<string, any> => {
+): Array<[string, MapValueType]> => {
   const mapData = (specifiers as any[]).map(
     (s: t.ImportNamespaceSpecifier | t.ImportDefaultSpecifier | t.ImportSpecifier) => {
       const specLocalName = s['local'].name;
@@ -85,6 +86,7 @@ export const createImportedMap = (
         }
       }
     }
-  ) as Array<[string, any]>;
-  return new Map<string, any>(mapData);
+  ) as Array<[string, MapValueType]>;
+
+  return mapData;
 };

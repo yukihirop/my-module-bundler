@@ -110,6 +110,7 @@ describe('modules-commonjs', () => {
       'import-named-multi',
       'import-named-as-mix',
       'import-basic',
+      'import-hoist',
       'import-global-variable-unbind',
       'export-hoist-function-success'
     ]
@@ -138,8 +139,6 @@ describe('modules-commonjs', () => {
       const dir = 'export-hoist-function-failure'
       await createDir(outputPath, dir);
       await build(fixturePath, outputPath, dir);
-
-      debugger
 
       const code = await readFile(join(outputPath, dir, BUNDLE_FILE), 'utf-8')
       expect(code).toMatchSnapshot();

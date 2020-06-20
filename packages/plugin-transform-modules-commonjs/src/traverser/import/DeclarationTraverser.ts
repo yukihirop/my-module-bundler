@@ -25,25 +25,19 @@ export default class DeclarationTraverser extends BaseTraverser {
     | t.ImportNamespaceSpecifier[]
     | t.ImportDefaultSpecifier[];
   public source: t.Literal;
-  public beforeStatements: t.Statement[];
-  public statements: t.Statement[];
-  public afterStatements: t.Statement[];
 
   constructor(path: NodePath, globalThis: GlobalThisType) {
     super(path);
     this.globalThis = globalThis;
     this.specifiers = path.node['specifiers'];
     this.source = path.node['source'];
-    this.beforeStatements = [] as t.Statement[];
-    this.statements = [] as t.Statement[];
-    this.afterStatements = [] as t.Statement[];
   }
 
   /**
    * @override
    */
   public run(): void {
-    const { path, specifiers, source, statements } = this;
+    const { globalThis, path, specifiers, source } = this;
 
     // e.g.)
     // import './spec/a.js'
@@ -51,14 +45,11 @@ export default class DeclarationTraverser extends BaseTraverser {
       const sourceName = (source as t.StringLiteral).value;
       const statement = buildRequireStatement(null, sourceName, 'require');
 
-      statements.push(statement);
-      const mainProgram = t.program(statements);
-      path.replaceWith(mainProgram);
+      globalThis.beforeStatements.push(statement);
 
       // e.g.)
       // import b from './a.js';
     } else if (specifiers.length > 0 && source) {
-      const { afterStatements } = this;
       const sourceName = (source as t.StringLiteral).value;
       const moduleName = basename(sourceName).split('.')[0];
       const requireType = judgeRequireType<
@@ -71,14 +62,13 @@ export default class DeclarationTraverser extends BaseTraverser {
           localName = `_${moduleName}`;
 
           statement = buildRequireStatement(moduleName, sourceName, requireType);
-          statements.push(statement);
+          globalThis.beforeStatements.push(statement);
           break;
         case INTEROP_REQUIRE_DEFAULT:
           localName = `_${moduleName}`;
 
           statement = buildRequireStatement(moduleName, sourceName, requireType);
-          statements.push(statement);
-          afterStatements.push(_interopRequireDefault);
+          globalThis.beforeStatements.push(statement, _interopRequireDefault);
           break;
         case INTEROP_REQUIRE_WILDCARD:
           if (specifiers.length > 1) {
@@ -90,18 +80,17 @@ export default class DeclarationTraverser extends BaseTraverser {
           }
 
           statement = buildRequireStatement(localName, sourceName, requireType);
-          statements.push(statement);
-          afterStatements.push(_getRequireWildcardCache, _interopRequireWildcard);
+          globalThis.beforeStatements.push(statement, _getRequireWildcardCache, _interopRequireWildcard);
           break;
       }
 
       createImportedMapData(localName, specifiers).forEach((data: [string, MapValueType]) => {
         this.globalThis.importedMap.set(...data)
       });
-
-      const mainProgram = t.program(statements);
-      path.replaceWith(mainProgram);
-      path.insertAfter(afterStatements);
     }
+
+    // If path.remove() is performed here, localBinding will be canceled and import hoisting processing will be affected.
+    // So keep the path to erase to make path.remove at the end
+    globalThis.willRemovePaths.push(path)
   }
 }

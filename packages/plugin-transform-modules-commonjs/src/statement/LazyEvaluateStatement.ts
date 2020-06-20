@@ -18,6 +18,21 @@ export default class LazyEvaluateStatement {
     this.data.push(nodeData)
   }
 
+  public replaceWith(): void {
+    const { data, globalThis } = this
+    data.forEach(({ path, localBindingIdName }: NodePathDataType) => {
+      const buildData = buildSequenceExpressionOrNot(path, localBindingIdName, globalThis)
+      if (buildData) {
+        const { statement, isSequenceExpression } = buildData
+        if (isSequenceExpression) {
+          path.parentPath.replaceWith(statement);
+        } else {
+          path.replaceWith(statement)
+        }
+      }
+    })
+  }
+
   public buildStatements(): Array<t.Statement> {
     const { data, globalThis } = this
     let result = [] as Array<t.Statement>

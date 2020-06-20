@@ -1,3 +1,4 @@
+import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import { ExportsVoid0Statement, LazyEvaluateStatement } from './statement'
 
@@ -16,6 +17,7 @@ export type GlobalThisType = {
   IsESModule: boolean;
   importedMap?: Map<string, MapValueType>;
   beforeStatements: t.Statement[];
+  willRemovePaths: NodePath[]
   ExportsVoid0Statement: ExportsVoid0Statement;
   LazyEvaluateStatement: LazyEvaluateStatement
 };

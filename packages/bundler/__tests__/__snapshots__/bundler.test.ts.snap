@@ -685,8 +685,7 @@ exports[`modules-commonjs interop export-hoist-function-failure 1`] = `
         value: true
       });
       exports.hoist = hoist;
-      exports.not_hoist_1 = void 0;
-      exports.not_hoist_2 = void 0;
+      exports.not_hoist_1 = exports.not_hoist_2 = void 0;
       hoist();
 
       function hoist() {
@@ -887,8 +886,7 @@ exports[`modules-commonjs interop export-named-as-mix 1`] = `
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
-      exports.default = void 0;
-      exports.b = void 0;
+      exports.default = exports.b = void 0;
       var a, b;
       exports.default = a;
       exports.b = b;
@@ -923,8 +921,7 @@ exports[`modules-commonjs interop export-named-multi 1`] = `
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
-      exports.a = void 0;
-      exports.b = void 0;
+      exports.a = exports.b = void 0;
       var a, b;
       exports.a = a;
       exports.b = b;
@@ -959,15 +956,8 @@ exports[`modules-commonjs interop export-variables 1`] = `
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
-      exports.a = void 0;
-      exports.b = void 0;
-      exports.d = void 0;
-      exports.e = void 0;
-      exports.f = void 0;
-      exports.g = void 0;
-      exports.h = void 0;
       exports.i = i;
-      exports.j = void 0;
+      exports.a = exports.b = exports.d = exports.e = exports.f = exports.g = exports.h = exports.j = void 0;
       var a = 1;
 
       exports.a = a;

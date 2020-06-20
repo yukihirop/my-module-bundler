@@ -23,8 +23,7 @@
         value: true
       });
       exports.hoist = hoist;
-      exports.not_hoist_1 = void 0;
-      exports.not_hoist_2 = void 0;
+      exports.not_hoist_1 = exports.not_hoist_2 = void 0;
       hoist();
 
       function hoist() {

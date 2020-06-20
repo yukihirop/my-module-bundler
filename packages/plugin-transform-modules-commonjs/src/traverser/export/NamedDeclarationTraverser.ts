@@ -6,7 +6,6 @@ import { NodeType, VariableKindType, GlobalThisType } from '../../types';
 import BaseTraverser from '../BaseTraverser';
 
 import {
-  buildExportsVoid0Statement,
   buildExportsStatement,
   buildDefinePropertyExportNamedStatement,
   buildRequireStatement,
@@ -71,7 +70,7 @@ export default class NamedDeclarationTraverser extends BaseTraverser {
         const moduleName = specifier.local.name as string;
         if (exportedName === ES_MODULE) throw new Error(`Illegal export "${ES_MODULE}"`);
 
-        globalThis.beforeStatements.push(buildExportsVoid0Statement(exportedName));
+        globalThis.ExportsVoid0Statement.push(exportedName);
         afterStatements.push(buildExportsStatement(exportedName, moduleName));
       });
 
@@ -167,7 +166,7 @@ export default class NamedDeclarationTraverser extends BaseTraverser {
           //
           // exports.not_hoist = not_hoist
           if (isFunctionExpression) {
-            globalThis.beforeStatements.push(buildExportsVoid0Statement(exportedName));
+            globalThis.ExportsVoid0Statement.push(exportedName);
             afterStatements.push(buildExportsStatement(exportedName, exportedName));
           }
           break;
@@ -185,7 +184,7 @@ export default class NamedDeclarationTraverser extends BaseTraverser {
             null
           );
           statements.push(nodeDeclaration);
-          globalThis.beforeStatements.push(buildExportsVoid0Statement(exportedName));
+          globalThis.ExportsVoid0Statement.push(exportedName);
           afterStatements.push(buildExportsStatement(exportedName, exportedName));
           break;
       }

@@ -3,7 +3,7 @@ import { NodePath } from '@babel/traverse';
 import BaseTraverser from '../BaseTraverser';
 import * as t from '@babel/types';
 
-import { buildExportsVoid0Statement, buildExportsStatement } from '../../statement';
+import { buildExportsStatement } from '../../statement';
 
 import { functionize } from '../../helper';
 
@@ -111,7 +111,7 @@ export default class DefaultDeclarationTraverser extends BaseTraverser {
     // exports.default = void 0;
     // var _default = <ArrayExpression | ObjectExpression | Literal>;
     // exports.default = _default;
-    globalThis.beforeStatements.push(buildExportsVoid0Statement());
+    globalThis.ExportsVoid0Statement.push('default');
   }
 
   /**

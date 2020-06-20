@@ -1,5 +1,7 @@
 import * as t from '@babel/types';
 import template from '@babel/template';
+import ExportsVoid0Statement from './ExportsVoid0Statement'
+export { ExportsVoid0Statement }
 
 export const useStrictStatement = t.expressionStatement(t.stringLiteral('use strict'));
 
@@ -17,12 +19,6 @@ export const define__esModuleStatement = t.expressionStatement(
     ]
   )
 );
-
-// e.g.)
-// exports.a = void 0
-// exports.default = void 0
-export const buildExportsVoid0Statement = (key = 'default'): t.ExpressionStatement =>
-  t.expressionStatement(template.expression`exports.KEY = void 0`({ KEY: key }));
 
 // e.g.)
 // exports.default = _default

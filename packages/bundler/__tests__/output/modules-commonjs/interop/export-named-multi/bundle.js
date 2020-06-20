@@ -22,8 +22,7 @@
       Object.defineProperty(exports, "__esModule", {
         value: true
       });
-      exports.a = void 0;
-      exports.b = void 0;
+      exports.a = exports.b = void 0;
       var a, b;
       exports.a = a;
       exports.b = b;

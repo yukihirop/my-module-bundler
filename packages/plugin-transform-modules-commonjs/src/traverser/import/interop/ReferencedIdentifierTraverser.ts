@@ -1,8 +1,8 @@
 import { NodePath, Binding } from '@babel/traverse';
-import BaseTraverser from '../BaseTraverser';
+import BaseTraverser from '../../BaseTraverser';
 
-import { GlobalThisType } from './../../types';
-import { buildSequenceExpressionOrNot } from '../../statement'
+import { GlobalThisType } from '../../../types';
+import { buildSequenceExpressionOrNot } from '../../../statement'
 
 export default class ReferencedIdentifierTraverser extends BaseTraverser {
   private IGNORE_REFERENCED_LIST = ['require', 'module', 'exports'];

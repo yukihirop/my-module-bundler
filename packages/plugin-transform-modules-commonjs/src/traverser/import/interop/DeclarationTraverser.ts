@@ -1,22 +1,22 @@
 import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
-import BaseTraverser from '../BaseTraverser';
+import BaseTraverser from '../../BaseTraverser';
 import { basename } from 'path';
 
-import { GlobalThisType, MapValueType } from './../../types';
+import { GlobalThisType, MapValueType } from '../../../types';
 import {
   buildRequireStatement,
   _interopRequireDefault,
   _interopRequireWildcard,
   _getRequireWildcardCache,
-} from '../../statement';
+} from '../../../statement';
 import {
   judgeRequireType,
   createImportedMapData,
   REQUIRE,
   INTEROP_REQUIRE_DEFAULT,
   INTEROP_REQUIRE_WILDCARD,
-} from '../../helper';
+} from '../../../helper';
 
 export default class DeclarationTraverser extends BaseTraverser {
   public globalThis: GlobalThisType;

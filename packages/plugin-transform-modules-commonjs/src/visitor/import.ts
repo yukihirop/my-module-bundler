@@ -1,7 +1,10 @@
 import { NodePath } from '@babel/traverse';
 import { BabelTypes } from '../types';
 
-import { ImportDeclarationTraverser, ImportReferencedIdentifierTraverser } from '../traverser';
+import {
+  Import_Interop_DeclarationTraverser,
+  Import_Interop_ReferencedIdentifierTraverser
+} from '../traverser';
 
 export default function ({ types: t }: BabelTypes) {
   return {
@@ -15,12 +18,12 @@ export default function ({ types: t }: BabelTypes) {
     },
     visitor: {
       ReferencedIdentifier(path: NodePath) {
-        const traverser = new ImportReferencedIdentifierTraverser(path, this);
+        const traverser = new Import_Interop_ReferencedIdentifierTraverser(path, this);
         const skip = traverser.run();
         if (skip) return;
       },
       ImportDeclaration(path: NodePath) {
-        const traverser = new ImportDeclarationTraverser(path, this);
+        const traverser = new Import_Interop_DeclarationTraverser(path, this);
         traverser.run();
       },
     },

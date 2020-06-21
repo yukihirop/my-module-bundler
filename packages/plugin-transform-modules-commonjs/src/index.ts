@@ -2,7 +2,8 @@ import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import { BabelTypes } from './types';
 import { exportVisitor, importVisitor } from './visitor';
-import { define__esModuleStatement, ExportsVoid0Statement, LazyEvaluateStatement } from './statement';
+import { useStrictStatement, define__esModuleStatement, ExportsVoid0Statement, LazyEvaluateStatement } from './statement';
+import { isInStrictMode } from './helper';
 
 export default function ({ types: t }: BabelTypes) {
   return {
@@ -20,6 +21,7 @@ export default function ({ types: t }: BabelTypes) {
       path.node['body'].unshift(this.ExportsVoid0Statement.build());
       path.node['body'].unshift(...this.beforeStatements);
       if (this.IsESModule) path.node['body'].unshift(define__esModuleStatement);
+      if (!isInStrictMode(path)) path.node['body'].unshift(useStrictStatement);
       this.willRemovePaths.forEach((path: NodePath) => path.remove())
     },
     visitor: {

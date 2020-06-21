@@ -19,6 +19,8 @@
 })({
   0: [
     function(require, module, exports) {
+      "use strict";
+
       Object.defineProperty(exports, "__esModule", {
         value: true
       });

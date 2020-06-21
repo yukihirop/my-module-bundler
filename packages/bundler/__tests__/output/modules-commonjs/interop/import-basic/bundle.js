@@ -19,6 +19,8 @@
 })({
   0: [
     function(require, module, exports) {
+      "use strict";
+
       require("./src/a.js");
     },
     {
@@ -27,6 +29,8 @@
   ],
   1: [
     function(require, module, exports) {
+      "use strict";
+
       var b;
       exports.b = b;
     },

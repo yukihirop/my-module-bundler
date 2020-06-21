@@ -1,3 +1,4 @@
+import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import { MapValueType } from '../types'
 
@@ -90,3 +91,11 @@ export const createImportedMapData = (
 
   return mapData;
 };
+
+export const isInStrictMode = (path: NodePath) => !!path.find(({ node }) => {
+  for (const directive of node['directives']) {
+    if (directive.value.value === "use strict") {
+      return true;
+    }
+  }
+})

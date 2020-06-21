@@ -19,6 +19,8 @@
 })({
   0: [
     function(require, module, exports) {
+      "use strict";
+
       /**
        * VariableDeclaration
        */

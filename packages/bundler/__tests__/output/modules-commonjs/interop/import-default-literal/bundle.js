@@ -19,6 +19,8 @@
 })({
   0: [
     function(require, module, exports) {
+      "use strict";
+
       var _a = _interopRequireDefault(require("./a.js"));
 
       function _interopRequireDefault(obj) {
@@ -35,6 +37,8 @@
   ],
   1: [
     function(require, module, exports) {
+      "use strict";
+
       var b;
       module.exports = b;
     },

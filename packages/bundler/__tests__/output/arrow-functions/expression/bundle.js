@@ -19,6 +19,8 @@
 })({
   0: [
     function(require, module, exports) {
+      "use strict";
+
       const arr = [1, 2, 3, 4];
       const result = arr.map(function(x, y) {
         return x * x;

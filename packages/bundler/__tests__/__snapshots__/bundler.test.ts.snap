@@ -34,6 +34,8 @@ exports[`modules-commonjs interop export-default-ae 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
@@ -75,6 +77,8 @@ exports[`modules-commonjs interop export-default-ce 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
@@ -114,6 +118,8 @@ exports[`modules-commonjs interop export-default-fd 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
@@ -153,6 +159,8 @@ exports[`modules-commonjs interop export-default-fd-id-name 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
@@ -192,6 +200,8 @@ exports[`modules-commonjs interop export-default-literal 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
@@ -227,6 +237,8 @@ exports[`modules-commonjs interop export-default-ne 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
@@ -268,6 +280,8 @@ exports[`modules-commonjs interop export-default-oe 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
@@ -309,6 +323,8 @@ exports[`modules-commonjs interop export-from-all 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
@@ -331,6 +347,8 @@ exports[`modules-commonjs interop export-from-all 1`] = `
   ],
   1: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       var b, c;
       module.exports = {
         b,
@@ -364,6 +382,8 @@ exports[`modules-commonjs interop export-from-as 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
@@ -382,6 +402,8 @@ exports[`modules-commonjs interop export-from-as 1`] = `
   ],
   1: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       var b;
       module.exports = {
         b
@@ -414,6 +436,8 @@ exports[`modules-commonjs interop export-from-as-default 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
@@ -432,6 +456,8 @@ exports[`modules-commonjs interop export-from-as-default 1`] = `
   ],
   1: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       var b;
       module.exports = {
         b
@@ -464,6 +490,8 @@ exports[`modules-commonjs interop export-from-as-mix 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
@@ -488,6 +516,8 @@ exports[`modules-commonjs interop export-from-as-mix 1`] = `
   ],
   1: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       var b, c;
       module.exports = {
         b,
@@ -521,6 +551,8 @@ exports[`modules-commonjs interop export-from-default-as 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
@@ -545,6 +577,8 @@ exports[`modules-commonjs interop export-from-default-as 1`] = `
   ],
   1: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       var b;
       module.exports = {
         default: b
@@ -577,6 +611,8 @@ exports[`modules-commonjs interop export-from-named 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
@@ -595,6 +631,8 @@ exports[`modules-commonjs interop export-from-named 1`] = `
   ],
   1: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       exports.b = function() {};
     },
     {},
@@ -624,6 +662,8 @@ exports[`modules-commonjs interop export-from-named-multi 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
@@ -648,6 +688,8 @@ exports[`modules-commonjs interop export-from-named-multi 1`] = `
   ],
   1: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       var b, c;
       module.exports = {
         b,
@@ -681,6 +723,8 @@ exports[`modules-commonjs interop export-hoist-function-failure 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
@@ -735,6 +779,8 @@ exports[`modules-commonjs interop export-hoist-function-success 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
@@ -781,6 +827,8 @@ exports[`modules-commonjs interop export-named 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
@@ -815,6 +863,8 @@ exports[`modules-commonjs interop export-named-as 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
@@ -849,6 +899,8 @@ exports[`modules-commonjs interop export-named-as-default 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
@@ -883,6 +935,8 @@ exports[`modules-commonjs interop export-named-as-mix 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
@@ -918,6 +972,8 @@ exports[`modules-commonjs interop export-named-multi 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
@@ -953,6 +1009,8 @@ exports[`modules-commonjs interop export-named-remap 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
@@ -988,6 +1046,8 @@ exports[`modules-commonjs interop export-rename-hoist 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
@@ -1035,6 +1095,8 @@ exports[`modules-commonjs interop export-rename-not-hoist 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
@@ -1088,6 +1150,8 @@ exports[`modules-commonjs interop export-variables 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       Object.defineProperty(exports, \\"__esModule\\", {
         value: true
       });
@@ -1154,6 +1218,8 @@ exports[`modules-commonjs interop import-as-mix 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       var _a = _interopRequireWildcard(require(\\"./a.js\\"));
 
       function _getRequireWildcardCache() {
@@ -1217,6 +1283,8 @@ exports[`modules-commonjs interop import-as-mix 1`] = `
   ],
   1: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       var b, c;
       exports.b = b;
       module.exports = c;
@@ -1248,6 +1316,8 @@ exports[`modules-commonjs interop import-basic 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       require(\\"./src/a.js\\");
     },
     {
@@ -1256,6 +1326,8 @@ exports[`modules-commonjs interop import-basic 1`] = `
   ],
   1: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       var b;
       exports.b = b;
     },
@@ -1286,6 +1358,8 @@ exports[`modules-commonjs interop import-default-as 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       var _a = _interopRequireDefault(require(\\"./a.js\\"));
 
       function _interopRequireDefault(obj) {
@@ -1302,6 +1376,8 @@ exports[`modules-commonjs interop import-default-as 1`] = `
   ],
   1: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       var b;
       module.exports = b;
     },
@@ -1332,6 +1408,8 @@ exports[`modules-commonjs interop import-default-literal 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       var _a = _interopRequireDefault(require(\\"./a.js\\"));
 
       function _interopRequireDefault(obj) {
@@ -1348,6 +1426,8 @@ exports[`modules-commonjs interop import-default-literal 1`] = `
   ],
   1: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       var b;
       module.exports = b;
     },
@@ -1378,6 +1458,8 @@ exports[`modules-commonjs interop import-global-variable-unbind 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       var _a = require(\\"./a.js\\");
 
       function d(n) {
@@ -1393,6 +1475,8 @@ exports[`modules-commonjs interop import-global-variable-unbind 1`] = `
   ],
   1: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       function b(n, m) {
         return n * m;
       }
@@ -1429,6 +1513,8 @@ exports[`modules-commonjs interop import-hoist 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       var _a = require(\\"./a.js\\");
 
       var _b = require(\\"./b.js\\");
@@ -1443,6 +1529,8 @@ exports[`modules-commonjs interop import-hoist 1`] = `
   ],
   1: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       function a1(n, m) {
         return n * m;
       }
@@ -1453,6 +1541,8 @@ exports[`modules-commonjs interop import-hoist 1`] = `
   ],
   2: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       function b1(n, m) {
         return n * m;
       }
@@ -1486,6 +1576,8 @@ exports[`modules-commonjs interop import-named 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       var _a = require(\\"./a.js\\");
 
       _a.b;
@@ -1496,6 +1588,8 @@ exports[`modules-commonjs interop import-named 1`] = `
   ],
   1: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       var b;
       exports.b = b;
     },
@@ -1526,6 +1620,8 @@ exports[`modules-commonjs interop import-named-as-mix 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       var _a = require(\\"./a.js\\");
 
       _a.c;
@@ -1537,7 +1633,7 @@ exports[`modules-commonjs interop import-named-as-mix 1`] = `
   ],
   1: [
     function(require, module, exports) {
-
+      \\"use strict\\";
     },
     {},
   ]
@@ -1566,6 +1662,8 @@ exports[`modules-commonjs interop import-named-multi 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       var _a = require(\\"./a.js\\");
 
       _a.b;
@@ -1577,6 +1675,8 @@ exports[`modules-commonjs interop import-named-multi 1`] = `
   ],
   1: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       var b, c;
       exports.b = b;
       exports.c = c;
@@ -1608,6 +1708,8 @@ exports[`modules-commonjs interop import-wildcard-as 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       var d = _interopRequireWildcard(require(\\"./a.js\\"));
 
       function _getRequireWildcardCache() {
@@ -1672,6 +1774,8 @@ exports[`modules-commonjs interop import-wildcard-as 1`] = `
   ],
   1: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       function b() {}
 
       function c() {}
@@ -1706,6 +1810,8 @@ exports[`modules-commonjs interop import-wildcard-as-hoist 1`] = `
 })({
   0: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       var d = _interopRequireWildcard(require(\\"./a.js\\"));
 
       function _getRequireWildcardCache() {
@@ -1770,6 +1876,8 @@ exports[`modules-commonjs interop import-wildcard-as-hoist 1`] = `
   ],
   1: [
     function(require, module, exports) {
+      \\"use strict\\";
+
       function b() {}
 
       function c() {}

@@ -19,6 +19,8 @@
 })({
   0: [
     function(require, module, exports) {
+      "use strict";
+
       var _a = require("./a.js");
 
       var _b = require("./b.js");
@@ -33,6 +35,8 @@
   ],
   1: [
     function(require, module, exports) {
+      "use strict";
+
       function a1(n, m) {
         return n * m;
       }
@@ -43,6 +47,8 @@
   ],
   2: [
     function(require, module, exports) {
+      "use strict";
+
       function b1(n, m) {
         return n * m;
       }

@@ -19,6 +19,8 @@
 })({
   0: [
     function(require, module, exports) {
+      "use strict";
+
       var _a = _interopRequireWildcard(require("./a.js"));
 
       function _getRequireWildcardCache() {
@@ -82,6 +84,8 @@
   ],
   1: [
     function(require, module, exports) {
+      "use strict";
+
       var b, c;
       exports.b = b;
       module.exports = c;

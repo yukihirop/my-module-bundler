@@ -151,3 +151,37 @@ describe('modules-commonjs', () => {
     })
   })
 })
+
+describe('modules-commonjs', () => {
+  describe('misc(throw error)', () => {
+    const type = 'modules-commonjs'
+    const subType = 'misc'
+    const fixturePath = join(fixtureBasePath, type, subType)
+    const outputPath = join(outputBasePath, type, subType)
+
+    beforeAll(async () => {
+      await createDir(outputPath, '');
+    })
+
+    const dirs = [
+      'import-global-variable-throw-bs',
+      'import-global-variable-throw-ae',
+      'import-global-variable-throw-id',
+      'import-global-variable-throw-bs-ls'
+    ]
+
+    for (const dir of dirs) {
+      test(dir, async () => {
+        await createDir(outputPath, dir);
+        await build(fixturePath, outputPath, dir);
+
+        // Actually execute the bundled file with vm
+        // OK if no error occurs
+        await expect(runGeneratedCodeInVM(outputPath, dir)).rejects.toThrow(new Error('"b" is read-only.'))
+
+        const code = await readFile(join(outputPath, dir, BUNDLE_FILE), 'utf-8')
+        expect(code).toMatchSnapshot();
+      });
+    }
+  })
+})

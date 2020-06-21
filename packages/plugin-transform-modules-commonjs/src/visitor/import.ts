@@ -3,7 +3,8 @@ import { BabelTypes } from '../types';
 
 import {
   Import_Interop_DeclarationTraverser,
-  Import_Interop_ReferencedIdentifierTraverser
+  Import_Interop_ReferencedIdentifierTraverser,
+  Import_Misc_AssignmentExpressionTraverser
 } from '../traverser';
 
 export default function ({ types: t }: BabelTypes) {
@@ -26,6 +27,11 @@ export default function ({ types: t }: BabelTypes) {
         const traverser = new Import_Interop_DeclarationTraverser(path, this);
         traverser.run();
       },
+      AssignmentExpression(path: NodePath) {
+        const traverser = new Import_Misc_AssignmentExpressionTraverser(path, this);
+        const skip = traverser.run();
+        if (skip) return;
+      }
     },
   };
 }

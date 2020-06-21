@@ -101,6 +101,7 @@ describe('modules-commonjs', () => {
       'export-named-as',
       'export-named-as-default',
       'export-named-as-mix',
+      'export-named-remap',
       'export-variables',
       'import-default-literal',
       'import-default-as',

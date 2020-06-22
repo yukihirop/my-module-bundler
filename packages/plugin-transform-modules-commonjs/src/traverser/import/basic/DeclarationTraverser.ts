@@ -3,7 +3,7 @@ import * as t from '@babel/types';
 import BaseTraverser from '../../BaseTraverser';
 import { basename } from 'path';
 
-import { GlobalThisType, MapValueType } from '../../../types';
+import { GlobalThisType, MapValueType, PluginOptionsType } from '../../../types';
 import {
   buildRequireStatement,
   _interopRequireDefault,
@@ -25,19 +25,22 @@ export default class DeclarationTraverser extends BaseTraverser {
     | t.ImportNamespaceSpecifier[]
     | t.ImportDefaultSpecifier[];
   public source: t.Literal;
+  public options: PluginOptionsType
 
   constructor(path: NodePath, globalThis: GlobalThisType) {
     super(path);
     this.globalThis = globalThis;
     this.specifiers = path.node['specifiers'];
     this.source = path.node['source'];
+    this.options = globalThis.opts;
   }
 
   /**
    * @override
    */
   public run(): void {
-    const { globalThis, path, specifiers, source } = this;
+    const { globalThis, path, specifiers, source, options } = this;
+    const { noInterop } = options
 
     // e.g.)
     // import './spec/a.js'
@@ -48,8 +51,23 @@ export default class DeclarationTraverser extends BaseTraverser {
       globalThis.beforeStatements.push(statement);
 
       // e.g.)
+      // no interop
       // import b from './a.js';
-    } else if (specifiers.length > 0 && source) {
+    } else if (specifiers.length > 0 && source && noInterop) {
+      const sourceName = (source as t.StringLiteral).value;
+      const moduleName = basename(sourceName).split('.')[0];
+      const localName = `_${moduleName}`;
+      const statement = buildRequireStatement(moduleName, sourceName, 'require');
+      globalThis.beforeStatements.push(statement);
+
+      createImportedMapData(localName, specifiers).forEach((data: [string, MapValueType]) => {
+        this.globalThis.importedMap.set(...data);
+      });
+
+      // e.g.)
+      // interop
+      // import b from './a.js';
+    } else if (specifiers.length > 0 && source && !noInterop) {
       const sourceName = (source as t.StringLiteral).value;
       const moduleName = basename(sourceName).split('.')[0];
       const requireType = judgeRequireType<

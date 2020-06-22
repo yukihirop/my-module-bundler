@@ -1890,7 +1890,43 @@ exports[`modules-commonjs interop import-wildcard-as-hoist 1`] = `
 })"
 `;
 
-exports[`modules-commonjs misc import-global-variable-throw-ae 1`] = `
+exports[`modules-commonjs misc this-computed-class-method-wrap-func 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      \\"use strict\\";
+
+      class A {
+        [function() {
+          this.a;
+        }]() {}
+
+      }
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`modules-commonjs misc(throw error) import-global-variable-throw-ae 1`] = `
 "(function(modules) {
   function require(id) {
     const [fn, mapping] = modules[id];
@@ -1943,7 +1979,7 @@ exports[`modules-commonjs misc import-global-variable-throw-ae 1`] = `
 })"
 `;
 
-exports[`modules-commonjs misc import-global-variable-throw-bs 1`] = `
+exports[`modules-commonjs misc(throw error) import-global-variable-throw-bs 1`] = `
 "(function(modules) {
   function require(id) {
     const [fn, mapping] = modules[id];
@@ -2006,7 +2042,7 @@ exports[`modules-commonjs misc import-global-variable-throw-bs 1`] = `
 })"
 `;
 
-exports[`modules-commonjs misc import-global-variable-throw-bs-ls 1`] = `
+exports[`modules-commonjs misc(throw error) import-global-variable-throw-bs-ls 1`] = `
 "(function(modules) {
   function require(id) {
     const [fn, mapping] = modules[id];
@@ -2065,7 +2101,7 @@ exports[`modules-commonjs misc import-global-variable-throw-bs-ls 1`] = `
 })"
 `;
 
-exports[`modules-commonjs misc import-global-variable-throw-id 1`] = `
+exports[`modules-commonjs misc(throw error) import-global-variable-throw-id 1`] = `
 "(function(modules) {
   function require(id) {
     const [fn, mapping] = modules[id];
@@ -2118,7 +2154,7 @@ exports[`modules-commonjs misc import-global-variable-throw-id 1`] = `
 })"
 `;
 
-exports[`modules-commonjs misc undefined-this-computed-class-method 1`] = `
+exports[`modules-commonjs misc(throw error) undefined-this-computed-class-method 1`] = `
 "(function(modules) {
   function require(id) {
     const [fn, mapping] = modules[id];

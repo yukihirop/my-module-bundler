@@ -1,4 +1,5 @@
 import exportVisitor from './export';
 import importVisitor from './import';
 import classVisitor from './class';
-export { exportVisitor, importVisitor, classVisitor };
+import mainVisitor from './main';
+export { exportVisitor, importVisitor, classVisitor, mainVisitor };

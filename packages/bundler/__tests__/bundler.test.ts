@@ -198,7 +198,8 @@ describe('modules-commonjs', () => {
     })
 
     const dirs = [
-      'undefined-this-computed-class-method'
+      'undefined-this-computed-class-method',
+      'undefined-this-root-call'
     ]
 
     for (const dir of dirs) {

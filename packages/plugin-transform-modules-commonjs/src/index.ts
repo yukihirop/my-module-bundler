@@ -1,7 +1,7 @@
 import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import { BabelTypes } from './types';
-import { exportVisitor, importVisitor, classVisitor } from './visitor';
+import { exportVisitor, importVisitor, classVisitor, mainVisitor } from './visitor';
 import { useStrictStatement, define__esModuleStatement, ExportsVoid0Statement, LazyEvaluateStatement } from './statement';
 import { isInStrictMode } from './helper';
 
@@ -27,7 +27,10 @@ export default function ({ types: t }: BabelTypes) {
     visitor: {
       ...exportVisitor({ types: t }).visitor,
       ...importVisitor({ types: t }).visitor,
-      ...classVisitor({ types: t }).visitor,
+      ThisExpression(path: NodePath) {
+        classVisitor({ types: t }).visitor.ThisExpression(path)
+        mainVisitor({ types: t }).visitor.ThisExpression(path)
+      },
       Program: {
         enter(path, state) {
           const { sourceType } = path.node;

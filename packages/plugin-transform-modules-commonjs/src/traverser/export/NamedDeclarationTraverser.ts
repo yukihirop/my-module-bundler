@@ -58,7 +58,7 @@ export default class NamedDeclarationTraverser extends BaseTraverser {
    */
   public run(): void {
     const { globalThis, path, specifiers, source, afterStatements, declaration, options } = this;
-    const { noInterop } = options
+    const { noInterop } = options;
 
     this.beforeProcess();
 

@@ -92,7 +92,7 @@ export const buildRequireStatement = (
   moduleName: string,
   sourceName: string,
   requireType = 'require',
-  rename = false,
+  rename = false
 ) => {
   let statement;
   switch (requireType) {
@@ -114,19 +114,27 @@ export const buildRequireStatement = (
 
 // e.g.)
 // var _a = require("./a.js");
-export const buildNodeRequireStatement = ({ sourceName, moduleName, rename }: { sourceName: string, moduleName?: string, rename: boolean }) => {
+export const buildNodeRequireStatement = ({
+  sourceName,
+  moduleName,
+  rename,
+}: {
+  sourceName: string;
+  moduleName?: string;
+  rename: boolean;
+}) => {
   return moduleName
     ? template.statement`
       var VARIABLE_NAME = require("SOURCE_NAME");
     `({
-      VARIABLE_NAME: rename ? `_${moduleName}` : moduleName,
-      SOURCE_NAME: sourceName,
-    })
+        VARIABLE_NAME: rename ? `_${moduleName}` : moduleName,
+        SOURCE_NAME: sourceName,
+      })
     : template.statement`
       require("SOURCE_NAME");
     `({
-      SOURCE_NAME: sourceName,
-    });
+        SOURCE_NAME: sourceName,
+      });
 };
 
 // e.g.)

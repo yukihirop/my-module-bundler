@@ -17,7 +17,7 @@ import {
   TYPE_DEFAULT,
   TYPE_WILDCARD,
   TYPE_OTHER,
-  REQUIRE
+  REQUIRE,
 } from '../../../helper';
 
 export default class DeclarationTraverser extends BaseTraverser {
@@ -27,7 +27,7 @@ export default class DeclarationTraverser extends BaseTraverser {
     | t.ImportNamespaceSpecifier[]
     | t.ImportDefaultSpecifier[];
   public source: t.Literal;
-  public options: PluginOptionsType
+  public options: PluginOptionsType;
 
   constructor(path: NodePath, globalThis: GlobalThisType) {
     super(path);
@@ -42,7 +42,7 @@ export default class DeclarationTraverser extends BaseTraverser {
    */
   public run(): void {
     const { globalThis, path, specifiers, source, options } = this;
-    const { noInterop } = options
+    const { noInterop } = options;
 
     // e.g.)
     // import './spec/a.js'
@@ -85,13 +85,13 @@ export default class DeclarationTraverser extends BaseTraverser {
           }
           break;
         // e.g.)
-        // import * as b from './a.js' 
+        // import * as b from './a.js'
         // import b, { a as c } from './a.js'
         case TYPE_WILDCARD:
           // import b, { a as c } from './a.js'
           if (specifiers.length > 1) {
             localName = `_${moduleName}`;
-            // import * as b from './a.js' 
+            // import * as b from './a.js'
           } else {
             localName = (specifiers as any[])
               .map((s) => (s['local'] ? s['local'].name : undefined))

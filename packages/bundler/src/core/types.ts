@@ -9,10 +9,10 @@ export type AssetType = {
 export type GraphType = Array<AssetType>;
 export type ModulesType = Array<string>;
 
-export type PluginsType = Array<[any, { [key: string]: any }] | [any]> | Array<any>
+export type PluginsType = Array<[any, { [key: string]: any }] | [any]> | Array<any>;
 export type OptionsType = {
-  plugins?: PluginsType
-}
+  plugins?: PluginsType;
+};
 export type WriteParamsType = {
   input: string;
   output: string;

@@ -15,10 +15,10 @@ export type MapValueType = {
 };
 
 export type PluginOptionsType = {
-  noInterop?: boolean
-  loose?: boolean
-  strictMode?: boolean
-}
+  noInterop?: boolean;
+  loose?: boolean;
+  strictMode?: boolean;
+};
 export type GlobalThisType = {
   IsESModule: boolean;
   importedMap?: Map<string, MapValueType>;
@@ -26,7 +26,7 @@ export type GlobalThisType = {
   willRemovePaths: NodePath[];
   ExportsVoid0Statement: ExportsVoid0Statement;
   LazyEvaluateStatement: LazyEvaluateStatement;
-  opts: PluginOptionsType
+  opts: PluginOptionsType;
 };
 
 export type StatementWithConditionType = { statement: t.Statement; isSequenceExpression: boolean };

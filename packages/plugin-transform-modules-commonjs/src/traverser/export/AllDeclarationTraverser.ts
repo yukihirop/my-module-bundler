@@ -18,12 +18,12 @@ export default class AllDeclarationTraverser extends BaseTraverser {
   /**
    * @override
    */
-  public beforeProcess(): void { }
+  public beforeProcess(): void {}
 
   /**
    * @override
    */
-  public insertBefore(): void { }
+  public insertBefore(): void {}
 
   /**
    * @override

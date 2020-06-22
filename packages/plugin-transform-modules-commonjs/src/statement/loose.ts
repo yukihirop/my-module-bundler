@@ -4,4 +4,4 @@ import template from '@babel/template';
 // Object.defineProperty(exports, "__esModule", {
 //   value: true
 // });
-export const loose__esModuleStatement = template.statement`exports.__esModule = true`()
+export const loose__esModuleStatement = template.statement`exports.__esModule = true`();

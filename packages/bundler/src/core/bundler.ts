@@ -19,7 +19,7 @@ class Bunlder {
 
   constructor(options: OptionsType) {
     this.moduleId = 0;
-    this.options = options
+    this.options = options;
   }
 
   /**

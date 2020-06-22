@@ -21,10 +21,13 @@ export default function ({ types: t }: BabelTypes) {
       this.willRemovePaths = [] as NodePath[];
       this.ExportsVoid0Statement = new ExportsVoid0Statement();
       this.LazyEvaluateStatement = new LazyEvaluateStatement(this);
-      this.opts = Object.assign({
-        loose: false,
-        strictMode: true
-      }, this.opts);
+      this.opts = Object.assign(
+        {
+          loose: false,
+          strictMode: true,
+        },
+        this.opts
+      );
     },
     post({ path }) {
       const { loose, strictMode } = this.opts;

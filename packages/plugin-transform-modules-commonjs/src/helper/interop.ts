@@ -64,7 +64,6 @@ const judgeExportType = <T = t.ExportSpecifier>(specifiers: T[]): string => {
   return exportType;
 };
 
-
 export const judgeRequireType = <T>(specifiers: T[], type: 'import' | 'export'): string => {
   if (type === 'import') {
     return judgeRequireTypeAtImport(specifiers);

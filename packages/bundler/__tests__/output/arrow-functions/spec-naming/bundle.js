@@ -19,8 +19,6 @@
 })({
   0: [
     function(require, module, exports) {
-      "use strict";
-
       var a = {
         k: function(x) {
           return x;

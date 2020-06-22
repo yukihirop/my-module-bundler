@@ -30,7 +30,7 @@
       var _default = {
         a: a,
         b: b,
-        k: function() {}
+        k: function k() {}
       };
 
       exports.default = _default;

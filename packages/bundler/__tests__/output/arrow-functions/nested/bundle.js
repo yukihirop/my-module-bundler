@@ -19,8 +19,6 @@
 })({
   0: [
     function(require, module, exports) {
-      "use strict";
-
       var arr = [
         [1, 2],
         [3, 4]

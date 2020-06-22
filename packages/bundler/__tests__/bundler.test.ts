@@ -64,6 +64,12 @@ describe('arrow-functions', () => {
     await createDir(outputPath, '');
   })
 
+  const opts = {
+    "plugins": [
+      transformArrowFunctions
+    ]
+  }
+
   const dirs = [
     'basic',
     'default-parameters',
@@ -76,7 +82,7 @@ describe('arrow-functions', () => {
   for (const dir of dirs) {
     test(dir, async () => {
       await createDir(outputPath, dir);
-      await build(fixturePath, outputPath, { type: dir });
+      await build(fixturePath, outputPath, { opts, type: dir });
       await runGeneratedCodeInVM(outputPath, dir);
 
       // https://stackoverflow.com/questions/52457575/jest-typescript-property-mock-does-not-exist-on-type
@@ -96,6 +102,12 @@ describe('modules-commonjs', () => {
     beforeAll(async () => {
       await createDir(outputPath, '');
     })
+
+    const opts = {
+      "plugins": [
+        transformModulesCommonjs
+      ]
+    }
 
     const dirs = [
       'export-default-literal',
@@ -138,7 +150,7 @@ describe('modules-commonjs', () => {
     for (const dir of dirs) {
       test(dir, async () => {
         await createDir(outputPath, dir);
-        await build(fixturePath, outputPath, { type: dir });
+        await build(fixturePath, outputPath, { opts, type: dir });
 
         // Actually execute the bundled file with vm
         // OK if no error occurs
@@ -150,15 +162,27 @@ describe('modules-commonjs', () => {
     }
 
     test('export-illegal', async () => {
+      const opts = {
+        "plugins": [
+          transformModulesCommonjs
+        ]
+      }
+
       const dir = 'export-illegal'
       await createDir(outputPath, dir);
-      await expect(build(fixturePath, outputPath, { type: dir })).rejects.toThrow(new Error('unknown: Illegal export "__esModule"'))
+      await expect(build(fixturePath, outputPath, { opts, type: dir })).rejects.toThrow(new Error('unknown: Illegal export "__esModule"'))
     })
 
     test('export-hoist-function-failure', async () => {
+      const opts = {
+        "plugins": [
+          transformModulesCommonjs
+        ]
+      }
+
       const dir = 'export-hoist-function-failure'
       await createDir(outputPath, dir);
-      await build(fixturePath, outputPath, { type: dir });
+      await build(fixturePath, outputPath, { opts, type: dir });
 
       const code = await readFile(join(outputPath, dir, BUNDLE_FILE), 'utf-8')
       expect(code).toMatchSnapshot();
@@ -179,6 +203,12 @@ describe('modules-commonjs', () => {
       await createDir(outputPath, '');
     })
 
+    const opts = {
+      "plugins": [
+        transformModulesCommonjs
+      ]
+    }
+
     const dirs = [
       'import-global-variable-throw-bs',
       'import-global-variable-throw-ae',
@@ -189,7 +219,7 @@ describe('modules-commonjs', () => {
     for (const dir of dirs) {
       test(dir, async () => {
         await createDir(outputPath, dir);
-        await build(fixturePath, outputPath, { type: dir });
+        await build(fixturePath, outputPath, { opts, type: dir });
 
         // Actually execute the bundled file with vm
         // OK if no error occurs
@@ -213,6 +243,12 @@ describe('modules-commonjs', () => {
       await createDir(outputPath, '');
     })
 
+    const opts = {
+      "plugins": [
+        transformModulesCommonjs
+      ]
+    }
+
     const dirs = [
       'undefined-this-computed-class-method',
       'undefined-this-root-call'
@@ -221,7 +257,7 @@ describe('modules-commonjs', () => {
     for (const dir of dirs) {
       test(dir, async () => {
         await createDir(outputPath, dir);
-        await build(fixturePath, outputPath, { type: dir });
+        await build(fixturePath, outputPath, { opts, type: dir });
 
         await expect(runGeneratedCodeInVM(outputPath, dir)).rejects.toThrow()
 
@@ -243,6 +279,12 @@ describe('modules-commonjs', () => {
       await createDir(outputPath, '');
     })
 
+    const opts = {
+      "plugins": [
+        transformModulesCommonjs
+      ]
+    }
+
     const dirs = [
       'this-computed-class-method-wrap-func',
       'undefined-this-root-declaration',
@@ -252,7 +294,7 @@ describe('modules-commonjs', () => {
     for (const dir of dirs) {
       test(dir, async () => {
         await createDir(outputPath, dir);
-        await build(fixturePath, outputPath, { type: dir });
+        await build(fixturePath, outputPath, { opts, type: dir });
 
         // Actually execute the bundled file with vm
         // OK if no error occurs

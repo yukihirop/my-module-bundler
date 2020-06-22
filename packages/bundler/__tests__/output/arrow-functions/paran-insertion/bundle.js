@@ -19,8 +19,6 @@
 })({
   0: [
     function(require, module, exports) {
-      "use strict";
-
       var t = function(i) {
         return i * 5;
       };

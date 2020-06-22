@@ -19,8 +19,6 @@
 })({
   0: [
     function(require, module, exports) {
-      "use strict";
-
       var a = function() {
         var a = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
         return a;

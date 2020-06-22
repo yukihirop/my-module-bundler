@@ -1,9 +1,6 @@
 'use strict';
 
 import fs from 'fs';
-import transformArrowFunctions from '@yukihirop/plugin-transform-arrow-functions';
-import transformModulesCommonjs from '@yukihirop/plugin-transform-modules-commonjs';
-
 import Bundler from './core/bundler';
 import { OptionsType } from './core/types';
 
@@ -22,13 +19,15 @@ const options: OptionsType | undefined = isExistFile(settingPath)
   ? require(settingPath)
   : undefined;
 
+if (options === undefined) {
+  throw new Error('".mmbrc" file is not found.')
+} else {
+  if (options && options["plugins"]) {
+    throw new Error("Plugin is not set.")
+  }
+}
+
 const input = process.argv[2],
-  output = process.argv[3],
-  defaultOptions = {
-    plugins: [
-      [transformArrowFunctions, {}],
-      [transformModulesCommonjs, {}],
-    ],
-  } as OptionsType;
-const bundler = new Bundler(options || defaultOptions);
+  output = process.argv[3];
+const bundler = new Bundler(options);
 bundler.write({ input, output });

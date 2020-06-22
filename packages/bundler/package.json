@@ -17,8 +17,6 @@
     "@types/jest": "^26.0.0",
     "@types/js-beautify": "^1.11.0",
     "@types/node": "^14.0.13",
-    "@yukihirop/plugin-transform-arrow-functions": "^1.0.0",
-    "@yukihirop/plugin-transform-modules-commonjs": "^1.0.0",
     "babel-core": "^6.26.3",
     "babel-traverse": "^6.26.0",
     "babylon": "^6.18.0",

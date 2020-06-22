@@ -10,16 +10,16 @@ import { js as beautify } from 'js-beautify';
 // TypeError: unknown: Cannot read property 'bindings' of null
 // https://stackoverflow.com/questions/52092739/upgrade-to-babel-7-cannot-read-property-bindings-of-null
 import env from '@babel/preset-env';
-import { Asset, Graph, BundlerParams } from './types';
-import transformArrowFunctions from '@yukihirop/plugin-transform-arrow-functions';
-import transformModulesCommonjs from '@yukihirop/plugin-transform-modules-commonjs';
+import { AssetType, GraphType, WriteParamsType, OptionsType } from './types';
 
 // TODO: Use Class
 class Bunlder {
   public moduleId: number;
+  public options: OptionsType;
 
-  constructor() {
+  constructor(options: OptionsType) {
     this.moduleId = 0;
+    this.options = options
   }
 
   /**
@@ -27,7 +27,7 @@ class Bunlder {
    * it's contents, and extract its dependencies.
    *
    */
-  private createAsset(filename: string): Asset {
+  private createAsset(filename: string): AssetType {
     const content = fs.readFileSync(filename, 'utf-8');
     const ast: any = babylon.parse(content, {
       sourceType: 'module',
@@ -56,9 +56,7 @@ class Bunlder {
     // We also assign a unique identifier to this module by incrementing a simple counter.
     const id = this.moduleId++;
 
-    const { code } = transformFromAstSync(ast, null, {
-      plugins: [transformArrowFunctions, transformModulesCommonjs],
-    });
+    const { code } = transformFromAstSync(ast, null, this.options);
 
     return {
       id,
@@ -71,7 +69,7 @@ class Bunlder {
   /**
    * Extract the dependencies of the entry file
    */
-  private createGraph(entry: string): Graph {
+  private createGraph(entry: string): GraphType {
     const mainAsset = this.createAsset(entry);
     const queue = [mainAsset];
 
@@ -103,7 +101,7 @@ class Bunlder {
    * (function(){})()
    * @access private
    */
-  private bundle(graph: Graph): string {
+  private bundle(graph: GraphType): string {
     let modules = [];
 
     // Add a string of this format: `key: value,`.
@@ -115,7 +113,7 @@ class Bunlder {
     return mainTemplate(modules);
   }
 
-  public async write({ input, output }: BundlerParams) {
+  public async write({ input, output }: WriteParamsType) {
     const graph = this.createGraph(input),
       result = this.bundle(graph),
       formatted = beautify(result, {

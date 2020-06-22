@@ -3,16 +3,32 @@
 import { promises } from 'fs';
 import { runInContext, createContext } from 'vm';
 import { join } from 'path';
+
 import Bundler from '../src/core/bundler';
+import { OptionsType } from '../src/core/types';
+import transformArrowFunctions from '@yukihirop/plugin-transform-arrow-functions';
+import transformModulesCommonjs from '@yukihirop/plugin-transform-modules-commonjs';
 
 const { readFile, mkdir } = promises;
 const fixtureBasePath = join(__dirname, 'fixtures')
   , outputBasePath = join(__dirname, 'output')
   , ENTRY_FILE = 'entry.js'
-  , BUNDLE_FILE = 'bundle.js';
+  , BUNDLE_FILE = 'bundle.js'
+  , defaultOpts = {
+    "plugins": [
+      [transformArrowFunctions, {}],
+      [transformModulesCommonjs, {}]
+    ]
+  } as OptionsType;
 
-async function build(fixturePath: string, outputPath: string, type?: string) {
-  await new Bundler().write({
+type TestBuildOptionsType = {
+  opts?: OptionsType
+  type?: string
+}
+
+async function build(fixturePath: string, outputPath: string, options: TestBuildOptionsType) {
+  const { opts, type } = options;
+  await new Bundler(opts || defaultOpts).write({
     input: join(fixturePath, type || "", ENTRY_FILE),
     output: join(outputPath, type || "", BUNDLE_FILE)
   })
@@ -60,7 +76,7 @@ describe('arrow-functions', () => {
   for (const dir of dirs) {
     test(dir, async () => {
       await createDir(outputPath, dir);
-      await build(fixturePath, outputPath, dir);
+      await build(fixturePath, outputPath, { type: dir });
       await runGeneratedCodeInVM(outputPath, dir);
 
       // https://stackoverflow.com/questions/52457575/jest-typescript-property-mock-does-not-exist-on-type
@@ -122,7 +138,7 @@ describe('modules-commonjs', () => {
     for (const dir of dirs) {
       test(dir, async () => {
         await createDir(outputPath, dir);
-        await build(fixturePath, outputPath, dir);
+        await build(fixturePath, outputPath, { type: dir });
 
         // Actually execute the bundled file with vm
         // OK if no error occurs
@@ -136,13 +152,13 @@ describe('modules-commonjs', () => {
     test('export-illegal', async () => {
       const dir = 'export-illegal'
       await createDir(outputPath, dir);
-      await expect(build(fixturePath, outputPath, dir)).rejects.toThrow(new Error('unknown: Illegal export "__esModule"'))
+      await expect(build(fixturePath, outputPath, { type: dir })).rejects.toThrow(new Error('unknown: Illegal export "__esModule"'))
     })
 
     test('export-hoist-function-failure', async () => {
       const dir = 'export-hoist-function-failure'
       await createDir(outputPath, dir);
-      await build(fixturePath, outputPath, dir);
+      await build(fixturePath, outputPath, { type: dir });
 
       const code = await readFile(join(outputPath, dir, BUNDLE_FILE), 'utf-8')
       expect(code).toMatchSnapshot();
@@ -173,7 +189,7 @@ describe('modules-commonjs', () => {
     for (const dir of dirs) {
       test(dir, async () => {
         await createDir(outputPath, dir);
-        await build(fixturePath, outputPath, dir);
+        await build(fixturePath, outputPath, { type: dir });
 
         // Actually execute the bundled file with vm
         // OK if no error occurs
@@ -205,7 +221,7 @@ describe('modules-commonjs', () => {
     for (const dir of dirs) {
       test(dir, async () => {
         await createDir(outputPath, dir);
-        await build(fixturePath, outputPath, dir);
+        await build(fixturePath, outputPath, { type: dir });
 
         await expect(runGeneratedCodeInVM(outputPath, dir)).rejects.toThrow()
 
@@ -236,7 +252,44 @@ describe('modules-commonjs', () => {
     for (const dir of dirs) {
       test(dir, async () => {
         await createDir(outputPath, dir);
-        await build(fixturePath, outputPath, dir);
+        await build(fixturePath, outputPath, { type: dir });
+
+        // Actually execute the bundled file with vm
+        // OK if no error occurs
+        await runGeneratedCodeInVM(outputPath, dir)
+
+        const code = await readFile(join(outputPath, dir, BUNDLE_FILE), 'utf-8')
+        expect(code).toMatchSnapshot();
+      });
+    }
+  })
+})
+
+describe('modules-commonjs', () => {
+  describe('noInterop', () => {
+    const type = 'modules-commonjs'
+    const subType = 'noInterop'
+    const fixturePath = join(fixtureBasePath, type, subType)
+    const outputPath = join(outputBasePath, type, subType)
+
+    beforeAll(async () => {
+      await createDir(outputPath, '');
+    })
+
+    const opts = {
+      "plugins": [
+        [transformModulesCommonjs, { "noInterop": true }]
+      ]
+    } as OptionsType
+
+    const dirs = [
+      'import-default'
+    ]
+
+    for (const dir of dirs) {
+      test(dir, async () => {
+        await createDir(outputPath, dir);
+        await build(fixturePath, outputPath, { opts, type: dir });
 
         // Actually execute the bundled file with vm
         // OK if no error occurs

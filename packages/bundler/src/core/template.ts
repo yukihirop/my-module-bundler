@@ -1,11 +1,11 @@
 'use strict';
 
-import { Asset, Modules } from './types';
+import { AssetType, ModulesType } from './types';
 
 /**
  * IFEE
  */
-function mainTemplate(modules: Modules): string {
+function mainTemplate(modules: ModulesType): string {
   return `
   (function(modules) {
     function require(id) {
@@ -27,7 +27,7 @@ function mainTemplate(modules: Modules): string {
   `;
 }
 
-function moduleTemlate(asset: Asset): string {
+function moduleTemlate(asset: AssetType): string {
   return `
   ${asset.id}: [
     function (require, module, exports) {

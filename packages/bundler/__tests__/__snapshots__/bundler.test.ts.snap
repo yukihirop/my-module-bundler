@@ -1890,6 +1890,42 @@ exports[`modules-commonjs interop import-wildcard-as-hoist 1`] = `
 })"
 `;
 
+exports[`modules-commonjs loose export-default 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      \\"use strict\\";
+
+      exports.__esModule = true;
+      exports.default = void 0;
+      var a;
+      var _default = a;
+
+      exports.default = _default;
+    },
+    {},
+  ]
+})"
+`;
+
 exports[`modules-commonjs misc this-computed-class-method-wrap-func 1`] = `
 "(function(modules) {
   function require(id) {

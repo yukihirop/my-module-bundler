@@ -345,3 +345,40 @@ describe('modules-commonjs', () => {
     }
   })
 })
+
+describe('modules-commonjs', () => {
+  describe('loose', () => {
+    const type = 'modules-commonjs'
+    const subType = 'loose'
+    const fixturePath = join(fixtureBasePath, type, subType)
+    const outputPath = join(outputBasePath, type, subType)
+
+    beforeAll(async () => {
+      await createDir(outputPath, '');
+    })
+
+    const opts = {
+      "plugins": [
+        [transformModulesCommonjs, { "loose": true }]
+      ]
+    } as OptionsType
+
+    const dirs = [
+      'export-default',
+    ]
+
+    for (const dir of dirs) {
+      test(dir, async () => {
+        await createDir(outputPath, dir);
+        await build(fixturePath, outputPath, { opts, type: dir });
+
+        // Actually execute the bundled file with vm
+        // OK if no error occurs
+        await runGeneratedCodeInVM(outputPath, dir)
+
+        const code = await readFile(join(outputPath, dir, BUNDLE_FILE), 'utf-8')
+        expect(code).toMatchSnapshot();
+      });
+    }
+  })
+})

@@ -16,6 +16,7 @@ export type MapValueType = {
 
 export type PluginOptionsType = {
   noInterop?: boolean
+  loose?: boolean
 }
 export type GlobalThisType = {
   IsESModule: boolean;

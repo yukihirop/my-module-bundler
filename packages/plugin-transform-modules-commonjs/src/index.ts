@@ -5,6 +5,7 @@ import { exportVisitor, importVisitor, classVisitor, mainVisitor } from './visit
 import {
   useStrictStatement,
   define__esModuleStatement,
+  loose__esModuleStatement,
   ExportsVoid0Statement,
   LazyEvaluateStatement,
 } from './statement';
@@ -25,7 +26,13 @@ export default function ({ types: t }: BabelTypes) {
       this.LazyEvaluateStatement.replaceWith();
       path.node['body'].unshift(this.ExportsVoid0Statement.build());
       path.node['body'].unshift(...this.beforeStatements);
-      if (this.IsESModule) path.node['body'].unshift(define__esModuleStatement);
+      if (this.IsESModule) {
+        if (this.opts.loose) {
+          path.node['body'].unshift(loose__esModuleStatement);
+        } else {
+          path.node['body'].unshift(define__esModuleStatement);
+        }
+      }
       if (!isInStrictMode(path)) path.node['body'].unshift(useStrictStatement);
       this.willRemovePaths.forEach((path: NodePath) => path.remove());
     },

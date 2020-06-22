@@ -1957,6 +1957,37 @@ exports[`modules-commonjs misc undefined-this-root-declaration 1`] = `
 })"
 `;
 
+exports[`modules-commonjs misc undefined-this-root-reference 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      \\"use strict\\";
+
+      void 0;
+    },
+    {},
+  ]
+})"
+`;
+
 exports[`modules-commonjs misc(throw error) import-global-variable-throw-ae 1`] = `
 "(function(modules) {
   function require(id) {

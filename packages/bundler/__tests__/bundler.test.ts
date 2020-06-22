@@ -229,7 +229,8 @@ describe('modules-commonjs', () => {
 
     const dirs = [
       'this-computed-class-method-wrap-func',
-      'undefined-this-root-declaration'
+      'undefined-this-root-declaration',
+      'undefined-this-root-reference'
     ]
 
     for (const dir of dirs) {

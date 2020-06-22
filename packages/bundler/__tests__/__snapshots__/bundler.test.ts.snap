@@ -2117,3 +2117,37 @@ exports[`modules-commonjs misc import-global-variable-throw-id 1`] = `
   ]
 })"
 `;
+
+exports[`modules-commonjs misc undefined-this-computed-class-method 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      \\"use strict\\";
+
+      class A {
+        [(void 0).a]() {}
+
+      }
+    },
+    {},
+  ]
+})"
+`;

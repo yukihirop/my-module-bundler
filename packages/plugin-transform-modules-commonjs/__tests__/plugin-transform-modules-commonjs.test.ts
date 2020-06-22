@@ -4,10 +4,8 @@ import { promises } from 'fs';
 import { runInContext, createContext } from 'vm';
 import { join } from 'path';
 
-import Bundler from '../src/core/bundler';
-import { OptionsType } from '../src/core/types';
-import transformArrowFunctions from '@yukihirop/plugin-transform-arrow-functions';
-import transformModulesCommonjs from '@yukihirop/plugin-transform-modules-commonjs';
+import { Bundler, types as t } from '@yukihirop/bundler';
+import transformModulesCommonjs from '../src';
 
 const { readFile, mkdir } = promises;
 const fixtureBasePath = join(__dirname, 'fixtures')
@@ -16,13 +14,12 @@ const fixtureBasePath = join(__dirname, 'fixtures')
   , BUNDLE_FILE = 'bundle.js'
   , defaultOpts = {
     "plugins": [
-      [transformArrowFunctions, {}],
       [transformModulesCommonjs, {}]
     ]
-  } as OptionsType;
+  } as t.OptionsType;
 
 type TestBuildOptionsType = {
-  opts?: OptionsType
+  opts?: t.OptionsType
   type?: string
 }
 
@@ -54,43 +51,6 @@ beforeEach(() => {
 afterEach(() => {
   jest.clearAllMocks();
 });
-
-describe('arrow-functions', () => {
-  const type = 'arrow-functions'
-  const fixturePath = join(fixtureBasePath, type)
-  const outputPath = join(outputBasePath, type)
-
-  beforeAll(async () => {
-    await createDir(outputPath, '');
-  })
-
-  const opts = {
-    "plugins": [
-      transformArrowFunctions
-    ]
-  }
-
-  const dirs = [
-    'basic',
-    'default-parameters',
-    'expression',
-    'nested',
-    'paran-insertion',
-    'spec-naming'
-  ]
-
-  for (const dir of dirs) {
-    test(dir, async () => {
-      await createDir(outputPath, dir);
-      await build(fixturePath, outputPath, { opts, type: dir });
-      await runGeneratedCodeInVM(outputPath, dir);
-
-      // https://stackoverflow.com/questions/52457575/jest-typescript-property-mock-does-not-exist-on-type
-      // I don't know why, but console.log executed in `vm` is not mocked
-      expect((console.log as jest.Mock).mock.calls).toMatchSnapshot();
-    });
-  }
-})
 
 describe('modules-commonjs', () => {
   describe('interop', () => {
@@ -322,7 +282,7 @@ describe('modules-commonjs', () => {
       "plugins": [
         [transformModulesCommonjs, { "noInterop": true }]
       ]
-    } as OptionsType
+    } as t.OptionsType
 
     const dirs = [
       'import-default',
@@ -361,7 +321,7 @@ describe('modules-commonjs', () => {
       "plugins": [
         [transformModulesCommonjs, { "loose": true }]
       ]
-    } as OptionsType
+    } as t.OptionsType
 
     const dirs = [
       'export-default',
@@ -398,7 +358,7 @@ describe('modules-commonjs', () => {
       "plugins": [
         [transformModulesCommonjs, { "strictMode": false }]
       ]
-    } as OptionsType
+    } as t.OptionsType
 
     const dirs = [
       'false',
@@ -419,3 +379,4 @@ describe('modules-commonjs', () => {
     }
   })
 })
+

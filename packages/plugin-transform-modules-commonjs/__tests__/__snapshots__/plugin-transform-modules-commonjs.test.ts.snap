@@ -1,17 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`arrow-functions basic 1`] = `Array []`;
-
-exports[`arrow-functions default-parameters 1`] = `Array []`;
-
-exports[`arrow-functions expression 1`] = `Array []`;
-
-exports[`arrow-functions nested 1`] = `Array []`;
-
-exports[`arrow-functions paran-insertion 1`] = `Array []`;
-
-exports[`arrow-functions spec-naming 1`] = `Array []`;
-
 exports[`modules-commonjs interop export-default-ae 1`] = `
 "(function(modules) {
   function require(id) {

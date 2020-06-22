@@ -6,16 +6,17 @@
   "scripts": {
     "dev": "lerna run ts-node",
     "build": "tsc -b packages/bundler packages/plugin-transform-arrow-functions packages/plugin-transform-modules-commonjs",
-    "bundler:dev": "yarn build && ts-node packages/bundler/src/index.ts",
-    "bundler:dev:debug": "yarn build && node --inspect -r ts-node/register packages/bundler/src/index.ts",
+    "bundler:dev": "yarn build && ts-node example/index.ts",
+    "bundler:dev:debug": "yarn build && node --inspect -r ts-node/register example/index.ts",
     "bundler:build": "tsc -p packages/bundler",
     "fmt": "prettier --write **/src/**/*.ts",
-    "test": "yarn build && jest",
-    "test:debug": "yarn build && node --inspect -r ts-node/register ./node_modules/.bin/jest --runInBand"
+    "test": "yarn build && jest --verbose",
+    "test:debug": "yarn build && node --inspect -r ts-node/register ./node_modules/.bin/jest --verbose --runInBand"
   },
   "devDependencies": {
     "jest": "^26.0.1",
-    "prettier": "^2.0.5"
+    "prettier": "^2.0.5",
+    "@yukihirop/bundler": "./packages/bundler"
   },
   "workspaces": [
     "packages/*"

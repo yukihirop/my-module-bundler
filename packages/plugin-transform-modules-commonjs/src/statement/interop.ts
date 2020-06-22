@@ -91,12 +91,13 @@ export const buildDefinePropertyExportNamedStatement = (
 export const buildRequireStatement = (
   moduleName: string,
   sourceName: string,
-  requireType = 'require'
+  requireType = 'require',
+  rename = false,
 ) => {
   let statement;
   switch (requireType) {
     case 'require':
-      statement = buildNodeRequireStatement(sourceName, moduleName);
+      statement = buildNodeRequireStatement({ sourceName, moduleName, rename });
       break;
     case '_interopRequireDefault':
       statement = build_InteropRequireDefaultStatement(moduleName, sourceName);
@@ -105,7 +106,7 @@ export const buildRequireStatement = (
       statement = build_InteropRequireWildcardStatement(moduleName, sourceName);
       break;
     default:
-      statement = buildNodeRequireStatement(sourceName, moduleName);
+      statement = buildNodeRequireStatement({ sourceName, moduleName, rename });
       break;
   }
   return statement;
@@ -113,19 +114,19 @@ export const buildRequireStatement = (
 
 // e.g.)
 // var _a = require("./a.js");
-export const buildNodeRequireStatement = (sourceName: string, moduleName?: string) => {
+export const buildNodeRequireStatement = ({ sourceName, moduleName, rename }: { sourceName: string, moduleName?: string, rename: boolean }) => {
   return moduleName
     ? template.statement`
       var VARIABLE_NAME = require("SOURCE_NAME");
     `({
-        VARIABLE_NAME: `_${moduleName}`,
-        SOURCE_NAME: sourceName,
-      })
+      VARIABLE_NAME: rename ? `_${moduleName}` : moduleName,
+      SOURCE_NAME: sourceName,
+    })
     : template.statement`
       require("SOURCE_NAME");
     `({
-        SOURCE_NAME: sourceName,
-      });
+      SOURCE_NAME: sourceName,
+    });
 };
 
 // e.g.)

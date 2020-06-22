@@ -109,7 +109,7 @@ export default class NamedDeclarationTraverser extends BaseTraverser {
         if (requireType === INTEROP_REQUIRE_DEFAULT) afterStatements.push(_interopRequireDefault);
       });
 
-      const requireStatement = buildRequireStatement(moduleName, sourceName, requireType);
+      const requireStatement = buildRequireStatement(moduleName, sourceName, requireType, true);
       path.replaceWith(requireStatement);
       path.insertAfter(afterStatements);
 

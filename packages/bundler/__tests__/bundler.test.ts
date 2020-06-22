@@ -325,7 +325,8 @@ describe('modules-commonjs', () => {
     } as OptionsType
 
     const dirs = [
-      'import-default'
+      'import-default',
+      'import-wildcard'
     ]
 
     for (const dir of dirs) {

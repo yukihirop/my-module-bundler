@@ -3,6 +3,7 @@ import BaseTraverser from '../BaseTraverser';
 import { basename } from 'path';
 
 import { buildRequireStatement, buildDefinePropertyExportsStatement } from '../../statement';
+import { REQUIRE } from '../../helper';
 
 export default class AllDeclarationTraverser extends BaseTraverser {
   public sourceName: string;
@@ -17,19 +18,19 @@ export default class AllDeclarationTraverser extends BaseTraverser {
   /**
    * @override
    */
-  public beforeProcess(): void {}
+  public beforeProcess(): void { }
 
   /**
    * @override
    */
-  public insertBefore(): void {}
+  public insertBefore(): void { }
 
   /**
    * @override
    */
   public replaceWith(): void {
     const { moduleName, sourceName } = this;
-    const statement = buildRequireStatement(moduleName, sourceName);
+    const statement = buildRequireStatement(moduleName, sourceName, REQUIRE, true);
     this.path.replaceWith(statement);
   }
 

@@ -12,10 +12,12 @@ import {
 } from '../../../statement';
 import {
   judgeRequireType,
+  judgeImportOrExportType,
   createImportedMapData,
-  REQUIRE,
-  INTEROP_REQUIRE_DEFAULT,
-  INTEROP_REQUIRE_WILDCARD,
+  TYPE_DEFAULT,
+  TYPE_WILDCARD,
+  TYPE_OTHER,
+  REQUIRE
 } from '../../../helper';
 
 export default class DeclarationTraverser extends BaseTraverser {
@@ -46,63 +48,67 @@ export default class DeclarationTraverser extends BaseTraverser {
     // import './spec/a.js'
     if (specifiers.length === 0 && source) {
       const sourceName = (source as t.StringLiteral).value;
-      const statement = buildRequireStatement(null, sourceName, 'require');
+      const statement = buildRequireStatement(null, sourceName, REQUIRE, true);
 
       globalThis.beforeStatements.push(statement);
-
-      // e.g.)
-      // no interop
-      // import b from './a.js';
-    } else if (specifiers.length > 0 && source && noInterop) {
-      const sourceName = (source as t.StringLiteral).value;
-      const moduleName = basename(sourceName).split('.')[0];
-      const localName = `_${moduleName}`;
-      const statement = buildRequireStatement(moduleName, sourceName, 'require');
-      globalThis.beforeStatements.push(statement);
-
-      createImportedMapData(localName, specifiers).forEach((data: [string, MapValueType]) => {
-        this.globalThis.importedMap.set(...data);
-      });
 
       // e.g.)
       // interop
       // import b from './a.js';
-    } else if (specifiers.length > 0 && source && !noInterop) {
+    } else if (specifiers.length > 0 && source) {
       const sourceName = (source as t.StringLiteral).value;
       const moduleName = basename(sourceName).split('.')[0];
       const requireType = judgeRequireType<
         t.ImportNamespaceSpecifier | t.ImportDefaultSpecifier | t.ImportSpecifier
       >(specifiers, 'import');
+      const importType = judgeImportOrExportType<
+        t.ImportNamespaceSpecifier | t.ImportDefaultSpecifier | t.ImportSpecifier
+      >(specifiers, 'import');
       let statement, localName;
 
-      switch (requireType) {
-        case REQUIRE:
+      switch (importType) {
+        case TYPE_OTHER:
           localName = `_${moduleName}`;
 
-          statement = buildRequireStatement(moduleName, sourceName, requireType);
+          statement = buildRequireStatement(moduleName, sourceName, REQUIRE, true);
           globalThis.beforeStatements.push(statement);
           break;
-        case INTEROP_REQUIRE_DEFAULT:
+        case TYPE_DEFAULT:
           localName = `_${moduleName}`;
 
-          statement = buildRequireStatement(moduleName, sourceName, requireType);
-          globalThis.beforeStatements.push(statement, _interopRequireDefault);
+          if (noInterop) {
+            statement = buildRequireStatement(moduleName, sourceName, REQUIRE, true);
+            globalThis.beforeStatements.push(statement);
+          } else {
+            statement = buildRequireStatement(moduleName, sourceName, requireType, false);
+            globalThis.beforeStatements.push(statement, _interopRequireDefault);
+          }
           break;
-        case INTEROP_REQUIRE_WILDCARD:
+        // e.g.)
+        // import * as b from './a.js' 
+        // import b, { a as c } from './a.js'
+        case TYPE_WILDCARD:
+          // import b, { a as c } from './a.js'
           if (specifiers.length > 1) {
             localName = `_${moduleName}`;
+            // import * as b from './a.js' 
           } else {
             localName = (specifiers as any[])
               .map((s) => (s['local'] ? s['local'].name : undefined))
               .filter(Boolean)[0];
           }
 
-          statement = buildRequireStatement(localName, sourceName, requireType);
-          globalThis.beforeStatements.push(
-            statement,
-            _getRequireWildcardCache,
-            _interopRequireWildcard
-          );
+          if (noInterop) {
+            statement = buildRequireStatement(localName, sourceName, REQUIRE, false);
+            globalThis.beforeStatements.push(statement);
+          } else {
+            statement = buildRequireStatement(localName, sourceName, requireType, false);
+            globalThis.beforeStatements.push(
+              statement,
+              _getRequireWildcardCache,
+              _interopRequireWildcard
+            );
+          }
           break;
       }
 

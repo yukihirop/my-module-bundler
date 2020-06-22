@@ -326,7 +326,8 @@ describe('modules-commonjs', () => {
 
     const dirs = [
       'import-default',
-      'import-wildcard'
+      'import-wildcard',
+      'export-named-from'
     ]
 
     for (const dir of dirs) {

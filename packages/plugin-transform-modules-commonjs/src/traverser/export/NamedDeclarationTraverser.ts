@@ -2,7 +2,7 @@ import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import { basename } from 'path';
 
-import { NodeType, VariableKindType, GlobalThisType } from '../../types';
+import { NodeType, VariableKindType, GlobalThisType, PluginOptionsType } from '../../types';
 import BaseTraverser from '../BaseTraverser';
 
 import {
@@ -12,7 +12,7 @@ import {
   _interopRequireDefault,
 } from '../../statement';
 
-import { judgeRequireType, INTEROP_REQUIRE_DEFAULT, ES_MODULE } from '../../helper';
+import { judgeRequireType, INTEROP_REQUIRE_DEFAULT, REQUIRE, ES_MODULE } from '../../helper';
 
 export default class NamedDeclarationTraverser extends BaseTraverser {
   public globalThis: GlobalThisType;
@@ -24,6 +24,7 @@ export default class NamedDeclarationTraverser extends BaseTraverser {
   public isFunctionExpression: boolean;
   public beforeStatements: t.Statement[];
   public afterStatements: t.Statement[];
+  public options: PluginOptionsType;
 
   constructor(path: NodePath, globalThis: GlobalThisType) {
     super(path);
@@ -36,6 +37,7 @@ export default class NamedDeclarationTraverser extends BaseTraverser {
     this.isFunctionExpression = true;
     this.beforeStatements = [] as t.Statement[];
     this.afterStatements = [] as t.Statement[];
+    this.options = globalThis.opts;
   }
 
   public beforeProcess(): void {
@@ -55,7 +57,8 @@ export default class NamedDeclarationTraverser extends BaseTraverser {
    * @override
    */
   public run(): void {
-    const { globalThis, path, specifiers, source, afterStatements, declaration } = this;
+    const { globalThis, path, specifiers, source, afterStatements, declaration, options } = this;
+    const { noInterop } = options
 
     this.beforeProcess();
 
@@ -106,10 +109,16 @@ export default class NamedDeclarationTraverser extends BaseTraverser {
         globalThis.beforeStatements.push(
           buildDefinePropertyExportNamedStatement(moduleName, exportedName, localName)
         );
-        if (requireType === INTEROP_REQUIRE_DEFAULT) afterStatements.push(_interopRequireDefault);
       });
 
-      const requireStatement = buildRequireStatement(moduleName, sourceName, requireType, true);
+      let requireStatement;
+      if (noInterop) {
+        requireStatement = buildRequireStatement(moduleName, sourceName, REQUIRE, true);
+      } else {
+        requireStatement = buildRequireStatement(moduleName, sourceName, requireType, true);
+        if (requireType === INTEROP_REQUIRE_DEFAULT) afterStatements.push(_interopRequireDefault);
+      }
+
       path.replaceWith(requireStatement);
       path.insertAfter(afterStatements);
 

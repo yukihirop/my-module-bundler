@@ -4,5 +4,5 @@ import Misc_AssignmentExpressionTraverser from './misc/AssignmentExpressionTrave
 export {
   Interop_DeclarationTraverser,
   Interop_ReferencedIdentifierTraverser,
-  Misc_AssignmentExpressionTraverser
-}
+  Misc_AssignmentExpressionTraverser,
+};

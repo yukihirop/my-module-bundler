@@ -80,17 +80,21 @@ export default class DeclarationTraverser extends BaseTraverser {
           }
 
           statement = buildRequireStatement(localName, sourceName, requireType);
-          globalThis.beforeStatements.push(statement, _getRequireWildcardCache, _interopRequireWildcard);
+          globalThis.beforeStatements.push(
+            statement,
+            _getRequireWildcardCache,
+            _interopRequireWildcard
+          );
           break;
       }
 
       createImportedMapData(localName, specifiers).forEach((data: [string, MapValueType]) => {
-        this.globalThis.importedMap.set(...data)
+        this.globalThis.importedMap.set(...data);
       });
     }
 
     // If path.remove() is performed here, localBinding will be canceled and import hoisting processing will be affected.
     // So keep the path to erase to make path.remove at the end
-    globalThis.willRemovePaths.push(path)
+    globalThis.willRemovePaths.push(path);
   }
 }

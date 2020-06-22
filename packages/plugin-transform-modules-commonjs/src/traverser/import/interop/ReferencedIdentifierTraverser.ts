@@ -2,7 +2,7 @@ import { NodePath, Binding } from '@babel/traverse';
 import BaseTraverser from '../../BaseTraverser';
 
 import { GlobalThisType } from '../../../types';
-import { buildSequenceExpressionOrNot } from '../../../statement'
+import { buildSequenceExpressionOrNot } from '../../../statement';
 
 export default class ReferencedIdentifierTraverser extends BaseTraverser {
   private IGNORE_REFERENCED_LIST = ['require', 'module', 'exports'];
@@ -44,14 +44,14 @@ export default class ReferencedIdentifierTraverser extends BaseTraverser {
     const mapValue = globalThis.importedMap.get(localBindingIdName);
 
     if (mapValue) {
-      const buildData = buildSequenceExpressionOrNot(path, localBindingIdName, globalThis)
+      const buildData = buildSequenceExpressionOrNot(path, localBindingIdName, globalThis);
       if (buildData) {
-        const { statement, isSequenceExpression } = buildData
+        const { statement, isSequenceExpression } = buildData;
 
         if (isSequenceExpression) {
           path.parentPath.replaceWith(statement);
         } else {
-          const { key } = mapValue
+          const { key } = mapValue;
           // If you replace something you don't need to replace, you end up in an endless loop with ReferencedIdentifier
           if (key) path.replaceWith(statement);
         }
@@ -59,7 +59,7 @@ export default class ReferencedIdentifierTraverser extends BaseTraverser {
     } else {
       // Unwind unreferenced statement at runtime
       // That is, lazy evaluation
-      globalThis.LazyEvaluateStatement.push({ path, localBindingIdName })
+      globalThis.LazyEvaluateStatement.push({ path, localBindingIdName });
     }
   }
 }

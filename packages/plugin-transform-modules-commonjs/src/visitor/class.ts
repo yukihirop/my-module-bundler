@@ -1,7 +1,7 @@
 import { NodePath } from '@babel/traverse';
 import { BabelTypes } from '../types';
 
-import { void0Statement } from '../statement'
+import { void0Statement } from '../statement';
 
 export default function ({ types: t }: BabelTypes) {
   return {
@@ -11,12 +11,12 @@ export default function ({ types: t }: BabelTypes) {
         // e.g.)
         // [this.a](){} => [(void 0).a](){}
         if (!path.container['computed']) {
-          const parentType = path.parentPath.parent.type
+          const parentType = path.parentPath.parent.type;
           if (parentType === 'ClassMethod') {
-            path.replaceWith(void0Statement)
+            path.replaceWith(void0Statement);
           }
         }
       },
-    }
-  }
+    },
+  };
 }

@@ -118,14 +118,14 @@ export const buildNodeRequireStatement = (sourceName: string, moduleName?: strin
     ? template.statement`
       var VARIABLE_NAME = require("SOURCE_NAME");
     `({
-      VARIABLE_NAME: `_${moduleName}`,
-      SOURCE_NAME: sourceName,
-    })
+        VARIABLE_NAME: `_${moduleName}`,
+        SOURCE_NAME: sourceName,
+      })
     : template.statement`
       require("SOURCE_NAME");
     `({
-      SOURCE_NAME: sourceName,
-    });
+        SOURCE_NAME: sourceName,
+      });
 };
 
 // e.g.)
@@ -150,12 +150,16 @@ export const build_InteropRequireWildcardStatement = (localName: string, sourceN
   });
 };
 
-export const buildSequenceExpressionOrNot = (path: NodePath, localBindingIdName: string, globalThis: GlobalThisType): StatementWithConditionType | null => {
+export const buildSequenceExpressionOrNot = (
+  path: NodePath,
+  localBindingIdName: string,
+  globalThis: GlobalThisType
+): StatementWithConditionType | null => {
   const mapValue = globalThis.importedMap.get(localBindingIdName);
   let statement;
 
   if (mapValue) {
-    const { localName, key } = mapValue
+    const { localName, key } = mapValue;
     const args = path.parent['arguments'];
 
     // e.g.)
@@ -164,21 +168,19 @@ export const buildSequenceExpressionOrNot = (path: NodePath, localBindingIdName:
       if (args !== undefined) {
         statement = t.expressionStatement(
           t.callExpression(
-            t.sequenceExpression(
-              [
-                t.numericLiteral(0),
-                t.memberExpression(t.identifier(localName), t.identifier(key), false)
-              ]
-            ),
+            t.sequenceExpression([
+              t.numericLiteral(0),
+              t.memberExpression(t.identifier(localName), t.identifier(key), false),
+            ]),
             args
           )
-        )
-        return { statement, isSequenceExpression: true }
+        );
+        return { statement, isSequenceExpression: true };
       } else {
         statement = t.expressionStatement(
           t.memberExpression(t.identifier(localName), t.identifier(key), false)
         );
-        return { statement, isSequenceExpression: false }
+        return { statement, isSequenceExpression: false };
       }
       // e.g.)
       // when 「import * as b from './a.js'」
@@ -187,19 +189,17 @@ export const buildSequenceExpressionOrNot = (path: NodePath, localBindingIdName:
     } else {
       // b(n) => b(n)
       if (args !== undefined) {
-        statement = t.expressionStatement(
-          t.callExpression(t.identifier(localName), args)
-        )
+        statement = t.expressionStatement(t.callExpression(t.identifier(localName), args));
         // b => b
       } else {
-        statement = t.expressionStatement(t.identifier(localName))
+        statement = t.expressionStatement(t.identifier(localName));
       }
-      return { statement, isSequenceExpression: false }
+      return { statement, isSequenceExpression: false };
     }
   } else {
-    return null
+    return null;
   }
-}
+};
 
 export const _interopRequireDefault = template.statement`
     function _interopRequireDefault(obj){ return obj && obj.__esModule ? obj : { default: obj}; }

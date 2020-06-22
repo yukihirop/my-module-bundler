@@ -68,7 +68,7 @@ export default class NamedDeclarationTraverser extends BaseTraverser {
       specifiers.forEach((specifier: t.ExportSpecifier) => {
         const exportedName = specifier.exported.name as string;
         const localName = specifier.local.name as string;
-        const localBinding = path.scope.getBinding(localName)
+        const localBinding = path.scope.getBinding(localName);
         if (exportedName === ES_MODULE) throw new Error(`Illegal export "${ES_MODULE}"`);
 
         // Use toString() to workaround Error:

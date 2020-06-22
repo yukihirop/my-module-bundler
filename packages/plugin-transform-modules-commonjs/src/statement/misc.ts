@@ -5,4 +5,4 @@ export const importConstThrowAst = (localName: string): t.Expression => template
 (function(){
     throw new Error('"' + "${localName}" + '" is read-only.');
   })()
-`
+`;

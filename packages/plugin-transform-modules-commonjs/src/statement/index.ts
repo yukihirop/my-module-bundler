@@ -6,4 +6,4 @@ export { ExportsVoid0Statement, LazyEvaluateStatement };
 
 import template from '@babel/template';
 
-export const void0Statement = template.statement`void 0`()
+export const void0Statement = template.statement`void 0`();

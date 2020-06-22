@@ -1,7 +1,7 @@
-export * from './interop'
+export * from './interop';
 
 import * as t from '@babel/types';
-import { MapValueType } from '../types'
+import { MapValueType } from '../types';
 import { NodePath } from '@babel/traverse';
 
 export const createImportedMapData = (
@@ -33,10 +33,11 @@ export const createImportedMapData = (
   return mapData;
 };
 
-export const isInStrictMode = (path: NodePath) => !!path.find(({ node }) => {
-  for (const directive of node['directives']) {
-    if (directive.value.value === "use strict") {
-      return true;
+export const isInStrictMode = (path: NodePath) =>
+  !!path.find(({ node }) => {
+    for (const directive of node['directives']) {
+      if (directive.value.value === 'use strict') {
+        return true;
+      }
     }
-  }
-})
+  });

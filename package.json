@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "lerna run ts-node",
-    "build": "tsc -b packages/bundler packages/plugin-transform-arrow-functions",
+    "build": "tsc -b packages/bundler packages/plugin-transform-arrow-functions packages/plugin-transform-modules-commonjs",
     "bundler:dev": "yarn build && ts-node packages/bundler/src/index.ts",
     "bundler:dev:debug": "yarn build && node --inspect -r ts-node/register packages/bundler/src/index.ts",
     "bundler:build": "tsc -p packages/bundler",

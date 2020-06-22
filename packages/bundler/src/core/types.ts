@@ -1,4 +1,4 @@
-export type Asset = {
+export type AssetType = {
   id: number;
   filename: string;
   dependencies: string[];
@@ -6,9 +6,14 @@ export type Asset = {
   mapping?: { [key: string]: number };
 };
 
-export type Graph = Array<Asset>;
-export type Modules = Array<string>;
-export type BundlerParams = {
+export type GraphType = Array<AssetType>;
+export type ModulesType = Array<string>;
+
+export type PluginsType = Array<[any, { [key: string]: any }] | [any]> | Array<any>;
+export type OptionsType = {
+  plugins?: PluginsType;
+};
+export type WriteParamsType = {
   input: string;
   output: string;
 };

@@ -21,19 +21,26 @@ export default function ({ types: t }: BabelTypes) {
       this.willRemovePaths = [] as NodePath[];
       this.ExportsVoid0Statement = new ExportsVoid0Statement();
       this.LazyEvaluateStatement = new LazyEvaluateStatement(this);
+      this.opts = Object.assign({
+        loose: false,
+        strictMode: true
+      }, this.opts);
     },
     post({ path }) {
+      const { loose, strictMode } = this.opts;
       this.LazyEvaluateStatement.replaceWith();
       path.node['body'].unshift(this.ExportsVoid0Statement.build());
       path.node['body'].unshift(...this.beforeStatements);
       if (this.IsESModule) {
-        if (this.opts.loose) {
+        if (loose) {
           path.node['body'].unshift(loose__esModuleStatement);
         } else {
           path.node['body'].unshift(define__esModuleStatement);
         }
       }
-      if (!isInStrictMode(path)) path.node['body'].unshift(useStrictStatement);
+      if (!isInStrictMode(path)) {
+        if (strictMode) path.node['body'].unshift(useStrictStatement);
+      }
       this.willRemovePaths.forEach((path: NodePath) => path.remove());
     },
     visitor: {

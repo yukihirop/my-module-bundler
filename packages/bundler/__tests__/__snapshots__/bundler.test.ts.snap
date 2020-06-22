@@ -2461,3 +2461,32 @@ exports[`modules-commonjs noInterop import-wildcard 1`] = `
   ]
 })"
 `;
+
+exports[`modules-commonjs strictMode false 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      var a;
+    },
+    {},
+  ]
+})"
+`;

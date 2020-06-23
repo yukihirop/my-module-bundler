@@ -1,8 +1,10 @@
 import template from '@babel/template';
+import LazyEvaluateStatement from './LazyEvaluateStatement'
+export { LazyEvaluateStatement }
 
 export const COMPATIBILITY_TYPEOF = "_typeof"
 
-export const _typeofStatement = template.statement`
+export const _interopTypeofStatement = template.statement`
 function _typeof(obj) {
   // After ES2015
   if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
@@ -16,4 +18,7 @@ function _typeof(obj) {
   }
   return _typeof(obj);
 }
-`()
+`();
+
+export const typeofforGlobalObjectStatement = (obj: any) => template.statement`
+    (typeof OBJ === "undefined" ? "undefined" : _typeof(OBJ))`({ OBJ: obj });

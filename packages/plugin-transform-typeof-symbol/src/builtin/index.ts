@@ -69,7 +69,7 @@ const builtInGlobalObject = [
   // undefined, variable
   'unescape',
   // uneval, any
-]
+];
 
 const buildInGlobalAny = [
   'AsyncFunction', // typescript unrecognize
@@ -82,15 +82,10 @@ const buildInGlobalAny = [
   'Symbol',
   'globalThis',
   'isNAN', // typescript unrecognize
-  'uneval' // typescript unrecognize
-]
+  'uneval', // typescript unrecognize
+];
 
-
-const builtInGlobalNamespace = [
-  'Intl',
-  'Reflect',
-  'WebAssembly'
-]
+const builtInGlobalNamespace = ['Intl', 'Reflect', 'WebAssembly'];
 
 // Since undefined and null are global objects, I listed them, but I did not use them, so commented out
 // const buildInGlobalVariable = [
@@ -98,8 +93,4 @@ const builtInGlobalNamespace = [
 //   undefined
 // ]
 
-export default [
-  ...builtInGlobalObject,
-  ...buildInGlobalAny,
-  ...builtInGlobalNamespace
-]
+export default [...builtInGlobalObject, ...buildInGlobalAny, ...builtInGlobalNamespace];

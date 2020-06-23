@@ -1,10 +1,11 @@
 import template from '@babel/template';
-import LazyEvaluateStatement from './LazyEvaluateStatement'
-export { LazyEvaluateStatement }
+import LazyEvaluateStatement from './LazyEvaluateStatement';
+export { LazyEvaluateStatement };
 
-export const COMPATIBILITY_TYPEOF = "_typeof"
+export const COMPATIBILITY_TYPEOF = '_typeof';
 
-export const _interopTypeofStatement = (funcName = COMPATIBILITY_TYPEOF) => template.statement`
+export const _interopTypeofStatement = (funcName = COMPATIBILITY_TYPEOF) =>
+  template.statement`
 function FUNC_NAME(obj) {
   // After ES2015
   if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
@@ -19,8 +20,9 @@ function FUNC_NAME(obj) {
   return FUNC_NAME(obj);
 }
 `({
-  FUNC_NAME: funcName
-});
+    FUNC_NAME: funcName,
+  });
 
-export const typeofforGlobalObjectStatement = (funcName = COMPATIBILITY_TYPEOF, obj: any) => template.statement`
+export const typeofforGlobalObjectStatement = (funcName = COMPATIBILITY_TYPEOF, obj: any) =>
+  template.statement`
     (typeof OBJ === "undefined" ? "undefined" : FUNC_NAME(OBJ))`({ FUNC_NAME: funcName, OBJ: obj });

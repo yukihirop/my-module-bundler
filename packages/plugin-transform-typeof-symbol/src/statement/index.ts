@@ -4,21 +4,23 @@ export { LazyEvaluateStatement }
 
 export const COMPATIBILITY_TYPEOF = "_typeof"
 
-export const _interopTypeofStatement = template.statement`
-function _typeof(obj) {
+export const _interopTypeofStatement = (funcName = COMPATIBILITY_TYPEOF) => template.statement`
+function FUNC_NAME(obj) {
   // After ES2015
   if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-    _typeof = function _typeof(obj) {
+    FUNC_NAME = function FUNC_NAME(obj) {
       return typeof obj;
     };
   } else {
-    _typeof = function _typeof(obj) {
+    FUNC_NAME = function FUNC_NAME(obj) {
       return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
     };
   }
-  return _typeof(obj);
+  return FUNC_NAME(obj);
 }
-`();
+`({
+  FUNC_NAME: funcName
+});
 
-export const typeofforGlobalObjectStatement = (obj: any) => template.statement`
-    (typeof OBJ === "undefined" ? "undefined" : _typeof(OBJ))`({ OBJ: obj });
+export const typeofforGlobalObjectStatement = (funcName = COMPATIBILITY_TYPEOF, obj: any) => template.statement`
+    (typeof OBJ === "undefined" ? "undefined" : FUNC_NAME(OBJ))`({ FUNC_NAME: funcName, OBJ: obj });

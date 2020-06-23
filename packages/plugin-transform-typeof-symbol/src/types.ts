@@ -7,5 +7,6 @@ export type BabelTypes = {
 
 export type TraverserThisType = {
   isTypeof: boolean;
+  typeofFuncName: string;
   LazyEvaluateStatement: LazyEvaluateStatement;
 }

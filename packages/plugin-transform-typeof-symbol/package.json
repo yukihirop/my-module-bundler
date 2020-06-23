@@ -1,10 +1,10 @@
 {
-  "name": "@yukihirop/plugin-transform-modules-commonjs",
+  "name": "@yukihirop/plugin-transform-typeof-symbol",
   "version": "1.0.0",
   "description": "> TODO: description",
   "author": "yukihirop <te108186@gmail.com>",
   "homepage": "https://github.com/yukihirop/my-module-bundler#readme",
-  "license": "ISC",
+  "license": "MIT",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "directories": {
@@ -25,12 +25,12 @@
     "url": "https://github.com/yukihirop/my-module-bundler/issues"
   },
   "devDependencies": {
-      "@babel/template": "^7.10.1",
-      "@babel/traverse": "^7.10.1",
-      "@babel/types": "^7.10.2",
-      "@types/babel-types": "^7.0.7",
-      "@types/babel__template": "^7.0.2",
-      "@types/babel__traverse": "^7.0.12",
-      "@yukihirop/bundler": "^1.0.0"
+    "@babel/template": "^7.10.3",
+    "@babel/traverse": "^7.10.3",
+    "@babel/types": "^7.10.3",
+    "@types/babel-types": "^7.0.7",
+    "@types/babel__template": "^7.0.2",
+    "@types/babel__traverse": "^7.0.12",
+    "@yukihirop/bundler": "^1.0.0"
   }
 }

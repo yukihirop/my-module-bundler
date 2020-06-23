@@ -3,7 +3,6 @@ const path = require('path');
 module.exports =
 {
   "plugins": [
-    [path.resolve(__dirname, "packages/plugin-transform-arrow-functions")],
-    [path.resolve(__dirname, "packages/plugin-transform-modules-commonjs"), { "noInterop": true, "loose": true, "strictMode": false }]
+    [path.resolve(__dirname, "packages/plugin-transform-typeof-symbol")],
   ]
 }

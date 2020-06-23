@@ -19,8 +19,14 @@ export default function ({ types: t }: BabelTypes) {
     visitor: {
       Program(path: NodePath) {
         const isExist_TypeofFunc = path.node['body'].filter(node => {
+          debugger
           return (
-            (node.type === 'VariableDeclaration') ||
+            (node.type === 'VariableDeclaration' && node.declarations &&
+              (
+                node.declarations[0].id.name === COMPATIBILITY_TYPEOF ||
+                node.declarations[0].init.id.name === COMPATIBILITY_TYPEOF
+              )
+            ) ||
             (node.type === 'FunctionDeclaration' && node.id && node.id.name === COMPATIBILITY_TYPEOF)
           )
         }).length > 0

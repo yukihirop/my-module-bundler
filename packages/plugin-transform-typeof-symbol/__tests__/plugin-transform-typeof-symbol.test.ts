@@ -67,7 +67,9 @@ describe('typeof-symbol', () => {
     'builtin-global-string',
     'typeof-typeof',
     'non-typeof',
-    'typeof-function-declaration'
+    'typeof-function-declaration',
+    'typeof-function-expression-var',
+    'typeof-function-expression-func'
   ]
 
   for (const dir of dirs) {

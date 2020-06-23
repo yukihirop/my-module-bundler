@@ -16,7 +16,7 @@
   "devDependencies": {
     "jest": "^26.0.1",
     "prettier": "^2.0.5",
-    "@yukihirop/bundler": "./packages/bundler"
+    "typescript": "^3.9.5"
   },
   "workspaces": [
     "packages/*"

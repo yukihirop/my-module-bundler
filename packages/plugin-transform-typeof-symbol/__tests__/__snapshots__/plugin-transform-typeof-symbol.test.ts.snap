@@ -259,6 +259,37 @@ exports[`typeof-symbol builtin-global-string 1`] = `
 })"
 `;
 
+exports[`typeof-symbol non-typeof 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      function a_typeof() {
+        return \\"typeof\\";
+      }
+    },
+    {},
+  ]
+})"
+`;
+
 exports[`typeof-symbol typeof-typeof 1`] = `
 "(function(modules) {
   function require(id) {

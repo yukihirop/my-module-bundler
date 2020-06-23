@@ -2,7 +2,6 @@ import { NodePath } from '@babel/traverse';
 
 import { BabelTypes } from './types';
 import { _interopTypeofStatement, typeofforGlobalObjectStatement, COMPATIBILITY_TYPEOF, LazyEvaluateStatement } from './statement';
-import BuiltinGlobalObjects from './builtin'
 
 export default function ({ types: t }: BabelTypes) {
   return {
@@ -20,24 +19,20 @@ export default function ({ types: t }: BabelTypes) {
         const nodeOperator = path.node['operator'];
         if (nodeOperator === 'typeof') {
           this.isTypeof = true
-
-          const argPath = path.get('argument');
-          // exclude null and undefined
-          const isNull = (argPath as NodePath).isNullLiteral();
-          const isUndefined = ((argPath as NodePath).isIdentifier() && path.node['argument'].name === "undefined");
-          const isBuiltinGlobalObject = (argPath as NodePath).isIdentifier() && BuiltinGlobalObjects.includes(path.node['argument'].name);
-          const isBuiltinGlobal = ![isNull, isUndefined].some(Boolean) && isBuiltinGlobalObject
+          const arg = path.node['argument'];
+          const isBuiltinGlobalObject = this.LazyEvaluateStatement.isBuiltinGlobalObject(arg);
 
           let statement;
-          if (isBuiltinGlobal) {
-            statement = typeofforGlobalObjectStatement(path.node['argument'].name)
+          if (isBuiltinGlobalObject) {
+            statement = typeofforGlobalObjectStatement(arg.name)
+            this.LazyEvaluateStatement.push({ path, statement })
           } else {
             statement = t.callExpression(
               t.identifier(COMPATIBILITY_TYPEOF),
-              [path.node['argument']]
+              [arg]
             )
+            path.replaceWith(statement)
           }
-          this.LazyEvaluateStatement.push({ path, statement })
         }
       }
     }

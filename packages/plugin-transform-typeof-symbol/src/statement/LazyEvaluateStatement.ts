@@ -20,7 +20,7 @@ export default class LazyEvaluateStatement {
     const isUndefined = arg.type === 'Identifier' && arg.name === 'undefined';
     const isBuiltinGlobalObject =
       arg.type === 'Identifier' && BuiltinGlobalObjects.includes(arg.name);
-    return ![isNull, isUndefined].some(Boolean) && isBuiltinGlobalObject;
+    return !isNull && (isUndefined || isBuiltinGlobalObject);
   }
 
   public push(statementData: NodePathDataType) {

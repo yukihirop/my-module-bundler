@@ -35,7 +35,7 @@
 
       // https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects
       _typeof(null) === null;
-      _typeof(undefined) === undefined;
+      (typeof undefined === "undefined" ? "undefined" : _typeof(undefined)) === undefined;
       (typeof AggregateError === "undefined" ? "undefined" : _typeof(AggregateError)) === "object";
       (typeof Array === "undefined" ? "undefined" : _typeof(Array)) === "object";
       (typeof ArrayBuffer === "undefined" ? "undefined" : _typeof(ArrayBuffer)) === "ArrayBuffer";

@@ -63,7 +63,8 @@ describe('typeof-symbol', () => {
 
   const dirs = [
     'basic',
-    'builtin-global'
+    'builtin-global',
+    'builtin-global-string'
   ]
 
   for (const dir of dirs) {

@@ -12,6 +12,7 @@ const builtInGlobalObject = [
   // Atomics, any
   // BigInt, any
   'BigInt64Array',
+  'BigUint64Array',
   'Boolean',
   'DataView',
   'Date',
@@ -37,6 +38,7 @@ const builtInGlobalObject = [
   'Promise',
   'Proxy',
   'RangeError',
+  'ReferenceError',
   // Reflect, namespace
   'RegExp',
   'Set',
@@ -81,7 +83,7 @@ const buildInGlobalAny = [
   'NaN',
   'Symbol',
   'globalThis',
-  'isNAN', // typescript unrecognize
+  'isNaN', // typescript unrecognize
   'uneval', // typescript unrecognize
 ];
 

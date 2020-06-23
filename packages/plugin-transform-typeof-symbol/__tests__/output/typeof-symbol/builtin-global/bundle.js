@@ -43,7 +43,7 @@
       (typeof Atomics === "undefined" ? "undefined" : _typeof(Atomics)) === {};
       (typeof BigInt === "undefined" ? "undefined" : _typeof(BigInt)) === function() {};
       (typeof BigInt64Array === "undefined" ? "undefined" : _typeof(BigInt64Array)) === (0, function() {})();
-      _typeof(BigUint64Array) === true;
+      (typeof BigUint64Array === "undefined" ? "undefined" : _typeof(BigUint64Array)) === true;
       (typeof Boolean === "undefined" ? "undefined" : _typeof(Boolean)) === false;
       (typeof DataView === "undefined" ? "undefined" : _typeof(DataView)) === 1;
       (typeof Date === "undefined" ? "undefined" : _typeof(Date)) !== "object";
@@ -68,7 +68,7 @@
       (typeof Promise === "undefined" ? "undefined" : _typeof(Promise)) === "object";
       (typeof Proxy === "undefined" ? "undefined" : _typeof(Proxy)) === "object";
       (typeof RangeError === "undefined" ? "undefined" : _typeof(RangeError)) === "object";
-      _typeof(ReferenceError) === "object";
+      (typeof ReferenceError === "undefined" ? "undefined" : _typeof(ReferenceError)) === "object";
       (typeof Reflect === "undefined" ? "undefined" : _typeof(Reflect)) === "object";
       (typeof RegExp === "undefined" ? "undefined" : _typeof(RegExp)) === "object";
       (typeof Set === "undefined" ? "undefined" : _typeof(Set)) === "object";
@@ -94,7 +94,7 @@
       (typeof eval === "undefined" ? "undefined" : _typeof(eval)) === "object";
       (typeof globalThis === "undefined" ? "undefined" : _typeof(globalThis)) === "object";
       (typeof isFinite === "undefined" ? "undefined" : _typeof(isFinite)) === "object";
-      _typeof(isNaN) === "object";
+      (typeof isNaN === "undefined" ? "undefined" : _typeof(isNaN)) === "object";
       (typeof parseFloat === "undefined" ? "undefined" : _typeof(parseFloat)) === "object";
       (typeof parseInt === "undefined" ? "undefined" : _typeof(parseInt)) === "object";
       (typeof unescape === "undefined" ? "undefined" : _typeof(unescape)) === "object";

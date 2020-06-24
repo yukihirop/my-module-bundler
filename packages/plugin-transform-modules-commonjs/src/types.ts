@@ -19,7 +19,7 @@ export type PluginOptionsType = {
   loose?: boolean;
   strictMode?: boolean;
 };
-export type GlobalThisType = {
+export type TraverserThisType = {
   IsESModule: boolean;
   importedMap?: Map<string, MapValueType>;
   beforeStatements: t.Statement[];

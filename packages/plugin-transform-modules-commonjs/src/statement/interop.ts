@@ -1,7 +1,7 @@
 import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import template from '@babel/template';
-import { GlobalThisType, StatementWithConditionType } from './../types';
+import { TraverserThisType, StatementWithConditionType } from './../types';
 
 export const useStrictStatement = t.expressionStatement(t.stringLiteral('use strict'));
 
@@ -162,9 +162,9 @@ export const build_InteropRequireWildcardStatement = (localName: string, sourceN
 export const buildSequenceExpressionOrNot = (
   path: NodePath,
   localBindingIdName: string,
-  globalThis: GlobalThisType
+  traverserThis: TraverserThisType
 ): StatementWithConditionType | null => {
-  const mapValue = globalThis.importedMap.get(localBindingIdName);
+  const mapValue = traverserThis.importedMap.get(localBindingIdName);
   let statement;
 
   if (mapValue) {

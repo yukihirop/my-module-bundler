@@ -1,18 +1,18 @@
 import { NodePath, Binding } from '@babel/traverse';
 import BaseTraverser from '../../BaseTraverser';
 
-import { GlobalThisType } from '../../../types';
+import { TraverserThisType } from '../../../types';
 import { buildSequenceExpressionOrNot } from '../../../statement';
 
 export default class ReferencedIdentifierTraverser extends BaseTraverser {
   private IGNORE_REFERENCED_LIST = ['require', 'module', 'exports'];
-  public globalThis: GlobalThisType;
+  public traverserThis: TraverserThisType;
   public nodeName: string;
   public localBinding: Binding;
 
-  constructor(path: NodePath, globalThis: GlobalThisType) {
+  constructor(path: NodePath, traverserThis: TraverserThisType) {
     super(path);
-    this.globalThis = globalThis;
+    this.traverserThis = traverserThis;
     this.nodeName = path.node['name'];
     this.localBinding = path.scope.getBinding(this.nodeName);
   }
@@ -39,12 +39,12 @@ export default class ReferencedIdentifierTraverser extends BaseTraverser {
    * @override
    */
   public replaceWith(): void {
-    const { globalThis, path, localBinding } = this;
+    const { traverserThis, path, localBinding } = this;
     const localBindingIdName: string = localBinding.identifier.name;
-    const mapValue = globalThis.importedMap.get(localBindingIdName);
+    const mapValue = traverserThis.importedMap.get(localBindingIdName);
 
     if (mapValue) {
-      const buildData = buildSequenceExpressionOrNot(path, localBindingIdName, globalThis);
+      const buildData = buildSequenceExpressionOrNot(path, localBindingIdName, traverserThis);
       if (buildData) {
         const { statement, isSequenceExpression } = buildData;
 
@@ -59,7 +59,7 @@ export default class ReferencedIdentifierTraverser extends BaseTraverser {
     } else {
       // Unwind unreferenced statement at runtime
       // That is, lazy evaluation
-      globalThis.LazyEvaluateStatement.push({ path, localBindingIdName });
+      traverserThis.LazyEvaluateStatement.push({ path, localBindingIdName });
     }
   }
 }

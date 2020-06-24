@@ -3,6 +3,7 @@
     "esModuleInterop": true,
     "sourceMap": true,
     "moduleResolution": "node",
-    "module": "commonjs"
+    "module": "commonjs",
+    "downlevelIteration": true
   }
 }

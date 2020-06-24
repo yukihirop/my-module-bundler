@@ -1,4 +1,4 @@
-import { GlobalThisType } from './../../types';
+import { TraverserThisType } from './../../types';
 import { NodePath } from '@babel/traverse';
 import BaseTraverser from '../BaseTraverser';
 import * as t from '@babel/types';
@@ -8,7 +8,7 @@ import { buildExportsStatement } from '../../statement';
 import { functionize } from '../../helper';
 
 export default class DefaultDeclarationTraverser extends BaseTraverser {
-  public globalThis: GlobalThisType;
+  public traverserThis: TraverserThisType;
   public declaration:
     | t.ObjectExpression
     | t.ArrayExpression
@@ -28,9 +28,9 @@ export default class DefaultDeclarationTraverser extends BaseTraverser {
     | t.Expression;
   public nodeDeclaration?: t.FunctionDeclaration;
 
-  constructor(path: NodePath, globalThis: GlobalThisType) {
+  constructor(path: NodePath, traverserThis: TraverserThisType) {
     super(path);
-    this.globalThis = globalThis;
+    this.traverserThis = traverserThis;
     this.declaration = path.node['declaration'];
     this.exportValue = this.declaration['value'];
     this.exportValueType = this.declaration['type'];
@@ -102,7 +102,7 @@ export default class DefaultDeclarationTraverser extends BaseTraverser {
    * @override
    */
   public insertBefore(): void {
-    const { globalThis } = this;
+    const { traverserThis } = this;
     // e.g.)
     //
     // Object.defineProperty(exports, "__esModule", {
@@ -111,7 +111,7 @@ export default class DefaultDeclarationTraverser extends BaseTraverser {
     // exports.default = void 0;
     // var _default = <ArrayExpression | ObjectExpression | Literal>;
     // exports.default = _default;
-    globalThis.ExportsVoid0Statement.push('default');
+    traverserThis.ExportsVoid0Statement.push('default');
   }
 
   /**

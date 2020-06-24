@@ -2,7 +2,7 @@ import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import { basename } from 'path';
 
-import { NodeType, VariableKindType, GlobalThisType, PluginOptionsType } from '../../types';
+import { NodeType, VariableKindType, TraverserThisType, PluginOptionsType } from '../../types';
 import BaseTraverser from '../BaseTraverser';
 
 import {
@@ -15,7 +15,7 @@ import {
 import { judgeRequireType, INTEROP_REQUIRE_DEFAULT, REQUIRE, ES_MODULE } from '../../helper';
 
 export default class NamedDeclarationTraverser extends BaseTraverser {
-  public globalThis: GlobalThisType;
+  public traverserThis: TraverserThisType;
   public specifiers: t.ExportSpecifier[];
   public source?: any;
   public declaration?: t.FunctionDeclaration | t.VariableDeclaration | t.ClassDeclaration;
@@ -26,9 +26,9 @@ export default class NamedDeclarationTraverser extends BaseTraverser {
   public afterStatements: t.Statement[];
   public options: PluginOptionsType;
 
-  constructor(path: NodePath, globalThis: GlobalThisType) {
+  constructor(path: NodePath, traverserThis: TraverserThisType) {
     super(path);
-    this.globalThis = globalThis;
+    this.traverserThis = traverserThis;
     this.specifiers = path.node['specifiers'];
     this.source = path.node['source'];
     this.declaration = path.node['declaration'];
@@ -37,7 +37,7 @@ export default class NamedDeclarationTraverser extends BaseTraverser {
     this.isFunctionExpression = true;
     this.beforeStatements = [] as t.Statement[];
     this.afterStatements = [] as t.Statement[];
-    this.options = globalThis.opts;
+    this.options = traverserThis.opts;
   }
 
   public beforeProcess(): void {
@@ -57,7 +57,7 @@ export default class NamedDeclarationTraverser extends BaseTraverser {
    * @override
    */
   public run(): void {
-    const { globalThis, path, specifiers, source, afterStatements, declaration, options } = this;
+    const { traverserThis, path, specifiers, source, afterStatements, declaration, options } = this;
     const { noInterop } = options;
 
     this.beforeProcess();
@@ -77,9 +77,9 @@ export default class NamedDeclarationTraverser extends BaseTraverser {
         // Use toString() to workaround Error:
         // This condition will always return 'true' since the types '"var" | "const" | "let" | "module"' and '"kind"' have no overlap.ts(2367)
         if (localBinding['kind'].toString() === 'hoisted') {
-          globalThis.beforeStatements.push(buildExportsStatement(exportedName, localName));
+          traverserThis.beforeStatements.push(buildExportsStatement(exportedName, localName));
         } else {
-          globalThis.ExportsVoid0Statement.push(exportedName);
+          traverserThis.ExportsVoid0Statement.push(exportedName);
           afterStatements.push(buildExportsStatement(exportedName, localName));
         }
       });
@@ -106,7 +106,7 @@ export default class NamedDeclarationTraverser extends BaseTraverser {
         const exportedName = specifier.exported.name;
         const localName = specifier.local ? specifier.local.name : null;
 
-        globalThis.beforeStatements.push(
+        traverserThis.beforeStatements.push(
           buildDefinePropertyExportNamedStatement(moduleName, exportedName, localName)
         );
       });
@@ -154,7 +154,7 @@ export default class NamedDeclarationTraverser extends BaseTraverser {
           // e.g.)
           //
           // exports.hoist = hoist
-          globalThis.beforeStatements.push(buildExportsStatement(exportedName, exportedName));
+          traverserThis.beforeStatements.push(buildExportsStatement(exportedName, exportedName));
 
           break;
 
@@ -182,7 +182,7 @@ export default class NamedDeclarationTraverser extends BaseTraverser {
           //
           // exports.not_hoist = not_hoist
           if (isFunctionExpression) {
-            globalThis.ExportsVoid0Statement.push(exportedName);
+            traverserThis.ExportsVoid0Statement.push(exportedName);
             afterStatements.push(buildExportsStatement(exportedName, exportedName));
           }
           break;
@@ -200,7 +200,7 @@ export default class NamedDeclarationTraverser extends BaseTraverser {
             null
           );
           statements.push(nodeDeclaration);
-          globalThis.ExportsVoid0Statement.push(exportedName);
+          traverserThis.ExportsVoid0Statement.push(exportedName);
           afterStatements.push(buildExportsStatement(exportedName, exportedName));
           break;
       }

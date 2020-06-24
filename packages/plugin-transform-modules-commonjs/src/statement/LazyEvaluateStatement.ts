@@ -1,16 +1,16 @@
 import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
-import { GlobalThisType } from '../types';
+import { TraverserThisType } from '../types';
 import { buildSequenceExpressionOrNot } from './index';
 
 type NodePathDataType = { path: NodePath; localBindingIdName: string };
 
 export default class LazyEvaluateStatement {
-  public globalThis: GlobalThisType;
+  public traverserThis: TraverserThisType;
   public data: NodePathDataType[];
 
-  constructor(globalThis: GlobalThisType) {
-    this.globalThis = globalThis;
+  constructor(traverserThis: TraverserThisType) {
+    this.traverserThis = traverserThis;
     this.data = [] as NodePathDataType[];
   }
 
@@ -19,9 +19,9 @@ export default class LazyEvaluateStatement {
   }
 
   public replaceWith(): void {
-    const { data, globalThis } = this;
+    const { data, traverserThis } = this;
     data.forEach(({ path, localBindingIdName }: NodePathDataType) => {
-      const buildData = buildSequenceExpressionOrNot(path, localBindingIdName, globalThis);
+      const buildData = buildSequenceExpressionOrNot(path, localBindingIdName, traverserThis);
       if (buildData) {
         const { statement, isSequenceExpression } = buildData;
         if (isSequenceExpression) {
@@ -34,10 +34,10 @@ export default class LazyEvaluateStatement {
   }
 
   public buildStatements(): Array<t.Statement> {
-    const { data, globalThis } = this;
+    const { data, traverserThis } = this;
     let result = [] as Array<t.Statement>;
     data.forEach(({ path, localBindingIdName }: NodePathDataType) => {
-      const buildData = buildSequenceExpressionOrNot(path, localBindingIdName, globalThis);
+      const buildData = buildSequenceExpressionOrNot(path, localBindingIdName, traverserThis);
       if (buildData) {
         const { statement, isSequenceExpression } = buildData;
         if (isSequenceExpression) {

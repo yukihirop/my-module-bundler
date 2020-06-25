@@ -5,5 +5,4 @@ export type BabelTypes = {
 };
 
 export type TraverserThisType = {
-  
 }

@@ -64,7 +64,8 @@ describe('destructuring', () => {
   const dirs = [
     'array-basic',
     'array-rest-basic',
-    'array-rest-nested'
+    'array-rest-nested',
+    'array-overflow'
   ]
 
   for (const dir of dirs) {

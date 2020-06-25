@@ -11,6 +11,7 @@ export default class DestructuringTraverser extends BaseTraverser {
   public node: Node;
   public declaration?: any;
   public idMap: Array<IdDataType & { index: number }>;
+  public use_ref: boolean
 
   constructor(path: NodePath, traverserThis: TraverserThisType) {
     super(path)
@@ -18,6 +19,7 @@ export default class DestructuringTraverser extends BaseTraverser {
     this.node = this.path.node
     this.declaration = path.node['declarations'] && path.node['declarations'][0];
     this.idMap = [] as Array<IdDataType & { index: number }>
+    this.use_ref = false
   }
 
   /**
@@ -43,9 +45,9 @@ export default class DestructuringTraverser extends BaseTraverser {
       return { ...this.searchIdData(el), index }
     });
 
-    const isExistRestElement = Object.entries(idMap).filter(([isRestElement]) => isRestElement).length > 0;
-    if (!isExistRestElement) return false;
-
+    const isExistRestElement = idMap.filter(({ isRestElement }) => isRestElement).length > 0;
+    const initElements = declaration!.init && declaration!.init.elements;
+    if ((idElements.length !== initElements.length) && !isExistRestElement) this.use_ref = true
     this.idMap = idMap
 
     return true
@@ -55,13 +57,44 @@ export default class DestructuringTraverser extends BaseTraverser {
    * @override
    */
   public replaceWith(): void {
-    const { path, node, declaration, idMap } = this
+    const { path, node, declaration, idMap, use_ref } = this
+    const { scope } = path
     const initElements = declaration!.init && declaration!.init.elements;
+
+    let kind = node['kind'];
+    let var_refDecl;
+    let initObjects = initElements;
+    let _refVariableDeclarators = [];
+    if (use_ref) {
+
+      // Creating _ref without name collision
+      // [ref] http://hzoo.github.io/babel.github.io/docs/advanced/plugins/scope/
+      const ref = scope.generateUidIdentifier("_ref");
+
+      // _ref = [1, '2', true, null, undefined, function () { }, Error, WebAssembly];
+      var_refDecl = t.variableDeclarator(
+        ref,
+        t.arrayExpression(initElements.map(node => t.cloneNode(node)))
+      )
+
+      // [ _ref[0], _ref[1], _ref[2], _ref[3] ]
+      initObjects = initElements.map((node, index) => {
+        return t.memberExpression(
+          ref,
+          t.numericLiteral(index),
+          true
+        )
+      })
+
+      kind = 'var';
+
+      _refVariableDeclarators.push(var_refDecl)
+    }
 
     // e.g.)
     // var [a, b, ...c] = [1, '2', true, null, undefined, function () { }, Error, WebAssembly];
     // var [a, [b], [...c], [...d]] = [1, ['2'], [true, null, undefined], [function () { }, Error, WebAssembly]]
-    const variableDeclarators = idMap.map(({ name, isRestElement, index, depth }) => {
+    const mainVariableDeclarators = idMap.map(({ name, isRestElement, index, depth }) => {
       if (isRestElement) {
         const sliced = initElements.slice(index)
         let afterSlicedObj = sliced;
@@ -72,7 +105,7 @@ export default class DestructuringTraverser extends BaseTraverser {
           Array.isArray(afterSlicedObj) ? t.arrayExpression(afterSlicedObj.map(node => t.cloneNode(node))) : t.cloneNode(afterSlicedObj)
         )
       } else {
-        const initEl = initElements[index]
+        const initEl = initObjects[index]
         let unnestedEl = initEl;
         if (initEl.type === 'ArrayExpression') unnestedEl = this.unnested(initEl.elements, depth);
 
@@ -83,10 +116,9 @@ export default class DestructuringTraverser extends BaseTraverser {
       }
     });
 
-    const kind = node['kind']
     const statement = t.variableDeclaration(
       kind,
-      variableDeclarators
+      [..._refVariableDeclarators, ...mainVariableDeclarators]
     )
 
     path.replaceWith(statement)

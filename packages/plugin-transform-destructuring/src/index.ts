@@ -1,14 +1,15 @@
 import { NodePath } from '@babel/traverse';
 import { BabelTypes } from './types';
 
-import { DestructuringTraverser } from './traverser';
+import { ArrayDestructuringTraverser } from './traverser';
 
 export default function ({ types: t }: BabelTypes) {
   return {
     name: "plugin-transform-destructuring",
     visitor: {
-      VariableDeclaration(path: NodePath) {
-        const traverser = new DestructuringTraverser(path, this)
+      ArrayExpression(path: NodePath) {
+        const parentPath = path.findParent(path => path.isVariableDeclaration());
+        const traverser = new ArrayDestructuringTraverser(parentPath, this)
         const skip = traverser.run()
         if (skip) return
       }

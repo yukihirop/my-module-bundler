@@ -62,6 +62,7 @@ describe('destructuring', () => {
   })
 
   const dirs = [
+    'array-basic',
     'array-rest-basic',
     'array-rest-nested'
   ]

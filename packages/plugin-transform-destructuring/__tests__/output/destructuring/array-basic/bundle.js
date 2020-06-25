@@ -21,13 +21,13 @@
     function(require, module, exports) {
       var a = 1,
         b = '2',
-        c = [true, null, undefined, function() {}, Error, WebAssembly];
+        c = true;
       const d = 1,
         e = '2',
-        f = [true, null, undefined, function() {}, Error, WebAssembly];
+        f = true;
       let g = 1,
         h = '2',
-        i = [true, null, undefined, function() {}, Error, WebAssembly];
+        i = true;
     },
     {},
   ]

@@ -1,2 +1,2 @@
-import RestElementTraverser from './VariableDeclaration/RestElementTraverser';
-export { RestElementTraverser }
+import DestructuringTraverser from './VariableDeclaration/DestructuringTraverser';
+export { DestructuringTraverser }

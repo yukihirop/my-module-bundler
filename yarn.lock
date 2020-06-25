@@ -1133,7 +1133,7 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@types/babel-types@*", "@types/babel-types@^7.0.7":
+"@types/babel-types@^7.0.7":
   version "7.0.7"
   resolved "https://registry.yarnpkg.com/@types/babel-types/-/babel-types-7.0.7.tgz#667eb1640e8039436028055737d2b9986ee336e3"
   integrity sha512-dBtBbrc+qTHy1WdfHYjBwRln4+LWqASWakLHsWHR2NWHIFkv4W3O070IGoGLEBrJBvct3r0L1BUPuvURi7kYUQ==
@@ -1186,13 +1186,6 @@
   integrity sha512-t4CoEokHTfcyfb4hUaF9oOHu9RmmNWnm1CP0YmMqOOfClKascOmvlEM736vlqeScuGvBDsHkf8R2INd4DWreQA==
   dependencies:
     "@babel/types" "^7.3.0"
-
-"@types/babylon@^6.16.5":
-  version "6.16.5"
-  resolved "https://registry.yarnpkg.com/@types/babylon/-/babylon-6.16.5.tgz#1c5641db69eb8cdf378edd25b4be7754beeb48b4"
-  integrity sha512-xH2e58elpj1X4ynnKp9qSnWlsRTIs6n3tgLGNfwAGHwePw0mulHQllV34n0T25uYSu1k0hRKkWXF890B1yS47w==
-  dependencies:
-    "@types/babel-types" "*"
 
 "@types/color-name@^1.1.1":
   version "1.1.1"

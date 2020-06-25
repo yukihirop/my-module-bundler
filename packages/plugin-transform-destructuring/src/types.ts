@@ -1,3 +1,4 @@
+import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 
 export type BabelTypes = {
@@ -5,4 +6,8 @@ export type BabelTypes = {
 };
 
 export type TraverserThisType = {
+  beforeStatements: t.Statement[];
+  isAddHelper?: boolean;
+  _objectWithoutProprtiesFuncName?: string;
+  _objectWithoutProprtiesLooseFuncName?: string;
 }

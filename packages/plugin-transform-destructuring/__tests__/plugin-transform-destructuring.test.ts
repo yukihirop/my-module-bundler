@@ -68,7 +68,8 @@ describe('destructuring', () => {
     'array-overflow',
     'array-self-reference',
     'array-assignment-function-block',
-    'object-basic'
+    'object-basic',
+    'object-rest-basic'
   ]
 
   for (const dir of dirs) {

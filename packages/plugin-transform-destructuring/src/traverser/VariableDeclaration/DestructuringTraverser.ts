@@ -34,7 +34,7 @@ export default class DestructuringTraverser extends BaseTraverser {
    * @override
    */
   public beforeProcess(): boolean | void {
-    const { declaration } = this
+    const { path, declaration } = this
 
     if (!declaration) return false;
 
@@ -47,7 +47,12 @@ export default class DestructuringTraverser extends BaseTraverser {
 
     const isExistRestElement = idMap.filter(({ isRestElement }) => isRestElement).length > 0;
     const initElements = declaration!.init && declaration!.init.elements;
-    if ((idElements.length !== initElements.length) && !isExistRestElement) this.use_ref = true
+    const isExistInitLocalBinding = initElements.filter(node => path.scope.hasOwnBinding(node.name)).length > 0;
+
+    if (
+      ((idElements.length !== initElements.length) && !isExistRestElement) ||
+      isExistInitLocalBinding
+    ) this.use_ref = true
     this.idMap = idMap
 
     return true

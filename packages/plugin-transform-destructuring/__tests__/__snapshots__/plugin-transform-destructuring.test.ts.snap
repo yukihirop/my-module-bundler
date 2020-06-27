@@ -544,6 +544,52 @@ exports[`destructuring object-rest-nested 1`] = `
         b = _a$b$c$d$e$f.b,
         c = _a$b$c$d$e$f.c,
         d = _objectWithoutProperties(_a$b$c$d$e$f, [\\"a\\", \\"b\\", \\"c\\"]);
+
+      var _a$b$c$d$e$f2 = {
+          a: 1,
+          b: {
+            b1: '2'
+          },
+          c: {
+            c1: true,
+            c2: null,
+            c3: undefined
+          },
+          d: {
+            d1: {
+              d2: function() {}
+            }
+          },
+          e: Error,
+          f: WebAssembly
+        },
+        e = _a$b$c$d$e$f2.e,
+        f = _a$b$c$d$e$f2.f,
+        g = _a$b$c$d$e$f2.g,
+        h = _objectWithoutProperties(_a$b$c$d$e$f2, [\\"e\\", \\"f\\", \\"g\\"]);
+
+      var _a$b$c$d$e$f3 = {
+          a: 1,
+          b: {
+            b1: '2'
+          },
+          c: {
+            c1: true,
+            c2: null,
+            c3: undefined
+          },
+          d: {
+            d1: {
+              d2: function() {}
+            }
+          },
+          e: Error,
+          f: WebAssembly
+        },
+        i = _a$b$c$d$e$f3.i,
+        j = _a$b$c$d$e$f3.j,
+        k = _a$b$c$d$e$f3.k,
+        l = _objectWithoutProperties(_a$b$c$d$e$f3, [\\"i\\", \\"j\\", \\"k\\"]);
     },
     {},
   ]

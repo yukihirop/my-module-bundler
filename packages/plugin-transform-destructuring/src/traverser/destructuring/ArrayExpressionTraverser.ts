@@ -6,7 +6,7 @@ import { TraverserThisType } from '../../types';
 
 type IdDataType = { name: string, isRestElement: boolean, depth: number }
 
-export default class ArrayDestructuringTraverser extends BaseTraverser {
+export default class ArrayExpressionTraverser extends BaseTraverser {
   public traverserThis: TraverserThisType;
   public node: Node;
   public declaration?: any;

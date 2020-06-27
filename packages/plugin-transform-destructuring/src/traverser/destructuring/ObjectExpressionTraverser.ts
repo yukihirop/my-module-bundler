@@ -12,7 +12,7 @@ import {
 
 type IdDataType = { name: string, isRestElement: boolean, depth: number }
 
-export default class ObjectDestructuringTraverser extends BaseTraverser {
+export default class ObjectExpressionTraverser extends BaseTraverser {
   public traverserThis: TraverserThisType;
   public node: Node;
   public declaration?: any;

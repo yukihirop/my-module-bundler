@@ -2,7 +2,7 @@ import * as t from '@babel/types';
 import { NodePath } from '@babel/traverse';
 import { BabelTypes } from './types';
 
-import { ArrayDestructuringTraverser, ObjectDestructuringTraverser } from './traverser';
+import { Dest_ArrayExpressionTraverser, Dest_ObjectExpressionTraverser } from './traverser';
 
 export default function ({ types: t }: BabelTypes) {
   return {
@@ -18,13 +18,13 @@ export default function ({ types: t }: BabelTypes) {
     visitor: {
       ObjectExpression(path: NodePath) {
         const parentPath = path.findParent(path => path.isVariableDeclaration());
-        const traverser = new ObjectDestructuringTraverser(parentPath, this)
+        const traverser = new Dest_ObjectExpressionTraverser(parentPath, this)
         const skip = traverser.run()
         if (skip) return
       },
       ArrayExpression(path: NodePath) {
         const parentPath = path.findParent(path => path.isVariableDeclaration());
-        const traverser = new ArrayDestructuringTraverser(parentPath, this)
+        const traverser = new Dest_ArrayExpressionTraverser(parentPath, this)
         const skip = traverser.run()
         if (skip) return
       }

@@ -55,7 +55,7 @@
         return target;
       }
 
-      var _a$b$c$d = {
+      var _a$b$c$d$e$f = {
           a: 1,
           b: {
             b1: '2'
@@ -73,10 +73,10 @@
           e: Error,
           f: WebAssembly
         },
-        a = _a$b$c$d.a,
-        b = _a$b$c$d.b,
-        c = _a$b$c$d.c,
-        d = _objectWithoutProperties(_a$b$c$d, ["a", "b", "c"]);
+        a = _a$b$c$d$e$f.a,
+        b = _a$b$c$d$e$f.b,
+        c = _a$b$c$d$e$f.c,
+        d = _objectWithoutProperties(_a$b$c$d$e$f, ["a", "b", "c"]);
     },
     {},
   ]

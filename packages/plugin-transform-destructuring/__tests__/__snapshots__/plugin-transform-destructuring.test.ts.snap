@@ -268,6 +268,97 @@ exports[`destructuring object-basic 1`] = `
 })"
 `;
 
+exports[`destructuring object-overflow 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      var _a$b$c$d$e$f = {
+          a: 1,
+          b: {
+            b1: '2'
+          },
+          c: {
+            c1: true,
+            c2: null,
+            c3: undefined
+          },
+          d: {
+            d1: {
+              d2: function() {}
+            }
+          },
+          e: Error,
+          f: WebAssembly
+        },
+        a = _a$b$c$d$e$f.a,
+        b = _a$b$c$d$e$f.b,
+        c = _a$b$c$d$e$f.c;
+      var _a$b$c$d$e$f2 = {
+          a: 1,
+          b: {
+            b1: '2'
+          },
+          c: {
+            c1: true,
+            c2: null,
+            c3: undefined
+          },
+          d: {
+            d1: {
+              d2: function() {}
+            }
+          },
+          e: Error,
+          f: WebAssembly
+        },
+        d = _a$b$c$d$e$f2.d,
+        e = _a$b$c$d$e$f2.e,
+        f = _a$b$c$d$e$f2.f;
+      var _a$b$c$d$e$f3 = {
+          a: 1,
+          b: {
+            b1: '2'
+          },
+          c: {
+            c1: true,
+            c2: null,
+            c3: undefined
+          },
+          d: {
+            d1: {
+              d2: function() {}
+            }
+          },
+          e: Error,
+          f: WebAssembly
+        },
+        g = _a$b$c$d$e$f3.g,
+        h = _a$b$c$d$e$f3.h,
+        i = _a$b$c$d$e$f3.i;
+    },
+    {},
+  ]
+})"
+`;
+
 exports[`destructuring object-rest-basic 1`] = `
 "(function(modules) {
   function require(id) {
@@ -326,7 +417,7 @@ exports[`destructuring object-rest-basic 1`] = `
         return target;
       }
 
-      var _a$b$x = {
+      var _a$b$c$d$e$f$g$h = {
           a: 1,
           b: '2',
           c: true,
@@ -336,11 +427,11 @@ exports[`destructuring object-rest-basic 1`] = `
           g: Error,
           h: WebAssembly
         },
-        a = _a$b$x.a,
-        b = _a$b$x.b,
-        x = _objectWithoutProperties(_a$b$x, [\\"a\\", \\"b\\"]);
+        a = _a$b$c$d$e$f$g$h.a,
+        b = _a$b$c$d$e$f$g$h.b,
+        x = _objectWithoutProperties(_a$b$c$d$e$f$g$h, [\\"a\\", \\"b\\"]);
 
-      var _d$e$y = {
+      var _a$b$c$d$e$f$g$h2 = {
           a: 1,
           b: '2',
           c: true,
@@ -350,11 +441,11 @@ exports[`destructuring object-rest-basic 1`] = `
           g: Error,
           h: WebAssembly
         },
-        d = _d$e$y.d,
-        e = _d$e$y.e,
-        y = _objectWithoutProperties(_d$e$y, [\\"d\\", \\"e\\"]);
+        d = _a$b$c$d$e$f$g$h2.d,
+        e = _a$b$c$d$e$f$g$h2.e,
+        y = _objectWithoutProperties(_a$b$c$d$e$f$g$h2, [\\"d\\", \\"e\\"]);
 
-      var _m$n$z = {
+      var _a$b$c$d$e$f$g$h3 = {
           a: 1,
           b: '2',
           c: true,
@@ -364,9 +455,9 @@ exports[`destructuring object-rest-basic 1`] = `
           g: Error,
           h: WebAssembly
         },
-        m = _m$n$z.m,
-        n = _m$n$z.n,
-        z = _objectWithoutProperties(_m$n$z, [\\"m\\", \\"n\\"]);
+        m = _a$b$c$d$e$f$g$h3.m,
+        n = _a$b$c$d$e$f$g$h3.n,
+        z = _objectWithoutProperties(_a$b$c$d$e$f$g$h3, [\\"m\\", \\"n\\"]);
     },
     {},
   ]
@@ -431,7 +522,7 @@ exports[`destructuring object-rest-nested 1`] = `
         return target;
       }
 
-      var _a$b$c$d = {
+      var _a$b$c$d$e$f = {
           a: 1,
           b: {
             b1: '2'
@@ -449,10 +540,10 @@ exports[`destructuring object-rest-nested 1`] = `
           e: Error,
           f: WebAssembly
         },
-        a = _a$b$c$d.a,
-        b = _a$b$c$d.b,
-        c = _a$b$c$d.c,
-        d = _objectWithoutProperties(_a$b$c$d, [\\"a\\", \\"b\\", \\"c\\"]);
+        a = _a$b$c$d$e$f.a,
+        b = _a$b$c$d$e$f.b,
+        c = _a$b$c$d$e$f.c,
+        d = _objectWithoutProperties(_a$b$c$d$e$f, [\\"a\\", \\"b\\", \\"c\\"]);
     },
     {},
   ]

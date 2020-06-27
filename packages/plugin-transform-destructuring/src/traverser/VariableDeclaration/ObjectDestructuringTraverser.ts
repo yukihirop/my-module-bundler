@@ -97,7 +97,7 @@ export default class ObjectDestructuringTraverser extends BaseTraverser {
     // [ref] http://hzoo.github.io/babel.github.io/docs/advanced/plugins/scope/
     //
     // e.g.) uid = _a$b$c
-    const uid = scope.generateUidIdentifierBasedOnNode(declaration.id);
+    const uid = scope.generateUidIdentifierBasedOnNode(declaration.init);
 
     // _a$b$c = { a: 1, b: '2', c: true };
     var_refDecl = t.variableDeclarator(

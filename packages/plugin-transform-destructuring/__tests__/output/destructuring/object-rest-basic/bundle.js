@@ -55,7 +55,7 @@
         return target;
       }
 
-      var _a$b$x = {
+      var _a$b$c$d$e$f$g$h = {
           a: 1,
           b: '2',
           c: true,
@@ -65,11 +65,11 @@
           g: Error,
           h: WebAssembly
         },
-        a = _a$b$x.a,
-        b = _a$b$x.b,
-        x = _objectWithoutProperties(_a$b$x, ["a", "b"]);
+        a = _a$b$c$d$e$f$g$h.a,
+        b = _a$b$c$d$e$f$g$h.b,
+        x = _objectWithoutProperties(_a$b$c$d$e$f$g$h, ["a", "b"]);
 
-      var _d$e$y = {
+      var _a$b$c$d$e$f$g$h2 = {
           a: 1,
           b: '2',
           c: true,
@@ -79,11 +79,11 @@
           g: Error,
           h: WebAssembly
         },
-        d = _d$e$y.d,
-        e = _d$e$y.e,
-        y = _objectWithoutProperties(_d$e$y, ["d", "e"]);
+        d = _a$b$c$d$e$f$g$h2.d,
+        e = _a$b$c$d$e$f$g$h2.e,
+        y = _objectWithoutProperties(_a$b$c$d$e$f$g$h2, ["d", "e"]);
 
-      var _m$n$z = {
+      var _a$b$c$d$e$f$g$h3 = {
           a: 1,
           b: '2',
           c: true,
@@ -93,9 +93,9 @@
           g: Error,
           h: WebAssembly
         },
-        m = _m$n$z.m,
-        n = _m$n$z.n,
-        z = _objectWithoutProperties(_m$n$z, ["m", "n"]);
+        m = _a$b$c$d$e$f$g$h3.m,
+        n = _a$b$c$d$e$f$g$h3.n,
+        z = _objectWithoutProperties(_a$b$c$d$e$f$g$h3, ["m", "n"]);
     },
     {},
   ]

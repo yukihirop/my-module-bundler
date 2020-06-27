@@ -110,7 +110,7 @@ export default class ObjectDestructuringTraverser extends BaseTraverser {
 
     // e.g.)
     // var {a, b, ...c} = [a: 1, b: '2', c: true, d: null, e: undefined, f: function () { }, g: Error, h: WebAssembly];
-    // var {a, {b}, {...c}, {...d]}} = {a: 1, b: { b1: '2'}, c: { c1: true, c2: null, c3: undefined }, d: { d1: function () { }, d2: Error, d3: WebAssembly}}
+    // var {a, b, c, ...d} = {a: 1, b: { b1: '2'}, c: { c1: true, c2: null, c3: undefined }, d: { d1: function () { }, d2: Error, d3: WebAssembly}}
     const excludedkeys = idMap.reduce((acc, { name, isRestElement }) => {
       if (!isRestElement) acc.push(name)
       return acc

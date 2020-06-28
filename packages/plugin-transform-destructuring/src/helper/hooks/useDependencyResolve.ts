@@ -1,24 +1,29 @@
 import traverse, { NodePath } from '@babel/traverse'
 import * as t from '@babel/types';
-import * as s from '../../statement'
+import * as catalog from '../../catalog'
 import HelperBuilder from '../builder';
 
-var statementNames = Object.keys(s);
+var catalogs = Object.keys(catalog.default);
 
+// MEMO:
+// Hook for setting dependencies and statement of HelperBuilder
 export default function useDependencyResolve(builder: HelperBuilder) {
   const dependencyVisitor: any = {
-    CallExpression(path: NodePath) {
-      const helperName = path.node['callee']['name'];
-
-      if (statementNames.includes(`${helperName}Statement`)) {
+    ImportDeclaration(path: NodePath) {
+      const helperName = path.node['source']['value']
+      if (catalogs.includes(helperName)) {
         let depBuilder = new HelperBuilder(helperName)
         depBuilder = useDependencyResolve(depBuilder)
-        builder.dependencies = { ...builder.dependencies, ...{ [helperName]: depBuilder } }
+        builder.setDependencies({ ...builder.dependencies, ...{ [helperName]: depBuilder } })
       }
+    },
+    ExportDefaultDeclaration(path: NodePath) {
+      const declaration = path.node['declaration'];
+      builder.setStatement(declaration)
     }
   }
 
-  const file = t.file(t.program([builder.statement]))
+  const file = t.file(builder.program)
   traverse(file, dependencyVisitor, file['scope'])
 
   return builder

@@ -1,15 +1,27 @@
 import * as t from '@babel/types';
-import * as s from '../../statement'
+import * as catalog from '../../catalog'
+
+export type DependencyType = { [key: string]: any }
 
 export default class HelperBuilder {
   public helperName: string;
-  public dependencies: { [key: string]: any };
+  public dependencies: DependencyType;
+  public program: t.Program;
   public statement: t.Statement;
 
   constructor(helperName: string) {
     this.helperName = helperName;
     this.dependencies = [];
-    this.statement = s[`${helperName}Statement`];
+    this.program = catalog.default[helperName].ast();
+    this.statement = null;
+  }
+
+  setDependencies(dependencies: DependencyType): void {
+    this.dependencies = dependencies
+  }
+
+  setStatement(statement: t.Statement): void {
+    this.statement = statement
   }
 
   public buildStatements(): t.Statement[] {

@@ -3,7 +3,7 @@ import * as t from '@babel/types';
 
 import BaseTraverser from '../BaseTraverser';
 import { TraverserThisType } from '../../types';
-import helper from '../../helper'
+import { helperBuilder } from '../../helper'
 
 type IdDataType = { name: string, isRestElement: boolean, depth: number }
 
@@ -122,7 +122,7 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
       [...beforeVariableDeclarators, ...mainVariableDeclarators]
     )
 
-    traverserThis.beforeStatements.push(...helper("_slicedToArray").buildStatements())
+    traverserThis.beforeStatements.push(...helperBuilder("_slicedToArray").buildStatements())
     traverserThis.LazyEvaluateStatement.push({ path, statement })
   }
 

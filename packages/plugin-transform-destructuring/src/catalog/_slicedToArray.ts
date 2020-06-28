@@ -1,12 +1,7 @@
-import template from '@babel/template';
-import * as t from '@babel/types';
+import { helper } from '../helperImpl'
 
 const helpers = Object.create(null);
 export default helpers;
-
-const helper = tpl => ({
-  ast: (): t.Program => template.program.ast(tpl)
-})
 
 helpers._slicedToArray = helper`
   import _arrayWithHoles from '_arrayWithHoles';

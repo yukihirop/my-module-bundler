@@ -12,17 +12,20 @@ helpers._slicedToArray = helper`
   import _arrayWithHoles from '_arrayWithHoles';
   import _iterableToArrayLimit from '_iterableToArrayLimit';
   import _unsupportedIterableToArray from '_unsupportedIterableToArray';
+  import _nonIterableRest from '_nonIterableRest';
 
   export default function _slicedToArray(arr, i) {
-    return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i);
+    return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
   }
 `;
 
-// helpers._nonIterableRest = helper`
-//   export default function _nonIterableRest() { 
-//     throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-//   }
-// `;
+helpers._nonIterableRest = helper`
+  export default function _nonIterableRest() {
+    throw new TypeError(
+      "Invalid attempt to destructure non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."
+    );
+  } 
+`;
 
 helpers._unsupportedIterableToArray = helper`
   import _arrayLikeToArray from '_arrayLikeToArray'
@@ -48,7 +51,7 @@ helpers._arrayLikeToArray = helper`
 `;
 
 helpers._iterableToArrayLimit = helper`
-  function _iterableToArrayLimit(arr, i) {
+  export default function _iterableToArrayLimit(arr, i) {
     if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return;
     var _arr = [];
     var _n = true;

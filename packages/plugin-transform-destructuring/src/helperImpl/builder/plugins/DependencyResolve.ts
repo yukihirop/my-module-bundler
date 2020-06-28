@@ -1,12 +1,13 @@
 import traverse, { NodePath } from '@babel/traverse'
 import * as t from '@babel/types';
 import HelperBuilder from '..';
+import { imported as importedCache } from '../cache';
 
 // MEMO:
 // Plugin for setting dependencies and statement of HelperBuilder
 // Be sure to return a HelperBuilder instance
 export default function DependencyResolve(builder: HelperBuilder, options?: any[]): HelperBuilder {
-  const dependencyVisitor: any = {
+  const visitor: any = {
     ImportDeclaration(path: NodePath) {
       if (
         path.node["specifiers"].length !== 1 ||
@@ -16,16 +17,25 @@ export default function DependencyResolve(builder: HelperBuilder, options?: any[
       }
 
       const helperName = path.node['source']['value']
-      const { catalog, catalogs } = builder
+      const { globalPath, catalog, catalogs } = builder
 
       if (catalogs.includes(helperName)) {
-        let depBuilder = new HelperBuilder(helperName, { catalog, catalogs })
+        let depBuilder = new HelperBuilder(helperName, globalPath, { catalog, catalogs })
         depBuilder = DependencyResolve(depBuilder)
         builder.setDependencies({ ...builder.dependencies, ...{ [helperName]: depBuilder } })
       }
     },
     ExportDefaultDeclaration(path: NodePath) {
+      const { globalPath, helperName } = builder
       const declaration = path.node['declaration'];
+      const uidName = globalPath.scope.generateUidIdentifier(helperName).name
+      if (helperName !== uidName) {
+        importedCache.set(helperName, uidName)
+        declaration.id.name = uidName
+        builder.updateHelperName(uidName)
+        builder.updateCatalogAll(helperName, uidName)
+      }
+      builder.setPath(path)
       builder.setStatement(declaration)
     },
     ExportAllDeclaration(path: NodePath) {
@@ -37,7 +47,7 @@ export default function DependencyResolve(builder: HelperBuilder, options?: any[
   }
 
   const file = t.file(builder.program())
-  traverse(file, dependencyVisitor, file['scope'])
+  traverse(file, visitor, file['scope'])
 
   return builder
 }

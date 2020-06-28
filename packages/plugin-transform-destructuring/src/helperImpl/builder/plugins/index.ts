@@ -1,3 +1,8 @@
-import DependencyResolvePlugin from './DependencyResolve';
 import CatalogPlugin from './Catalog';
-export { DependencyResolvePlugin, CatalogPlugin }
+import DependencyResolvePlugin from './DependencyResolve';
+import ReferencedResolvePlugin from './ReferencedResolve';
+export {
+  CatalogPlugin,
+  DependencyResolvePlugin,
+  ReferencedResolvePlugin
+}

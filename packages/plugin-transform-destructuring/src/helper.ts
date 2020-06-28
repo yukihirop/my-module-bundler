@@ -1,12 +1,13 @@
 import {
   builder as baseBuilder,
   CatalogPlugin,
-  HelperBuilder
+  HelperBuilder,
+  NodePath
 } from './helperImpl'
 import * as catalog from './catalog'
 
-const helper = (name: string): HelperBuilder => {
-  const builder = baseBuilder(name);
+const helper = (name: string, globalPath: NodePath): HelperBuilder => {
+  const builder = baseBuilder(name, globalPath);
   return builder
     .use(CatalogPlugin, { catalog })
     .exec()

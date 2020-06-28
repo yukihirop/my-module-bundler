@@ -3,6 +3,7 @@ import * as t from '@babel/types';
 
 import BaseTraverser from '../BaseTraverser';
 import { TraverserThisType } from '../../types';
+import { HelperBuilder } from '../../helperImpl';
 import helper from '../../helper'
 
 type IdDataType = { name: string, isRestElement: boolean, depth: number }
@@ -65,6 +66,7 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
       idMap,
       traverserThis
     } = this
+    const h = helper("_slicedToArray", path) as HelperBuilder
     const { scope } = path
     const initCallee = declaration!.init && declaration!.init.callee;
 
@@ -89,7 +91,7 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
     const var_refDecl = t.variableDeclarator(
       _slicedToArrayVarName,
       t.callExpression(
-        t.identifier("_slicedToArray"),
+        t.identifier(h.helperName),
         [
           renameUid,
           t.numericLiteral(idElements.length)
@@ -122,7 +124,7 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
       [...beforeVariableDeclarators, ...mainVariableDeclarators]
     )
 
-    traverserThis.beforeStatements.push(...helper("_slicedToArray").buildStatements())
+    traverserThis.beforeStatements.push(...h.buildStatements())
     traverserThis.LazyEvaluateStatement.push({ path, statement })
   }
 

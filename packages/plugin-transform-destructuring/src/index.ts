@@ -33,9 +33,11 @@ export default function ({ types: t }: BabelTypes) {
       },
       ObjectExpression(path: NodePath) {
         const parentPath = path.findParent(path => path.isVariableDeclaration());
-        const traverser = new Dest_ObjectExpressionTraverser(parentPath, this)
-        const skip = traverser.run()
-        if (skip) return
+        if (parentPath) {
+          const traverser = new Dest_ObjectExpressionTraverser(parentPath, this)
+          const skip = traverser.run()
+          if (skip) return
+        }
       },
       ArrayExpression(path: NodePath) {
         const parentPath = path.findParent(path => path.isVariableDeclaration());

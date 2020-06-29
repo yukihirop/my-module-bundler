@@ -124,7 +124,10 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
       [...beforeVariableDeclarators, ...mainVariableDeclarators]
     )
 
-    traverserThis.beforeStatements.push(...h.buildStatements())
+    if (!traverserThis.isAddHelper) {
+      traverserThis.beforeStatements.push(...h.buildStatements())
+      traverserThis.isAddHelper = true
+    }
     traverserThis.LazyEvaluateStatement.push({ path, statement })
   }
 

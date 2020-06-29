@@ -306,6 +306,17 @@ exports[`destructuring call-expression-array-basic 1`] = `
         _f2 = _slicedToArray(_f, 2),
         a = _f2[0],
         b = _f2[1];
+
+      function g() {
+        return [1, 2];
+      }
+
+      ;
+
+      var _g = g(),
+        _g2 = _slicedToArray(_g, 2),
+        c = _g2[0],
+        d = _g2[1];
     },
     {},
   ]

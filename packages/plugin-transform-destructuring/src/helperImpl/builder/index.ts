@@ -11,6 +11,7 @@ import {
 import { plugin as pluginCache } from './cache'
 
 const CATALOG_PLUGIN_NAME = 'Catalog'
+const EXPORTED_CACHE_NAMESPACE = '__babel-udf-helpers'
 
 export default class HelperBuilder {
   public helperName: string;
@@ -21,6 +22,7 @@ export default class HelperBuilder {
   public catalog: CatalogType
   public catalogs: CatalogListType
   public _file: t.File
+  public exportedCacheNamespace: string
 
   constructor(helperName: string, globalPath: NodePath, options?: HelperBuilderOptions) {
     this.helperName = helperName;
@@ -30,6 +32,7 @@ export default class HelperBuilder {
     this.path = null;
     this.catalog = options && options["catalog"] || []
     this.catalogs = options && options["catalogs"] || []
+    this.exportedCacheNamespace = EXPORTED_CACHE_NAMESPACE
   }
 
   public exec(): HelperBuilder {

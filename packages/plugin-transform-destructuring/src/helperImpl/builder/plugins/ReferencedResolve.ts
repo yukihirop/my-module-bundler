@@ -1,6 +1,5 @@
 import traverse, { NodePath } from '@babel/traverse'
 import HelperBuilder from '..';
-import { imported as importedCache } from '../cache';
 
 // MEMO:
 // Helps traversing the ReferencedIdentifier of helper code
@@ -8,8 +7,11 @@ import { imported as importedCache } from '../cache';
 export default function ReferencedResolve(builder: HelperBuilder, options?: any[]): HelperBuilder {
   const visitor: any = {
     ReferencedIdentifier(path: NodePath) {
+      const { globalPath, exportedCacheNamespace: namespace } = builder
       const name = path.node['name'];
-      const rename = importedCache.get(name)
+      const gpPath = globalPath.findParent(path => path.isProgram())
+      const exportedCache = gpPath.scope['globals']
+      const rename = exportedCache[namespace] && exportedCache[namespace][name]
 
       if (rename && builder.path.scope.hasBinding(name)) {
         builder.path.scope.rename(name, rename)

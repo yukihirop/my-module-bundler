@@ -1,6 +1,5 @@
 import traverse, { NodePath } from '@babel/traverse'
 import HelperBuilder from '..';
-import { imported as importedCache } from '../cache';
 
 // MEMO:
 // Plugin for setting dependencies and statement of HelperBuilder
@@ -25,19 +24,52 @@ export default function DependencyResolve(builder: HelperBuilder, options?: any[
       }
     },
     ExportDefaultDeclaration(path: NodePath) {
-      const { globalPath, helperName } = builder
+      const { globalPath, helperName, exportedCacheNamespace: namespace } = builder
       const declaration = path.node['declaration'];
-      const uidName = globalPath.scope.generateUidIdentifier(helperName).name
-      if (helperName !== uidName) {
-        const imported = importedCache.get(helperName)
+      const gpPath = globalPath.findParent(path => path.isProgram())
 
-        if (!imported) {
-          importedCache.set(helperName, uidName)
+      //　Avoid global pollution as much as possible by cutting the namespace for exportedCache
+      let exportedCache = gpPath.scope['globals']
+      exportedCache[namespace] = exportedCache[namespace] || {}
+      exportedCache = exportedCache[namespace]
+
+      const exported = exportedCache[helperName]
+
+      if (!exported) {
+        const uidName = globalPath.scope.generateUidIdentifier(helperName).name
+
+        if (helperName !== uidName) {
+          exportedCache[helperName] = uidName
           declaration.id.name = uidName
+
           builder.updateHelperName(uidName)
           builder.updateCatalogAll(helperName, uidName)
+        } else {
+          exportedCache[helperName] = helperName
+        }
+      } else {
+        const globalParentPath = globalPath.findParent(path => path.isProgram())
+        const gpUids = globalParentPath.scope['uids'];
+
+        // MEMO:
+        // Global cache exists, but there is no cache for uids in globalPath.
+        // This means traversing for entirely new content.
+        // There is no problem in overwriting the cache.
+        if (!gpUids[helperName]) {
+          const uidName = globalPath.scope.generateUidIdentifier(helperName).name
+
+          if (helperName !== uidName) {
+            exportedCache[helperName] = uidName
+            declaration.id.name = uidName
+
+            builder.updateHelperName(uidName)
+            builder.updateCatalogAll(helperName, uidName)
+          } else {
+            exportedCache[helperName] = helperName
+          }
         }
       }
+
       builder.setPath(path)
       builder.setStatement(declaration)
     },

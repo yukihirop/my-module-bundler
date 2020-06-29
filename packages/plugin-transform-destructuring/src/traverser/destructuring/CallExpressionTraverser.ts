@@ -1,3 +1,4 @@
+import * as babel from '@babel/core';
 import { NodePath, Node } from '@babel/traverse';
 import * as t from '@babel/types';
 
@@ -121,7 +122,7 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
 
         switch (type) {
           // e.g.)
-          // 
+          //
           // _f2$2 = _toArray(_f2[2]),
           // c = _f2$2.slice(0),
           case 'ArrayPattern':

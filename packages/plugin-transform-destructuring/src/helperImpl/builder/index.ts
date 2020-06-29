@@ -8,7 +8,7 @@ import {
   HelperBuilderOptions,
   PluginCacheType
 } from '../types'
-import { plugin as pluginCache, clear as clearCache } from './cache'
+import { plugin as pluginCache } from './cache'
 
 const CATALOG_PLUGIN_NAME = 'Catalog'
 
@@ -37,7 +37,6 @@ export default class HelperBuilder {
     this.execCatalog();
 
     pluginCache.forEach(({ plugin, options }: PluginCacheType<HelperBuilder>) => plugin(this, options))
-    clearCache()
 
     return this
   }

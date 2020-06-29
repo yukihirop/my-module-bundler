@@ -29,10 +29,14 @@ export default function DependencyResolve(builder: HelperBuilder, options?: any[
       const declaration = path.node['declaration'];
       const uidName = globalPath.scope.generateUidIdentifier(helperName).name
       if (helperName !== uidName) {
-        importedCache.set(helperName, uidName)
-        declaration.id.name = uidName
-        builder.updateHelperName(uidName)
-        builder.updateCatalogAll(helperName, uidName)
+        const imported = importedCache.get(helperName)
+
+        if (!imported) {
+          importedCache.set(helperName, uidName)
+          declaration.id.name = uidName
+          builder.updateHelperName(uidName)
+          builder.updateCatalogAll(helperName, uidName)
+        }
       }
       builder.setPath(path)
       builder.setStatement(declaration)

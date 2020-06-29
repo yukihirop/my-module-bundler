@@ -1,13 +1,14 @@
-import { NodePath } from '@babel/traverse';
-import template from '@babel/template';
+import { helper } from '../helperImpl'
 
-export const OBJECT_WITHOUT_PROPERTIES = "_objectWithoutProperties"
-export const OBJECT_WITHOUT_PROPERTIES_LOOSE = "_objectWithoutPropertiesLoose"
+const helpers = Object.create(null);
+export default helpers;
 
-export const _objectWithoutPropertiesStatement = (funcName: string, funcNameLoose: string) => template.statement`
-  function FUNC_NAME(source, excluded) {
+helpers._objectWithoutProperties = helper`
+  import _objectWithoutPropertiesLoose from '_objectWithoutPropertiesLoose';
+
+  export default function _objectWithoutProperties(source, excluded) {
     if (source == null) return {};
-    var target = FUNC_NAME_LOOSE(source, excluded);
+    var target = _objectWithoutPropertiesLoose(source, excluded);
     var key,i;
     if (Object.getOwnPropertySymbols){
       var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
@@ -20,13 +21,10 @@ export const _objectWithoutPropertiesStatement = (funcName: string, funcNameLoos
     }
     return target
   }
-`({
-  FUNC_NAME: funcName,
-  FUNC_NAME_LOOSE: funcNameLoose
-});
+`;
 
-export const _objectWithoutPropertiesLooseStatement = (funcName: string) => template.statement`
-  function FUNC_NAME(source, excluded){
+helpers._objectWithoutPropertiesLoose = helper`
+  export default function _objectWithoutPropertiesLoose(source, excluded){
     if (source == null) return {};
     var target = {};
     var sourceKeys = Object.keys(source);
@@ -38,6 +36,4 @@ export const _objectWithoutPropertiesLooseStatement = (funcName: string) => temp
     }
     return target;
   }
-`({
-  FUNC_NAME: funcName
-});
+`

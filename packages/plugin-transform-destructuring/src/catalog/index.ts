@@ -1,2 +1,6 @@
 import _slicedToArrayHelpers from './_slicedToArray';
-export default { ..._slicedToArrayHelpers }
+import _objectWithoutProperties from './_objectWithoutProperties';
+export default {
+  ..._slicedToArrayHelpers,
+  ..._objectWithoutProperties
+}

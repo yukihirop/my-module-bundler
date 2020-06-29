@@ -3,12 +3,8 @@ import * as t from '@babel/types';
 
 import BaseTraverser from '../BaseTraverser';
 import { TraverserThisType } from '../../types';
-import {
-  OBJECT_WITHOUT_PROPERTIES,
-  OBJECT_WITHOUT_PROPERTIES_LOOSE,
-  _objectWithoutPropertiesStatement,
-  _objectWithoutPropertiesLooseStatement
-} from './../../statement';
+import helper from '../../helper'
+import { HelperBuilder } from '../../helperImpl';
 
 type IdDataType = { name: string, isRestElement: boolean, depth: number }
 
@@ -17,8 +13,7 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
   public node: Node;
   public declaration?: any;
   public idMap: Array<IdDataType & { index: number }>;
-  public _objectWithoutProprtiesFuncName: string;
-  public _objectWithoutProprtiesLooseFuncName: string
+  public h: HelperBuilder
 
   constructor(path: NodePath, traverserThis: TraverserThisType) {
     super(path)
@@ -26,6 +21,7 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
     this.node = this.path.node
     this.declaration = path.node['declarations'] && path.node['declarations'][0];
     this.idMap = [] as Array<IdDataType & { index: number }>
+    this.h = helper("_objectWithoutProperties", path)
   }
 
   /**
@@ -41,9 +37,9 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
    */
   public beforeProcess(): boolean | void {
     const {
-      path,
       declaration,
-      traverserThis
+      traverserThis,
+      h
     } = this
 
     if (!declaration) return false;
@@ -55,17 +51,10 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
       return { ...this.searchIdData(el), index }
     });
 
-    const funcName = traverserThis._objectWithoutProprtiesFuncName! || path.scope.generateUidIdentifier(OBJECT_WITHOUT_PROPERTIES).name;
-    const funcNameLoose = traverserThis._objectWithoutProprtiesLooseFuncName! || path.scope.generateUidIdentifier(OBJECT_WITHOUT_PROPERTIES_LOOSE).name;
     const isExistRestElement = idMap.filter(({ isRestElement }) => isRestElement).length > 0;
     if (isExistRestElement && !traverserThis.isAddHelper) {
-      traverserThis.beforeStatements.push(
-        _objectWithoutPropertiesStatement(funcName, funcNameLoose),
-        _objectWithoutPropertiesLooseStatement(funcNameLoose)
-      )
+      traverserThis.beforeStatements.push(...h.buildStatements())
       this.traverserThis.isAddHelper = true
-      this.traverserThis._objectWithoutProprtiesFuncName = funcName
-      this.traverserThis._objectWithoutProprtiesLooseFuncName = funcNameLoose
     }
 
     this.idMap = idMap
@@ -82,9 +71,8 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
       node,
       declaration,
       idMap,
-      traverserThis
+      h
     } = this
-    const { _objectWithoutProprtiesFuncName: funcName } = traverserThis
     const { scope } = path
     const initProperties = declaration!.init && declaration!.init.properties;
 
@@ -120,7 +108,7 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
         return t.variableDeclarator(
           t.identifier(name),
           t.callExpression(
-            t.identifier(funcName),
+            t.identifier(h.helperName),
             [
               uid,
               t.arrayExpression(excludedkeys.map(key => t.stringLiteral(key)))
@@ -161,16 +149,6 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
       case 'RestElement':
         return { name: el.argument.name, isRestElement: true, depth }
     }
-  }
-
-  private unnested(arr: Array<any>, count: number): any {
-    return count === 0 ?
-      arr
-      :
-      [...Array(count).keys()].reduce((acc, _) => {
-        acc = acc[0]
-        return acc
-      }, arr);
   }
 
   private unnestedForRest(arr: Array<any>, count: number): any {

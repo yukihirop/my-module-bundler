@@ -88,3 +88,30 @@ describe('destructuring', () => {
     });
   }
 })
+
+describe('destructuring(err)', () => {
+  const type = 'destructuring'
+  const fixturePath = join(fixtureBasePath, type)
+  const outputPath = join(outputBasePath, type)
+
+  beforeAll(async () => {
+    await createDir(outputPath, '');
+  })
+
+  const dirs = [
+    'call-expression-array-init-mix',
+  ]
+
+  for (const dir of dirs) {
+    test(dir, async () => {
+      await createDir(outputPath, dir);
+      await build(fixturePath, outputPath, { type: dir });
+
+      // Error occurr
+      await expect(runGeneratedCodeInVM(outputPath, dir)).rejects.toThrowError();
+
+      const code = await readFile(join(outputPath, dir, BUNDLE_FILE), 'utf-8')
+      expect(code).toMatchSnapshot();
+    });
+  }
+})

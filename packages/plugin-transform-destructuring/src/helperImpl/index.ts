@@ -7,6 +7,7 @@ import * as t from '@babel/types';
 import HelperBuilder from './builder';
 import {
   CatalogPlugin,
+  ConfigureStorePlugin,
   DependencyResolvePlugin,
   ReferencedResolvePlugin
 } from './builder/plugins';
@@ -18,6 +19,7 @@ const helper = tpl => ({
 const builder = (name: string, globalPath: NodePath): HelperBuilder => {
   const builder = new HelperBuilder(name, globalPath);
   return builder
+    .use(ConfigureStorePlugin)
     .use(DependencyResolvePlugin)
     .use(ReferencedResolvePlugin)
 }

@@ -6,12 +6,14 @@ import {
   CatalogType,
   CatalogListType,
   HelperBuilderOptions,
-  PluginCacheType
+  PluginCacheType,
+  StoreType
 } from '../types'
 import { plugin as pluginCache } from './cache'
 
 const CATALOG_PLUGIN_NAME = 'Catalog'
-const EXPORTED_CACHE_NAMESPACE = '__babel-udf-helpers'
+const EXPORTED_STORE_NAMESPACE = '__babel-udf-helpers_exported'
+const SPITOUT_STORE_NAMESPACE = '__babel-udf-helpers_spitout'
 
 export default class HelperBuilder {
   public helperName: string;
@@ -22,7 +24,8 @@ export default class HelperBuilder {
   public catalog: CatalogType
   public catalogs: CatalogListType
   public _file: t.File
-  public exportedCacheNamespace: string
+  public exportedStoreNamespace: string
+  public spitoutStoreNamespace: string
 
   constructor(helperName: string, globalPath: NodePath, options?: HelperBuilderOptions) {
     this.helperName = helperName;
@@ -32,7 +35,8 @@ export default class HelperBuilder {
     this.path = null;
     this.catalog = options && options["catalog"] || []
     this.catalogs = options && options["catalogs"] || []
-    this.exportedCacheNamespace = EXPORTED_CACHE_NAMESPACE
+    this.exportedStoreNamespace = EXPORTED_STORE_NAMESPACE
+    this.spitoutStoreNamespace = SPITOUT_STORE_NAMESPACE
   }
 
   public exec(): HelperBuilder {
@@ -87,12 +91,26 @@ export default class HelperBuilder {
   }
 
   public buildStatements(): t.Statement[] {
-    const { dependencies } = this
+    const { dependencies, globalPath, spitoutStoreNamespace: ssn } = this
     let result = [this.statement] as t.Statement[];
+
+    // MEMO:
+    // Not methodized so that store (globals) is not bound to this
+    // It doesn't make sense to not reference the same thing in all HelperBuilder instances
+    const gpPath = globalPath.findParent(path => path.isProgram())
+    const globals = gpPath.scope['globals']
+    const splitoutStore = globals[ssn]
 
     Object.entries(dependencies).map(([key, child]: [string, any]) => {
       if (child.statement) {
-        result.push(...child.buildStatements())
+        child.buildStatements().forEach((statement: t.Statement) => {
+          // Once spit outed, do not spit out separately
+          const name = statement['id']['name']
+          if (!splitoutStore[name]) {
+            result.push(statement)
+            splitoutStore[name] = name
+          }
+        })
       }
     })
 
@@ -120,5 +138,11 @@ export default class HelperBuilder {
   private program(): t.Program {
     const { catalog, helperName } = this
     return catalog[helperName].ast();
+  }
+
+  private getGlobals(): any {
+    const { globalPath } = this
+    const gpPath = globalPath.findParent(path => path.isProgram())
+    return gpPath.scope['globals']
   }
 }

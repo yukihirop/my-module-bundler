@@ -13,6 +13,7 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
   public node: Node;
   public declaration?: any;
   public idMap: Array<IdDataType & { index: number }>;
+  public usedUids: t.Identifier[];
 
   constructor(path: NodePath, traverserThis: TraverserThisType) {
     super(path)
@@ -20,6 +21,7 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
     this.node = this.path.node
     this.declaration = path.node['declarations'] && path.node['declarations'][0];
     this.idMap = [] as Array<IdDataType & { index: number }>
+    this.usedUids = []
   }
 
   /**
@@ -64,9 +66,12 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
       node,
       declaration,
       idMap,
-      traverserThis
+      traverserThis,
+      usedUids,
     } = this
-    const h = helper("_slicedToArray", path) as HelperBuilder
+    const _slicedToArrayHelper = helper("_slicedToArray", path) as HelperBuilder
+    const _toArrayHelper = helper("_toArray", path) as HelperBuilder
+
     const { scope } = path
     const initCallee = declaration!.init && declaration!.init.callee;
 
@@ -76,6 +81,8 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
     // e.g.)
     // var _f = f();
     const renameUid = scope.generateUidIdentifier(initCallee.name);
+    usedUids.push(renameUid)
+
     const var_renameDecl = t.variableDeclarator(
       renameUid,
       t.callExpression(
@@ -88,10 +95,12 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
     // var _f2 = _slicedToArray(_f, 2);
     const idElements = declaration.id && declaration.id.elements;
     const _slicedToArrayVarName = scope.generateUidIdentifier(initCallee.name);
+    usedUids.push(_slicedToArrayVarName)
+
     const var_refDecl = t.variableDeclarator(
       _slicedToArrayVarName,
       t.callExpression(
-        t.identifier(h.helperName),
+        t.identifier(_slicedToArrayHelper.helperName),
         [
           renameUid,
           t.numericLiteral(idElements.length)
@@ -105,19 +114,98 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
     // e.g.)
     // function f(){ return [1,2] }
     // var [a, b] = f();
-    const mainVariableDeclarators = idMap.map(({ name, isRestElement, index }) => {
+    const mainVariableDeclarators = idMap.reduce((acc, { name, isRestElement, index, depth }) => {
       if (isRestElement) {
+        const idElements = declaration.id && declaration.id.elements;
+        const type = idElements[index].type
+
+        switch (type) {
+          // e.g.)
+          // 
+          // _f2$2 = _toArray(_f2[2]),
+          // c = _f2$2.slice(0),
+          case 'ArrayPattern':
+            const { [0]: firstUid, length: l, [l - 1]: lastUid } = usedUids
+            const uid = scope.generateUidIdentifier(lastUid.name)
+            usedUids.push(uid)
+
+            // _f2$2 = _toArray(_f2[2])
+            const vd1 = t.variableDeclarator(
+              uid,
+              t.callExpression(
+                t.identifier(_toArrayHelper.helperName),
+                [
+                  t.memberExpression(
+                    firstUid,
+                    t.numericLiteral(index),
+                    true
+                  )
+                ]
+              )
+            );
+            // c = _f2$2.slice(0)
+            const vd2 = t.variableDeclarator(
+              t.identifier(name),
+              t.callExpression(
+                t.memberExpression(
+                  uid,
+                  t.identifier("slice"),
+                  false
+                ),
+                [t.numericLiteral(0)]
+              )
+            );
+            acc.push(vd1, vd2);
+
+            break
+          case 'RestPattern':
+            debugger
+            break
+        }
       } else {
-        return t.variableDeclarator(
-          t.identifier(name),
-          t.memberExpression(
-            _slicedToArrayVarName,
-            t.numericLiteral(index),
-            true
+        if (depth > 0) {
+          const uid = scope.generateUidIdentifier(_slicedToArrayVarName.name);
+          usedUids.push(uid.name)
+
+          // e.g.)
+          // _f2$ = _slicedToArray(_f2[1], 1)
+          const vd1 = t.variableDeclarator(
+            uid,
+            t.callExpression(
+              t.identifier(_slicedToArrayHelper.helperName),
+              [
+                _slicedToArrayVarName,
+                t.numericLiteral(depth)
+              ]
+            )
+          );
+          // e.g.)
+          // b = _f2$[0]
+          const vd2 = t.variableDeclarator(
+            t.identifier(name),
+            t.memberExpression(
+              uid,
+              t.numericLiteral(0),
+              true
+            )
           )
-        )
+          acc.push(vd1, vd2)
+        } else {
+          // e.g.)
+          // a = _f2[0]
+          const vd = t.variableDeclarator(
+            t.identifier(name),
+            t.memberExpression(
+              _slicedToArrayVarName,
+              t.numericLiteral(index),
+              true
+            )
+          )
+          acc.push(vd)
+        }
       }
-    });
+      return acc
+    }, []);
 
     const statement = t.variableDeclaration(
       kind,
@@ -125,7 +213,8 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
     )
 
     if (!traverserThis.isAddHelper) {
-      traverserThis.beforeStatements.push(...h.buildStatements())
+      traverserThis.beforeStatements.push(..._slicedToArrayHelper.buildStatements())
+      traverserThis.beforeStatements.push(..._toArrayHelper.buildStatements())
       traverserThis.isAddHelper = true
     }
     traverserThis.LazyEvaluateStatement.push({ path, statement })
@@ -144,6 +233,9 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
         return { name: el.name, isRestElement: false, depth }
       case 'RestElement':
         return { name: el.argument.name, isRestElement: true, depth }
+      case 'ArrayPattern':
+        depth++
+        return this.searchIdData(el.elements[0], depth)
     }
   }
 }

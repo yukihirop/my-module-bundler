@@ -11,3 +11,4 @@ export type PluginCacheType<T> = {
   plugin: PluginType<T>;
   options?: PluginOptionsType;
 }
+export type StoreType = { [key: string]: string }

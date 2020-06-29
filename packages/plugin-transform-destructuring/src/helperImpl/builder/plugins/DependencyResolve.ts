@@ -24,33 +24,32 @@ export default function DependencyResolve(builder: HelperBuilder, options?: any[
       }
     },
     ExportDefaultDeclaration(path: NodePath) {
-      const { globalPath, helperName, exportedCacheNamespace: namespace } = builder
+      const { globalPath, helperName, exportedStoreNamespace: esn } = builder
       const declaration = path.node['declaration'];
+
+      // MEMO:
+      // Not methodized so that store (globals) is not bound to this
+      // It doesn't make sense to not reference the same thing in all HelperBuilder instances
+      // Avoid global pollution as much as possible by cutting the namespace for exportedStore
       const gpPath = globalPath.findParent(path => path.isProgram())
-
-      //　Avoid global pollution as much as possible by cutting the namespace for exportedCache
-      let exportedCache = gpPath.scope['globals']
-      exportedCache[namespace] = exportedCache[namespace] || {}
-      exportedCache = exportedCache[namespace]
-
-      const exported = exportedCache[helperName]
+      const globals = gpPath.scope['globals']
+      const gpUids = gpPath.scope['uids'];
+      const exportedStore = globals[esn]
+      const exported = exportedStore[helperName]
 
       if (!exported) {
         const uidName = globalPath.scope.generateUidIdentifier(helperName).name
 
-        if (helperName !== uidName) {
-          exportedCache[helperName] = uidName
+        if (helperName !== uidName && !gpUids[helperName]) {
+          exportedStore[helperName] = uidName
           declaration.id.name = uidName
 
           builder.updateHelperName(uidName)
           builder.updateCatalogAll(helperName, uidName)
         } else {
-          exportedCache[helperName] = helperName
+          exportedStore[helperName] = helperName
         }
       } else {
-        const globalParentPath = globalPath.findParent(path => path.isProgram())
-        const gpUids = globalParentPath.scope['uids'];
-
         // MEMO:
         // Global cache exists, but there is no cache for uids in globalPath.
         // This means traversing for entirely new content.
@@ -59,13 +58,13 @@ export default function DependencyResolve(builder: HelperBuilder, options?: any[
           const uidName = globalPath.scope.generateUidIdentifier(helperName).name
 
           if (helperName !== uidName) {
-            exportedCache[helperName] = uidName
+            exportedStore[helperName] = uidName
             declaration.id.name = uidName
 
             builder.updateHelperName(uidName)
             builder.updateCatalogAll(helperName, uidName)
           } else {
-            exportedCache[helperName] = helperName
+            exportedStore[helperName] = helperName
           }
         }
       }

@@ -7,11 +7,17 @@ import HelperBuilder from '..';
 export default function ReferencedResolve(builder: HelperBuilder, options?: any[]): HelperBuilder {
   const visitor: any = {
     ReferencedIdentifier(path: NodePath) {
-      const { globalPath, exportedCacheNamespace: namespace } = builder
+      const { globalPath, exportedStoreNamespace: esn } = builder
       const name = path.node['name'];
+
+      // MEMO:
+      // Not methodized so that store (globals) is not bound to this
+      // It doesn't make sense to not reference the same thing in all HelperBuilder instances
+      // Avoid global pollution as much as possible by cutting the namespace for exportedStore
       const gpPath = globalPath.findParent(path => path.isProgram())
-      const exportedCache = gpPath.scope['globals']
-      const rename = exportedCache[namespace] && exportedCache[namespace][name]
+      const globals = gpPath.scope['globals']
+      const exportedStore = globals[esn]
+      const rename = exportedStore[name]
 
       if (rename && builder.path.scope.hasBinding(name)) {
         builder.path.scope.rename(name, rename)

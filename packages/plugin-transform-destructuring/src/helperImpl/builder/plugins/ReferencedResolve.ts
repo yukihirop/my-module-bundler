@@ -1,5 +1,4 @@
 import traverse, { NodePath } from '@babel/traverse'
-import * as t from '@babel/types';
 import HelperBuilder from '..';
 import { imported as importedCache } from '../cache';
 
@@ -24,8 +23,9 @@ export default function ReferencedResolve(builder: HelperBuilder, options?: any[
     }
   }
 
-  const file = t.file(builder.program())
+  const file = builder.file()
   traverse(file, visitor, file['scope'])
+  builder.setFile(file)
 
   return builder
 }

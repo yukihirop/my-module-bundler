@@ -20,6 +20,7 @@ export default class HelperBuilder {
   public path: NodePath;
   public catalog: CatalogType
   public catalogs: CatalogListType
+  public _file: t.File
 
   constructor(helperName: string, globalPath: NodePath, options?: HelperBuilderOptions) {
     this.helperName = helperName;
@@ -55,6 +56,14 @@ export default class HelperBuilder {
     this.helperName = name
   }
 
+  public file(): t.File {
+    return this._file || t.file(this.program())
+  }
+
+  public setFile(file: t.File): void {
+    this._file = file
+  }
+
   public setCatalog(catalog: CatalogType): void {
     this.catalog = catalog
   }
@@ -73,12 +82,6 @@ export default class HelperBuilder {
 
   public setStatement(statement: t.Statement): void {
     this.statement = statement
-  }
-
-  public program(): t.Program {
-    const { catalog, helperName } = this
-    if (!catalog[helperName]) debugger
-    return catalog[helperName].ast();
   }
 
   public buildStatements(): t.Statement[] {
@@ -110,5 +113,10 @@ export default class HelperBuilder {
 
   private updateCatalogs(): void {
     this.setCatalogs(Object.keys(this.catalog))
+  }
+
+  private program(): t.Program {
+    const { catalog, helperName } = this
+    return catalog[helperName].ast();
   }
 }

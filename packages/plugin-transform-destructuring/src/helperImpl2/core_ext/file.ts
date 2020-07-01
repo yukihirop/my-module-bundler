@@ -50,8 +50,8 @@ export function addUDFHelper(name: string): t.Identifier {
   // MEMO:
   // babel/generator reads _compact and compacts the output
   // https://github.com/babel/babel/blob/379e1c55937231de15ca97b475942b96983aa330/packages/babel-generator/src/printer.js#L374
-  nodes.forEach(name => {
-    nodes._compact = true
+  nodes.forEach(node => {
+    node._compact = true
   });
 
   this.path.unshiftContainer("body", nodes);

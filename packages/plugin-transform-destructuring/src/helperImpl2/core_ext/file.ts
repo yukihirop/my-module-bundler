@@ -1,9 +1,23 @@
 import * as t from '@babel/types'
 import * as builder from '../builder'
+import {
+  AlreadyImplementedError
+} from '../errors';
 
 // MEMO:
 // binding to an instance of BabelFile
 export function addUDFHelper(name: string): t.Identifier {
+  let isAlreadyExist;
+
+  /**
+   * MEMO:
+   * 
+   * availableHelper may return an error.
+   * https://github.com/babel/babel/blob/3d498d05e737b6b497df55a177c113fd8167b744/packages/babel-core/src/transformation/file/file.js#L134
+   */
+  try { isAlreadyExist = this.availableHelper(name, undefined) } catch (e) { throw e };
+  if (isAlreadyExist) throw new AlreadyImplementedError(`${name} cannot be used because it is supported by babel official.\nPlease change the name of the helper.`);
+
   const declar = this.declarations[name];
   if (declar) return t.cloneNode(declar);
 

@@ -18,27 +18,15 @@ export default function useDangerousUDFHelpers(pass: babel.PluginPass, opts: UDF
   // addUDFHelper Function existence check
   if (
     typeof pass.file['addUDFHelper'] === 'function' ||
-    typeof pass['addUDFHelper'] === 'function'
+    typeof pass['addUDFHelper'] === 'function' ||
+    typeof pass.file['listUDFHelper'] === 'function' ||
+    typeof pass['listUDFHelper'] === 'function'
   ) throw new AlreadyImplementedError(`
 This tool cannot be used. officially supported.
 Please see the official documentation.
 
 https://babeljs.io/docs/en/babel-helpers
 `)
-
-  Object.defineProperty(pass.file, 'addUDFHelper', {
-    enumerable: true,
-    get: function addUDFHelper() {
-      return _file.addUDFHelper.bind(pass.file);
-    }
-  })
-
-  Object.defineProperty(pass, 'addUDFHelper', {
-    enumerable: true,
-    get: function addUDFHelper() {
-      return _file.addUDFHelper.bind(pass.file);
-    }
-  })
 
   const helpers = opts["helpers"];
   if (helpers) {
@@ -59,4 +47,32 @@ https://babeljs.io/docs/en/babel-helpers
       pluginStore.set(plugin.name, { plugin, options })
     })
   }
+
+  Object.defineProperty(pass.file, 'addUDFHelper', {
+    enumerable: true,
+    get: function addUDFHelper() {
+      return _file.addUDFHelper.bind(pass.file);
+    }
+  })
+
+  Object.defineProperty(pass, 'addUDFHelper', {
+    enumerable: true,
+    get: function addUDFHelper() {
+      return _file.addUDFHelper.bind(pass.file);
+    }
+  })
+
+  Object.defineProperty(pass.file, 'listUDFHelper', {
+    enumerable: true,
+    get: function listUDFHelper() {
+      return _file.listUDFHelper.bind(pass.file);
+    }
+  })
+
+  Object.defineProperty(pass, 'listUDFHelper', {
+    enumerable: true,
+    get: function listUDFHelper() {
+      return _file.listUDFHelper.bind(pass.file)
+    }
+  })
 }

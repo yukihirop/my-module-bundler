@@ -17,3 +17,7 @@ export type UDFHelperType = {
 export type UDFHelpersType = {
   [key: string]: UDFHelperType
 }
+export type UDFHelperListType = {
+  available: string[],
+  unavailable: string[]
+}

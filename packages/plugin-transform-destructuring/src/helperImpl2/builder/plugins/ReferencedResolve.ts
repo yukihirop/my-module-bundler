@@ -37,8 +37,30 @@ export default function ReferencedResolve(file: babel.BabelFile, options?: UDFPl
     AssignmentExpression(path) {
       const left = path.get("left");
 
+      /**
+       * MEMO:
+       * 
+       * The following example will be a return
+       * 
+       * helper`
+       * 
+       * undefined = 1;
+       * str = 'hoge'
+       *
+       * `
+       */
       if (!(iExportName in left.getBindingIdentifiers())) return;
 
+      /**
+       * MEMO:
+       * 
+       *　↓↓↓ I can't think of an example where processing goes below this ↓↓↓
+       *　It is written in the code on the babel side, and it is written because it seems to be meaningful code
+       *
+       *  https://github.com/babel/babel/blob/3d498d05e737b6b497df55a177c113fd8167b744/packages/babel-helpers/src/index.js#L103-L113
+       */
+
+      
       if (!left.isIdentifier()) {
         throw left.buildCodeFrameError(
           "Only simple assignments to exports are allowed in UDF helpers",

@@ -9,7 +9,9 @@ export default function ProgramBuild(file: babel.BabelFile, options: UDFPluginOp
     iLocalBindingNames,
     iImportPaths,
     iImportBindingsReferences,
-    iExportPath
+    iExportPath,
+    iExportName,
+    iExportBindingAssignments
   } = opts as any;
   const {
     currentId,
@@ -41,7 +43,7 @@ export default function ProgramBuild(file: babel.BabelFile, options: UDFPluginOp
       const importPaths = iImportPaths.map(p => path.get(p))
       const importBindingRefs = iImportBindingsReferences.map(p => path.get(p));
 
-      const declar = exportNode.get<any>("declaration") as NodePath;
+      const declar = exportNode.get("declaration") as NodePath;
       if (currentId.type === "Identifier") {
         if (declar.isFunctionDeclaration()) {
           // STEP 3.1: Remove export default (Function Declaration)
@@ -54,6 +56,26 @@ export default function ProgramBuild(file: babel.BabelFile, options: UDFPluginOp
                 t.variableDeclarator(currentId, (declar as any)['node'])
               ]
             )
+          );
+        }
+      } else if (currentId.type === "MemberExpression") {
+        if (declar.isFunctionDeclaration()) {
+          iExportBindingAssignments.forEeach(assignPath => {
+            const assign = path.get(assignPath);
+            (assign as NodePath).replaceWith(t.assignmentExpression("=", currentId, assign['node']));
+          });
+          exportNode.replaceWith(declar);
+          /**
+           * Cannot resolve pushContainer type
+           * https://github.com/DefinitelyTyped/DefinitelyTyped/commit/248de54338ef00c66f904aa06c568893d4692f16#diff-a73ef04a9efc8d29b305baa51072da24R447
+           * 
+           */
+          // @ts-ignore
+          path.pushContainer('body', t.expressionStatement(t.assignmentExpression("=", currentId, t.identifier(iExportName)))
+          );
+        } else {
+          exportNode.replaceWith(
+            t.expressionStatement(t.assignmentExpression("=", currentId, (declar as NodePath<any>)['node']))
           );
         }
       } else {

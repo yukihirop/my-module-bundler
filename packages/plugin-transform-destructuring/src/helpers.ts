@@ -37,3 +37,21 @@ helpers.objectWithoutPropertiesLoose = helper`
     return target;
   }
 `;
+
+helpers.assignmentExpressionExample = helper`
+  var assin = {};
+  var str = '';
+  
+  // MemberExpression
+  assign.hoge = 1;
+
+  // AssignmentExpression
+  str = 'fuga';
+
+  // Identifier
+  undefined = 1
+
+  export default function _assignmentExpressionExample(){
+    return "assignmentExpressionExample"
+  }
+`

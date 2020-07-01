@@ -46,10 +46,26 @@ export default function ProgramBuild(file: babel.BabelFile, options: UDFPluginOp
       const declar = exportNode.get("declaration") as NodePath;
       if (currentId.type === "Identifier") {
         if (declar.isFunctionDeclaration()) {
-          // STEP 3.1: Remove export default (Function Declaration)
+          /**
+           * STEP 3.1: Remove export default (Function Declaration)
+           * 
+           * helper`export default function fd(){}`
+           * ↓
+           * function fd(){}
+           * 
+           */
           exportNode.replaceWith(declar);
         } else {
-          // STEP 3.2: Remove export defualt (Function Expression)
+          /**
+           * STEP 3.2: Remove export defualt (Function Expression)
+           * 
+           * helper`
+           * var fe = function fe(){}
+           * export default fe
+           * `
+           * ↓
+           * var fe = function fe(){}
+           */
           exportNode.replaceWith(
             t.variableDeclaration("var",
               [
@@ -59,6 +75,15 @@ export default function ProgramBuild(file: babel.BabelFile, options: UDFPluginOp
           );
         }
       } else if (currentId.type === "MemberExpression") {
+
+        /**
+         * MEMO:
+         *
+         *　↓↓↓ I can't think of an example where processing goes below this ↓↓↓
+         *　It is written in the code on the babel side, and it is written because it seems to be meaningful code
+         *
+         *  https://github.com/babel/babel/blob/3d498d05e737b6b497df55a177c113fd8167b744/packages/babel-helpers/src/index.js#L194-L212
+         */
         if (declar.isFunctionDeclaration()) {
           iExportBindingAssignments.forEeach(assignPath => {
             const assign = path.get(assignPath);

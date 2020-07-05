@@ -3,7 +3,7 @@ import {
   CatalogPlugin,
   HelperBuilder,
   NodePath
-} from './helperImpl'
+} from '.'
 import * as catalog from './catalog'
 
 const helper = (name: string, globalPath: NodePath): HelperBuilder => {

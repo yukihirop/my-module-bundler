@@ -1,11 +1,8 @@
-import * as babel from '@babel/core';
 import { NodePath, Node } from '@babel/traverse';
 import * as t from '@babel/types';
 
 import BaseTraverser from '../BaseTraverser';
 import { TraverserThisType } from '../../types';
-import { HelperBuilder } from '../../helperImpl';
-import helper from '../../helper'
 
 type IdDataType = { name: string, isRestElement: boolean, depth: number }
 
@@ -15,6 +12,8 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
   public declaration?: any;
   public idMap: Array<IdDataType & { index: number }>;
   public usedUids: t.Identifier[];
+  public toArrayHelper?: t.Identifier;
+  public slicedToArrayHelper?: t.Identifier;
 
   constructor(path: NodePath, traverserThis: TraverserThisType) {
     super(path)
@@ -23,6 +22,8 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
     this.declaration = path.node['declarations'] && path.node['declarations'][0];
     this.idMap = [] as Array<IdDataType & { index: number }>
     this.usedUids = []
+    this.toArrayHelper = null
+    this.slicedToArrayHelper = null
   }
 
   /**
@@ -38,7 +39,8 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
    */
   public beforeProcess(): boolean | void {
     const {
-      declaration
+      declaration,
+      traverserThis
     } = this
 
     if (!declaration) return false;
@@ -52,6 +54,15 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
     const idMap = idElements.map((el, index) => {
       return { ...this.searchIdData(el), index }
     });
+    
+    const isExistRestElement = idMap.filter(({ isRestElement }) => isRestElement).length > 0;
+    if (isExistRestElement) {
+      // @ts-ignore
+      this.toArrayHelper = traverserThis.addUDFHelper("udf_toArray");
+    } else {
+      // @ts-ignore
+      this.slicedToArrayHelper = traverserThis.addUDFHelper("udf_slicedToArray");
+    }
 
     this.idMap = idMap
 
@@ -69,9 +80,9 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
       idMap,
       traverserThis,
       usedUids,
+      toArrayHelper,
+      slicedToArrayHelper
     } = this
-    const _slicedToArrayHelper = helper("_slicedToArray", path) as HelperBuilder
-    const _toArrayHelper = helper("_toArray", path) as HelperBuilder
 
     const { scope } = path
     const initCallee = declaration!.init && declaration!.init.callee;
@@ -101,7 +112,7 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
     const var_refDecl = t.variableDeclarator(
       _slicedToArrayVarName,
       t.callExpression(
-        t.identifier(_slicedToArrayHelper.helperName),
+        t.identifier(slicedToArrayHelper.name),
         [
           renameUid,
           t.numericLiteral(idElements.length)
@@ -134,7 +145,7 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
             const vd1 = t.variableDeclarator(
               uid,
               t.callExpression(
-                t.identifier(_toArrayHelper.helperName),
+                t.identifier(toArrayHelper.name),
                 [
                   t.memberExpression(
                     firstUid,
@@ -160,7 +171,6 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
 
             break
           case 'RestPattern':
-            debugger
             break
         }
       } else {
@@ -173,7 +183,7 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
           const vd1 = t.variableDeclarator(
             uid,
             t.callExpression(
-              t.identifier(_slicedToArrayHelper.helperName),
+              t.identifier(slicedToArrayHelper.name),
               [
                 _slicedToArrayVarName,
                 t.numericLiteral(depth)
@@ -213,11 +223,6 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
       [...beforeVariableDeclarators, ...mainVariableDeclarators]
     )
 
-    if (!traverserThis.isAddHelper) {
-      traverserThis.beforeStatements.push(..._slicedToArrayHelper.buildStatements())
-      traverserThis.beforeStatements.push(..._toArrayHelper.buildStatements())
-      traverserThis.isAddHelper = true
-    }
     traverserThis.LazyEvaluateStatement.push({ path, statement })
   }
 

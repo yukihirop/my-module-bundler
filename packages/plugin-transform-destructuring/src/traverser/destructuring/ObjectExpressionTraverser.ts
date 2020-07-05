@@ -3,8 +3,6 @@ import * as t from '@babel/types';
 
 import BaseTraverser from '../BaseTraverser';
 import { TraverserThisType } from '../../types';
-import helper from '../../helper'
-import { HelperBuilder } from '../../helperImpl';
 
 type IdDataType = { name: string, isRestElement: boolean, depth: number }
 
@@ -13,7 +11,7 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
   public node: Node;
   public declaration?: any;
   public idMap: Array<IdDataType & { index: number }>;
-  public h: HelperBuilder
+  public objectWithoutPropertiesHelper: t.Identifier;
 
   constructor(path: NodePath, traverserThis: TraverserThisType) {
     super(path)
@@ -21,7 +19,7 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
     this.node = this.path.node
     this.declaration = path.node['declarations'] && path.node['declarations'][0];
     this.idMap = [] as Array<IdDataType & { index: number }>
-    this.h = helper("_objectWithoutProperties", path)
+    this.objectWithoutPropertiesHelper = undefined as t.Identifier
   }
 
   /**
@@ -39,7 +37,6 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
     const {
       declaration,
       traverserThis,
-      h
     } = this
 
     if (!declaration) return false;
@@ -52,10 +49,8 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
     });
 
     const isExistRestElement = idMap.filter(({ isRestElement }) => isRestElement).length > 0;
-    if (isExistRestElement && !traverserThis.isAddHelper) {
-      traverserThis.beforeStatements.push(...h.buildStatements())
-      this.traverserThis.isAddHelper = true
-    }
+    // @ts-ignore
+    if (isExistRestElement) this.objectWithoutPropertiesHelper = traverserThis.addUDFHelper("udf_objectWithoutProperties")
 
     this.idMap = idMap
 
@@ -71,7 +66,7 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
       node,
       declaration,
       idMap,
-      h
+      objectWithoutPropertiesHelper
     } = this
     const { scope } = path
     const initProperties = declaration!.init && declaration!.init.properties;
@@ -108,7 +103,7 @@ export default class ObjectExpressionTraverser extends BaseTraverser {
         return t.variableDeclarator(
           t.identifier(name),
           t.callExpression(
-            t.identifier(h.helperName),
+            t.identifier(objectWithoutPropertiesHelper.name),
             [
               uid,
               t.arrayExpression(excludedkeys.map(key => t.stringLiteral(key)))

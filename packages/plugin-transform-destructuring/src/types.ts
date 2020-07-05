@@ -6,8 +6,7 @@ export type BabelTypes = {
   types: typeof t;
 };
 
-export type TraverserThisType = {
+export type TraverserThisType = babel.PluginPass & {
   beforeStatements: t.Statement[];
   LazyEvaluateStatement: LazyEvaluateStatement;
-  isAddHelper?: boolean;
 }

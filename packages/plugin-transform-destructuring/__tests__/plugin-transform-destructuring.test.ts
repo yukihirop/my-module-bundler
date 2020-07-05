@@ -43,15 +43,6 @@ async function createDir(base: string, dir?: string) {
   await mkdir(join(base, dir || ""), { recursive: true });
 }
 
-beforeEach(() => {
-  jest.spyOn(console, 'log').mockImplementation()
-  jest.spyOn(console, 'warn').mockImplementation()
-});
-
-afterEach(() => {
-  jest.clearAllMocks();
-});
-
 describe('destructuring', () => {
   const type = 'destructuring'
   const fixturePath = join(fixtureBasePath, type)

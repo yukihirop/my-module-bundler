@@ -19,16 +19,12 @@
 })({
   0: [
     function(require, module, exports) {
-      function _objectWithoutProperties(source, excluded) {
+      function _udf_objectWithoutProperties(source, excluded) {
         if (source == null) return {};
-
-        var target = _objectWithoutPropertiesLoose(source, excluded);
-
+        var target = _udf_objectWithoutPropertiesLoose(source, excluded);
         var key, i;
-
         if (Object.getOwnPropertySymbols) {
           var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-
           for (i = 0; i < sourceSymbolKeys.length; i++) {
             key = sourceSymbolKeys[i];
             if (excluded.indexOf(key) >= 0) continue;
@@ -36,22 +32,19 @@
             target[key] = source[key];
           }
         }
-
         return target;
       }
 
-      function _objectWithoutPropertiesLoose(source, excluded) {
+      function _udf_objectWithoutPropertiesLoose(source, excluded) {
         if (source == null) return {};
         var target = {};
         var sourceKeys = Object.keys(source);
         var key, i;
-
         for (i = 0; i < sourceKeys.length; i++) {
           key = sourceKeys[i];
           if (excluded.indexOf(key) >= 0) continue;
           target[key] = source[key];
         }
-
         return target;
       }
 
@@ -67,7 +60,7 @@
         },
         a = _a$b$c$d$e$f$g$h.a,
         b = _a$b$c$d$e$f$g$h.b,
-        x = _objectWithoutProperties(_a$b$c$d$e$f$g$h, ["a", "b"]);
+        x = _udf_objectWithoutProperties(_a$b$c$d$e$f$g$h, ["a", "b"]);
 
       var _a$b$c$d$e$f$g$h2 = {
           a: 1,
@@ -81,7 +74,7 @@
         },
         d = _a$b$c$d$e$f$g$h2.d,
         e = _a$b$c$d$e$f$g$h2.e,
-        y = _objectWithoutProperties(_a$b$c$d$e$f$g$h2, ["d", "e"]);
+        y = _udf_objectWithoutProperties(_a$b$c$d$e$f$g$h2, ["d", "e"]);
 
       var _a$b$c$d$e$f$g$h3 = {
           a: 1,
@@ -95,7 +88,7 @@
         },
         m = _a$b$c$d$e$f$g$h3.m,
         n = _a$b$c$d$e$f$g$h3.n,
-        z = _objectWithoutProperties(_a$b$c$d$e$f$g$h3, ["m", "n"]);
+        z = _udf_objectWithoutProperties(_a$b$c$d$e$f$g$h3, ["m", "n"]);
     },
     {},
   ]

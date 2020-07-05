@@ -1,15 +1,14 @@
-import { useDangerousUDFHelpers } from './helperImpl2'
 import * as t from '@babel/types';
 import { NodePath } from '@babel/traverse';
 import { BabelTypes } from './types';
-
 import {
   Dest_ArrayExpressionTraverser,
   Dest_ObjectExpressionTraverser,
   Dest_CallExpressionTraverser
 } from './traverser';
 import { LazyEvaluateStatement } from './statement';
-// import * as helpers from './helpers'
+
+import { useDangerousUDFHelpers } from 'babel-udf-helpers';
 import helpers from './helpers'
 
 export default function ({ types: t }: BabelTypes) {
@@ -18,7 +17,6 @@ export default function ({ types: t }: BabelTypes) {
     pre(state) {
       useDangerousUDFHelpers(this, { helpers })
       this.beforeStatements = [] as t.Statement[]
-      this.isAddHelper = false
       this.LazyEvaluateStatement = new LazyEvaluateStatement(this);
     },
     post({ path }) {

@@ -1631,6 +1631,11 @@ babel-types@^6.26.0:
     lodash "^4.17.4"
     to-fast-properties "^1.0.3"
 
+babel-udf-helpers@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/babel-udf-helpers/-/babel-udf-helpers-1.0.2.tgz#adc227baa5f546583cbcc6c831892afe71ab7238"
+  integrity sha512-sAcmAgEiK2d89tyVYpjp7rEgU4iJNBsursxyUAL5pJ40DqBd4xJKdYU4tvDIYI4sb//UefISV3wC8diBk6fBjA==
+
 babylon@^6.18.0:
   version "6.18.0"
   resolved "https://registry.yarnpkg.com/babylon/-/babylon-6.18.0.tgz#af2f3b88fa6f5c1e4c634d1a0f8eac4f55b395e3"

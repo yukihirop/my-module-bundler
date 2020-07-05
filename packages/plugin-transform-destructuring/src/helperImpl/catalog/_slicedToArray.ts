@@ -1,4 +1,4 @@
-import { helper } from '../helperImpl'
+import { helper } from '..'
 
 const helpers = Object.create(null);
 export default helpers;

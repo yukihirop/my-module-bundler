@@ -238,25 +238,40 @@ exports[`destructuring call-expression-array-basic 1`] = `
 })({
   0: [
     function(require, module, exports) {
-      function _slicedToArray(arr, i) {
-        return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
+      function _udf_slicedToArray(arr, i) {
+        return _udf_arrayWithHoles(arr) || _udf_iterableToArrayLimit(arr, i) || _udf_unsupportedIterableToArray(arr, i) || _udf_nonIterableRest();
       }
 
-      function _arrayWithHoles(arr) {
-        if (Array.isArray(arr)) return arr;
+      function _udf_nonIterableRest() {
+        throw new TypeError(\\"Invalid attempt to destructure non-iterable instance.\\\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.\\");
       }
 
-      function _iterableToArrayLimit(arr, i) {
+      function _udf_unsupportedIterableToArray(o, minLen) {
+        if (!o) return;
+        if (typeof o === \\"string\\") return _udf_arrayLikeToArray(o, minLen);
+        var n = Object.prototype.toString.call(o).slice(8, -1);
+        if (n === \\"Object\\" && o.constructor) n = o.constructor.name;
+        if (n === \\"Map\\" || n === \\"Set\\") return Array.from(o);
+        if (n === \\"Arguments\\" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _udf_arrayLikeToArray(o, minLen);
+      }
+
+      function _udf_arrayLikeToArray(arr, len) {
+        if (len == null || len > arr.length) len = arr.length;
+        for (var i = 0, arr2 = new Array(len); i < len; i++) {
+          arr2[i] = arr[i];
+        }
+        return arr2;
+      }
+
+      function _udf_iterableToArrayLimit(arr, i) {
         if (typeof Symbol === \\"undefined\\" || !(Symbol.iterator in Object(arr))) return;
         var _arr = [];
         var _n = true;
         var _d = false;
         var _e = undefined;
-
         try {
           for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
             _arr.push(_s.value);
-
             if (i && _arr.length === i) break;
           }
         } catch (err) {
@@ -269,31 +284,11 @@ exports[`destructuring call-expression-array-basic 1`] = `
             if (_d) throw _e;
           }
         }
-
         return _arr;
       }
 
-      function _unsupportedIterableToArray(o, minLen) {
-        if (!o) return;
-        if (typeof o === \\"string\\") return _arrayLikeToArray(o, minLen);
-        var n = Object.prototype.toString.call(o).slice(8, -1);
-        if (n === \\"Object\\" && o.constructor) n = o.constructor.name;
-        if (n === \\"Map\\" || n === \\"Set\\") return Array.from(o);
-        if (n === \\"Arguments\\" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-      }
-
-      function _arrayLikeToArray(arr, len) {
-        if (len == null || len > arr.length) len = arr.length;
-
-        for (var i = 0, arr2 = new Array(len); i < len; i++) {
-          arr2[i] = arr[i];
-        }
-
-        return arr2;
-      }
-
-      function _nonIterableRest() {
-        throw new TypeError(\\"Invalid attempt to destructure non-iterable instance.\\\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.\\");
+      function _udf_arrayWithHoles(arr) {
+        if (Array.isArray(arr)) return arr;
       }
 
       function f() {
@@ -303,7 +298,7 @@ exports[`destructuring call-expression-array-basic 1`] = `
       ;
 
       var _f = f(),
-        _f2 = _slicedToArray(_f, 2),
+        _f2 = _udf_slicedToArray(_f, 2),
         a = _f2[0],
         b = _f2[1];
 
@@ -314,7 +309,7 @@ exports[`destructuring call-expression-array-basic 1`] = `
       ;
 
       var _g = g(),
-        _g2 = _slicedToArray(_g, 2),
+        _g2 = _udf_slicedToArray(_g, 2),
         c = _g2[0],
         d = _g2[1];
     },
@@ -345,25 +340,40 @@ exports[`destructuring call-expression-array-helper-rename 1`] = `
 })({
   0: [
     function(require, module, exports) {
-      function _slicedToArray2(arr, i) {
-        return _arrayWithHoles2(arr) || _iterableToArrayLimit2(arr, i) || _unsupportedIterableToArray2(arr, i) || _nonIterableRest2();
+      function _udf_slicedToArray(arr, i) {
+        return _udf_arrayWithHoles(arr) || _udf_iterableToArrayLimit(arr, i) || _udf_unsupportedIterableToArray(arr, i) || _udf_nonIterableRest();
       }
 
-      function _arrayWithHoles2(arr) {
-        if (Array.isArray(arr)) return arr;
+      function _udf_nonIterableRest() {
+        throw new TypeError(\\"Invalid attempt to destructure non-iterable instance.\\\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.\\");
       }
 
-      function _iterableToArrayLimit2(arr, i) {
+      function _udf_unsupportedIterableToArray(o, minLen) {
+        if (!o) return;
+        if (typeof o === \\"string\\") return _udf_arrayLikeToArray(o, minLen);
+        var n = Object.prototype.toString.call(o).slice(8, -1);
+        if (n === \\"Object\\" && o.constructor) n = o.constructor.name;
+        if (n === \\"Map\\" || n === \\"Set\\") return Array.from(o);
+        if (n === \\"Arguments\\" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _udf_arrayLikeToArray(o, minLen);
+      }
+
+      function _udf_arrayLikeToArray(arr, len) {
+        if (len == null || len > arr.length) len = arr.length;
+        for (var i = 0, arr2 = new Array(len); i < len; i++) {
+          arr2[i] = arr[i];
+        }
+        return arr2;
+      }
+
+      function _udf_iterableToArrayLimit(arr, i) {
         if (typeof Symbol === \\"undefined\\" || !(Symbol.iterator in Object(arr))) return;
         var _arr = [];
         var _n = true;
         var _d = false;
         var _e = undefined;
-
         try {
           for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
             _arr.push(_s.value);
-
             if (i && _arr.length === i) break;
           }
         } catch (err) {
@@ -376,31 +386,11 @@ exports[`destructuring call-expression-array-helper-rename 1`] = `
             if (_d) throw _e;
           }
         }
-
         return _arr;
       }
 
-      function _unsupportedIterableToArray2(o, minLen) {
-        if (!o) return;
-        if (typeof o === \\"string\\") return _arrayLikeToArray2(o, minLen);
-        var n = Object.prototype.toString.call(o).slice(8, -1);
-        if (n === \\"Object\\" && o.constructor) n = o.constructor.name;
-        if (n === \\"Map\\" || n === \\"Set\\") return Array.from(o);
-        if (n === \\"Arguments\\" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray2(o, minLen);
-      }
-
-      function _arrayLikeToArray2(arr, len) {
-        if (len == null || len > arr.length) len = arr.length;
-
-        for (var i = 0, arr2 = new Array(len); i < len; i++) {
-          arr2[i] = arr[i];
-        }
-
-        return arr2;
-      }
-
-      function _nonIterableRest2() {
-        throw new TypeError(\\"Invalid attempt to destructure non-iterable instance.\\\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.\\");
+      function _udf_arrayWithHoles(arr) {
+        if (Array.isArray(arr)) return arr;
       }
 
       function _slicedToArray() {
@@ -419,10 +409,10 @@ exports[`destructuring call-expression-array-helper-rename 1`] = `
 
       function _arrayWithHoles(arr) {}
 
-      var _slicedToArray3 = _slicedToArray(),
-        _slicedToArray4 = _slicedToArray2(_slicedToArray3, 2),
-        a = _slicedToArray4[0],
-        b = _slicedToArray4[1];
+      var _slicedToArray2 = _slicedToArray(),
+        _slicedToArray3 = _udf_slicedToArray(_slicedToArray2, 2),
+        a = _slicedToArray3[0],
+        b = _slicedToArray3[1];
     },
     {},
   ]
@@ -451,25 +441,40 @@ exports[`destructuring call-expression-array-self-reference 1`] = `
 })({
   0: [
     function(require, module, exports) {
-      function _slicedToArray(arr, i) {
-        return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
+      function _udf_slicedToArray(arr, i) {
+        return _udf_arrayWithHoles(arr) || _udf_iterableToArrayLimit(arr, i) || _udf_unsupportedIterableToArray(arr, i) || _udf_nonIterableRest();
       }
 
-      function _arrayWithHoles(arr) {
-        if (Array.isArray(arr)) return arr;
+      function _udf_nonIterableRest() {
+        throw new TypeError(\\"Invalid attempt to destructure non-iterable instance.\\\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.\\");
       }
 
-      function _iterableToArrayLimit(arr, i) {
+      function _udf_unsupportedIterableToArray(o, minLen) {
+        if (!o) return;
+        if (typeof o === \\"string\\") return _udf_arrayLikeToArray(o, minLen);
+        var n = Object.prototype.toString.call(o).slice(8, -1);
+        if (n === \\"Object\\" && o.constructor) n = o.constructor.name;
+        if (n === \\"Map\\" || n === \\"Set\\") return Array.from(o);
+        if (n === \\"Arguments\\" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _udf_arrayLikeToArray(o, minLen);
+      }
+
+      function _udf_arrayLikeToArray(arr, len) {
+        if (len == null || len > arr.length) len = arr.length;
+        for (var i = 0, arr2 = new Array(len); i < len; i++) {
+          arr2[i] = arr[i];
+        }
+        return arr2;
+      }
+
+      function _udf_iterableToArrayLimit(arr, i) {
         if (typeof Symbol === \\"undefined\\" || !(Symbol.iterator in Object(arr))) return;
         var _arr = [];
         var _n = true;
         var _d = false;
         var _e = undefined;
-
         try {
           for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
             _arr.push(_s.value);
-
             if (i && _arr.length === i) break;
           }
         } catch (err) {
@@ -482,31 +487,11 @@ exports[`destructuring call-expression-array-self-reference 1`] = `
             if (_d) throw _e;
           }
         }
-
         return _arr;
       }
 
-      function _unsupportedIterableToArray(o, minLen) {
-        if (!o) return;
-        if (typeof o === \\"string\\") return _arrayLikeToArray(o, minLen);
-        var n = Object.prototype.toString.call(o).slice(8, -1);
-        if (n === \\"Object\\" && o.constructor) n = o.constructor.name;
-        if (n === \\"Map\\" || n === \\"Set\\") return Array.from(o);
-        if (n === \\"Arguments\\" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-      }
-
-      function _arrayLikeToArray(arr, len) {
-        if (len == null || len > arr.length) len = arr.length;
-
-        for (var i = 0, arr2 = new Array(len); i < len; i++) {
-          arr2[i] = arr[i];
-        }
-
-        return arr2;
-      }
-
-      function _nonIterableRest() {
-        throw new TypeError(\\"Invalid attempt to destructure non-iterable instance.\\\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.\\");
+      function _udf_arrayWithHoles(arr) {
+        if (Array.isArray(arr)) return arr;
       }
 
       function f() {
@@ -516,7 +501,7 @@ exports[`destructuring call-expression-array-self-reference 1`] = `
       ;
 
       var _f = f(),
-        _f2 = _slicedToArray(_f, 2),
+        _f2 = _udf_slicedToArray(_f, 2),
         a = _f2[0],
         b = _f2[1];
 
@@ -527,7 +512,7 @@ exports[`destructuring call-expression-array-self-reference 1`] = `
       ;
 
       var _g = g(),
-        _g2 = _slicedToArray(_g, 2),
+        _g2 = _udf_slicedToArray(_g, 2),
         c = _g2[0],
         d = _g2[1];
     },
@@ -739,16 +724,12 @@ exports[`destructuring object-rest-basic 1`] = `
 })({
   0: [
     function(require, module, exports) {
-      function _objectWithoutProperties(source, excluded) {
+      function _udf_objectWithoutProperties(source, excluded) {
         if (source == null) return {};
-
-        var target = _objectWithoutPropertiesLoose(source, excluded);
-
+        var target = _udf_objectWithoutPropertiesLoose(source, excluded);
         var key, i;
-
         if (Object.getOwnPropertySymbols) {
           var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-
           for (i = 0; i < sourceSymbolKeys.length; i++) {
             key = sourceSymbolKeys[i];
             if (excluded.indexOf(key) >= 0) continue;
@@ -756,22 +737,19 @@ exports[`destructuring object-rest-basic 1`] = `
             target[key] = source[key];
           }
         }
-
         return target;
       }
 
-      function _objectWithoutPropertiesLoose(source, excluded) {
+      function _udf_objectWithoutPropertiesLoose(source, excluded) {
         if (source == null) return {};
         var target = {};
         var sourceKeys = Object.keys(source);
         var key, i;
-
         for (i = 0; i < sourceKeys.length; i++) {
           key = sourceKeys[i];
           if (excluded.indexOf(key) >= 0) continue;
           target[key] = source[key];
         }
-
         return target;
       }
 
@@ -787,7 +765,7 @@ exports[`destructuring object-rest-basic 1`] = `
         },
         a = _a$b$c$d$e$f$g$h.a,
         b = _a$b$c$d$e$f$g$h.b,
-        x = _objectWithoutProperties(_a$b$c$d$e$f$g$h, [\\"a\\", \\"b\\"]);
+        x = _udf_objectWithoutProperties(_a$b$c$d$e$f$g$h, [\\"a\\", \\"b\\"]);
 
       var _a$b$c$d$e$f$g$h2 = {
           a: 1,
@@ -801,7 +779,7 @@ exports[`destructuring object-rest-basic 1`] = `
         },
         d = _a$b$c$d$e$f$g$h2.d,
         e = _a$b$c$d$e$f$g$h2.e,
-        y = _objectWithoutProperties(_a$b$c$d$e$f$g$h2, [\\"d\\", \\"e\\"]);
+        y = _udf_objectWithoutProperties(_a$b$c$d$e$f$g$h2, [\\"d\\", \\"e\\"]);
 
       var _a$b$c$d$e$f$g$h3 = {
           a: 1,
@@ -815,7 +793,7 @@ exports[`destructuring object-rest-basic 1`] = `
         },
         m = _a$b$c$d$e$f$g$h3.m,
         n = _a$b$c$d$e$f$g$h3.n,
-        z = _objectWithoutProperties(_a$b$c$d$e$f$g$h3, [\\"m\\", \\"n\\"]);
+        z = _udf_objectWithoutProperties(_a$b$c$d$e$f$g$h3, [\\"m\\", \\"n\\"]);
     },
     {},
   ]
@@ -844,16 +822,12 @@ exports[`destructuring object-rest-nested 1`] = `
 })({
   0: [
     function(require, module, exports) {
-      function _objectWithoutProperties(source, excluded) {
+      function _udf_objectWithoutProperties(source, excluded) {
         if (source == null) return {};
-
-        var target = _objectWithoutPropertiesLoose(source, excluded);
-
+        var target = _udf_objectWithoutPropertiesLoose(source, excluded);
         var key, i;
-
         if (Object.getOwnPropertySymbols) {
           var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-
           for (i = 0; i < sourceSymbolKeys.length; i++) {
             key = sourceSymbolKeys[i];
             if (excluded.indexOf(key) >= 0) continue;
@@ -861,22 +835,19 @@ exports[`destructuring object-rest-nested 1`] = `
             target[key] = source[key];
           }
         }
-
         return target;
       }
 
-      function _objectWithoutPropertiesLoose(source, excluded) {
+      function _udf_objectWithoutPropertiesLoose(source, excluded) {
         if (source == null) return {};
         var target = {};
         var sourceKeys = Object.keys(source);
         var key, i;
-
         for (i = 0; i < sourceKeys.length; i++) {
           key = sourceKeys[i];
           if (excluded.indexOf(key) >= 0) continue;
           target[key] = source[key];
         }
-
         return target;
       }
 
@@ -901,7 +872,7 @@ exports[`destructuring object-rest-nested 1`] = `
         a = _a$b$c$d$e$f.a,
         b = _a$b$c$d$e$f.b,
         c = _a$b$c$d$e$f.c,
-        d = _objectWithoutProperties(_a$b$c$d$e$f, [\\"a\\", \\"b\\", \\"c\\"]);
+        d = _udf_objectWithoutProperties(_a$b$c$d$e$f, [\\"a\\", \\"b\\", \\"c\\"]);
 
       var _a$b$c$d$e$f2 = {
           a: 1,
@@ -924,7 +895,7 @@ exports[`destructuring object-rest-nested 1`] = `
         e = _a$b$c$d$e$f2.e,
         f = _a$b$c$d$e$f2.f,
         g = _a$b$c$d$e$f2.g,
-        h = _objectWithoutProperties(_a$b$c$d$e$f2, [\\"e\\", \\"f\\", \\"g\\"]);
+        h = _udf_objectWithoutProperties(_a$b$c$d$e$f2, [\\"e\\", \\"f\\", \\"g\\"]);
 
       var _a$b$c$d$e$f3 = {
           a: 1,
@@ -947,7 +918,7 @@ exports[`destructuring object-rest-nested 1`] = `
         i = _a$b$c$d$e$f3.i,
         j = _a$b$c$d$e$f3.j,
         k = _a$b$c$d$e$f3.k,
-        l = _objectWithoutProperties(_a$b$c$d$e$f3, [\\"i\\", \\"j\\", \\"k\\"]);
+        l = _udf_objectWithoutProperties(_a$b$c$d$e$f3, [\\"i\\", \\"j\\", \\"k\\"]);
     },
     {},
   ]
@@ -976,25 +947,40 @@ exports[`destructuring(err) call-expression-array-init-mix 1`] = `
 })({
   0: [
     function(require, module, exports) {
-      function _slicedToArray(arr, i) {
-        return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
+      function _udf_slicedToArray(arr, i) {
+        return _udf_arrayWithHoles(arr) || _udf_iterableToArrayLimit(arr, i) || _udf_unsupportedIterableToArray(arr, i) || _udf_nonIterableRest();
       }
 
-      function _arrayWithHoles(arr) {
-        if (Array.isArray(arr)) return arr;
+      function _udf_nonIterableRest() {
+        throw new TypeError(\\"Invalid attempt to destructure non-iterable instance.\\\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.\\");
       }
 
-      function _iterableToArrayLimit(arr, i) {
+      function _udf_unsupportedIterableToArray(o, minLen) {
+        if (!o) return;
+        if (typeof o === \\"string\\") return _udf_arrayLikeToArray(o, minLen);
+        var n = Object.prototype.toString.call(o).slice(8, -1);
+        if (n === \\"Object\\" && o.constructor) n = o.constructor.name;
+        if (n === \\"Map\\" || n === \\"Set\\") return Array.from(o);
+        if (n === \\"Arguments\\" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _udf_arrayLikeToArray(o, minLen);
+      }
+
+      function _udf_arrayLikeToArray(arr, len) {
+        if (len == null || len > arr.length) len = arr.length;
+        for (var i = 0, arr2 = new Array(len); i < len; i++) {
+          arr2[i] = arr[i];
+        }
+        return arr2;
+      }
+
+      function _udf_iterableToArrayLimit(arr, i) {
         if (typeof Symbol === \\"undefined\\" || !(Symbol.iterator in Object(arr))) return;
         var _arr = [];
         var _n = true;
         var _d = false;
         var _e = undefined;
-
         try {
           for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
             _arr.push(_s.value);
-
             if (i && _arr.length === i) break;
           }
         } catch (err) {
@@ -1007,31 +993,11 @@ exports[`destructuring(err) call-expression-array-init-mix 1`] = `
             if (_d) throw _e;
           }
         }
-
         return _arr;
       }
 
-      function _unsupportedIterableToArray(o, minLen) {
-        if (!o) return;
-        if (typeof o === \\"string\\") return _arrayLikeToArray(o, minLen);
-        var n = Object.prototype.toString.call(o).slice(8, -1);
-        if (n === \\"Object\\" && o.constructor) n = o.constructor.name;
-        if (n === \\"Map\\" || n === \\"Set\\") return Array.from(o);
-        if (n === \\"Arguments\\" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-      }
-
-      function _arrayLikeToArray(arr, len) {
-        if (len == null || len > arr.length) len = arr.length;
-
-        for (var i = 0, arr2 = new Array(len); i < len; i++) {
-          arr2[i] = arr[i];
-        }
-
-        return arr2;
-      }
-
-      function _nonIterableRest() {
-        throw new TypeError(\\"Invalid attempt to destructure non-iterable instance.\\\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.\\");
+      function _udf_arrayWithHoles(arr) {
+        if (Array.isArray(arr)) return arr;
       }
 
       function f() {
@@ -1041,7 +1007,7 @@ exports[`destructuring(err) call-expression-array-init-mix 1`] = `
       ;
 
       var _f = f(),
-        _f2 = _slicedToArray(_f, 2),
+        _f2 = _udf_slicedToArray(_f, 2),
         a = _f2[0],
         b = _f2[1];
 
@@ -1055,7 +1021,7 @@ exports[`destructuring(err) call-expression-array-init-mix 1`] = `
       ;
 
       var _g = g(),
-        _g2 = _slicedToArray(_g, 2),
+        _g2 = _udf_slicedToArray(_g, 2),
         c = _g2[0],
         d = _g2[1];
     },

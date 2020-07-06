@@ -25,7 +25,6 @@ export default function ({ types: t }: BabelTypes) {
       Program(path: NodePath) {
         const isExist_TypeofFunc =
           path.node['body'].filter((node) => {
-            debugger;
             return (
               (node.type === 'VariableDeclaration' &&
                 node.declarations &&

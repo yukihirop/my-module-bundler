@@ -1,0 +1,1031 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`destructuring array-assignment-function-block 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      function c() {
+        var a = 1,
+          b = 2;
+      }
+
+      ;
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`destructuring array-basic 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      var a = 1,
+        b = '2',
+        c = true;
+      const d = 1,
+        e = '2',
+        f = true;
+      let g = 1,
+        h = '2',
+        i = true;
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`destructuring array-overflow 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      var _ref = [1, '2', true, null, undefined, function() {}, Error, WebAssembly],
+        a = _ref[0],
+        b = _ref[1],
+        c = _ref[2];
+      var _ref2 = [1, '2', true, null, undefined, function() {}, Error, WebAssembly],
+        d = _ref2[0],
+        e = _ref2[1],
+        f = _ref2[2];
+      var _ref3 = [1, '2', true, null, undefined, function() {}, Error, WebAssembly],
+        g = _ref3[0],
+        h = _ref3[1],
+        i = _ref3[2];
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`destructuring array-rest-basic 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      var a = 1,
+        b = '2',
+        c = [true, null, undefined, function() {}, Error, WebAssembly];
+      const d = 1,
+        e = '2',
+        f = [true, null, undefined, function() {}, Error, WebAssembly];
+      let g = 1,
+        h = '2',
+        i = [true, null, undefined, function() {}, Error, WebAssembly];
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`destructuring array-rest-nested 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      var a = 1,
+        b = '2',
+        c = [true, null, undefined],
+        d = [function() {}, Error, WebAssembly];
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`destructuring array-self-reference 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      var d;
+      var _ref = [1, a, b, d],
+        a = _ref[0],
+        b = _ref[1],
+        c = _ref[2];
+      var a = 1,
+        b = \\"a\\",
+        c = \\"b\\";
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`destructuring call-expression-array-basic 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      function _udf_slicedToArray(arr, i) {
+        return _udf_arrayWithHoles(arr) || _udf_iterableToArrayLimit(arr, i) || _udf_unsupportedIterableToArray(arr, i) || _udf_nonIterableRest();
+      }
+
+      function _udf_nonIterableRest() {
+        throw new TypeError(\\"Invalid attempt to destructure non-iterable instance.\\\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.\\");
+      }
+
+      function _udf_unsupportedIterableToArray(o, minLen) {
+        if (!o) return;
+        if (typeof o === \\"string\\") return _udf_arrayLikeToArray(o, minLen);
+        var n = Object.prototype.toString.call(o).slice(8, -1);
+        if (n === \\"Object\\" && o.constructor) n = o.constructor.name;
+        if (n === \\"Map\\" || n === \\"Set\\") return Array.from(o);
+        if (n === \\"Arguments\\" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _udf_arrayLikeToArray(o, minLen);
+      }
+
+      function _udf_arrayLikeToArray(arr, len) {
+        if (len == null || len > arr.length) len = arr.length;
+        for (var i = 0, arr2 = new Array(len); i < len; i++) {
+          arr2[i] = arr[i];
+        }
+        return arr2;
+      }
+
+      function _udf_iterableToArrayLimit(arr, i) {
+        if (typeof Symbol === \\"undefined\\" || !(Symbol.iterator in Object(arr))) return;
+        var _arr = [];
+        var _n = true;
+        var _d = false;
+        var _e = undefined;
+        try {
+          for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+            _arr.push(_s.value);
+            if (i && _arr.length === i) break;
+          }
+        } catch (err) {
+          _d = true;
+          _e = err;
+        } finally {
+          try {
+            if (!_n && _i[\\"return\\"] != null) _i[\\"return\\"]();
+          } finally {
+            if (_d) throw _e;
+          }
+        }
+        return _arr;
+      }
+
+      function _udf_arrayWithHoles(arr) {
+        if (Array.isArray(arr)) return arr;
+      }
+
+      function f() {
+        return [1, 2];
+      }
+
+      ;
+
+      var _f = f(),
+        _f2 = _udf_slicedToArray(_f, 2),
+        a = _f2[0],
+        b = _f2[1];
+
+      function g() {
+        return [1, 2];
+      }
+
+      ;
+
+      var _g = g(),
+        _g2 = _udf_slicedToArray(_g, 2),
+        c = _g2[0],
+        d = _g2[1];
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`destructuring call-expression-array-helper-rename 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      function _udf_slicedToArray(arr, i) {
+        return _udf_arrayWithHoles(arr) || _udf_iterableToArrayLimit(arr, i) || _udf_unsupportedIterableToArray(arr, i) || _udf_nonIterableRest();
+      }
+
+      function _udf_nonIterableRest() {
+        throw new TypeError(\\"Invalid attempt to destructure non-iterable instance.\\\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.\\");
+      }
+
+      function _udf_unsupportedIterableToArray(o, minLen) {
+        if (!o) return;
+        if (typeof o === \\"string\\") return _udf_arrayLikeToArray(o, minLen);
+        var n = Object.prototype.toString.call(o).slice(8, -1);
+        if (n === \\"Object\\" && o.constructor) n = o.constructor.name;
+        if (n === \\"Map\\" || n === \\"Set\\") return Array.from(o);
+        if (n === \\"Arguments\\" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _udf_arrayLikeToArray(o, minLen);
+      }
+
+      function _udf_arrayLikeToArray(arr, len) {
+        if (len == null || len > arr.length) len = arr.length;
+        for (var i = 0, arr2 = new Array(len); i < len; i++) {
+          arr2[i] = arr[i];
+        }
+        return arr2;
+      }
+
+      function _udf_iterableToArrayLimit(arr, i) {
+        if (typeof Symbol === \\"undefined\\" || !(Symbol.iterator in Object(arr))) return;
+        var _arr = [];
+        var _n = true;
+        var _d = false;
+        var _e = undefined;
+        try {
+          for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+            _arr.push(_s.value);
+            if (i && _arr.length === i) break;
+          }
+        } catch (err) {
+          _d = true;
+          _e = err;
+        } finally {
+          try {
+            if (!_n && _i[\\"return\\"] != null) _i[\\"return\\"]();
+          } finally {
+            if (_d) throw _e;
+          }
+        }
+        return _arr;
+      }
+
+      function _udf_arrayWithHoles(arr) {
+        if (Array.isArray(arr)) return arr;
+      }
+
+      function _slicedToArray() {
+        return [1, 2];
+      }
+
+      ;
+
+      function _nonIterableRest() {}
+
+      function _unsupportedIterableToArray(o, minLen) {}
+
+      function _arrayLikeToArray(arr, len) {}
+
+      function _iterableToArrayLimit(arr, i) {}
+
+      function _arrayWithHoles(arr) {}
+
+      var _slicedToArray2 = _slicedToArray(),
+        _slicedToArray3 = _udf_slicedToArray(_slicedToArray2, 2),
+        a = _slicedToArray3[0],
+        b = _slicedToArray3[1];
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`destructuring call-expression-array-self-reference 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      function _udf_slicedToArray(arr, i) {
+        return _udf_arrayWithHoles(arr) || _udf_iterableToArrayLimit(arr, i) || _udf_unsupportedIterableToArray(arr, i) || _udf_nonIterableRest();
+      }
+
+      function _udf_nonIterableRest() {
+        throw new TypeError(\\"Invalid attempt to destructure non-iterable instance.\\\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.\\");
+      }
+
+      function _udf_unsupportedIterableToArray(o, minLen) {
+        if (!o) return;
+        if (typeof o === \\"string\\") return _udf_arrayLikeToArray(o, minLen);
+        var n = Object.prototype.toString.call(o).slice(8, -1);
+        if (n === \\"Object\\" && o.constructor) n = o.constructor.name;
+        if (n === \\"Map\\" || n === \\"Set\\") return Array.from(o);
+        if (n === \\"Arguments\\" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _udf_arrayLikeToArray(o, minLen);
+      }
+
+      function _udf_arrayLikeToArray(arr, len) {
+        if (len == null || len > arr.length) len = arr.length;
+        for (var i = 0, arr2 = new Array(len); i < len; i++) {
+          arr2[i] = arr[i];
+        }
+        return arr2;
+      }
+
+      function _udf_iterableToArrayLimit(arr, i) {
+        if (typeof Symbol === \\"undefined\\" || !(Symbol.iterator in Object(arr))) return;
+        var _arr = [];
+        var _n = true;
+        var _d = false;
+        var _e = undefined;
+        try {
+          for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+            _arr.push(_s.value);
+            if (i && _arr.length === i) break;
+          }
+        } catch (err) {
+          _d = true;
+          _e = err;
+        } finally {
+          try {
+            if (!_n && _i[\\"return\\"] != null) _i[\\"return\\"]();
+          } finally {
+            if (_d) throw _e;
+          }
+        }
+        return _arr;
+      }
+
+      function _udf_arrayWithHoles(arr) {
+        if (Array.isArray(arr)) return arr;
+      }
+
+      function f() {
+        return [c, d];
+      }
+
+      ;
+
+      var _f = f(),
+        _f2 = _udf_slicedToArray(_f, 2),
+        a = _f2[0],
+        b = _f2[1];
+
+      function g() {
+        return [a, b];
+      }
+
+      ;
+
+      var _g = g(),
+        _g2 = _udf_slicedToArray(_g, 2),
+        c = _g2[0],
+        d = _g2[1];
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`destructuring object-assignment-function-block 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      function c() {
+        var _a$b = {
+            a: 1,
+            b: 2
+          },
+          a = _a$b.a,
+          b = _a$b.b;
+      }
+
+      ;
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`destructuring object-basic 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      var _a$b$c = {
+          a: 1,
+          b: '2',
+          c: true
+        },
+        a = _a$b$c.a,
+        b = _a$b$c.b,
+        c = _a$b$c.c;
+      var _d$e$f = {
+          d: 1,
+          e: '2',
+          f: true
+        },
+        d = _d$e$f.d,
+        e = _d$e$f.e,
+        f = _d$e$f.f;
+      var _g$h$i = {
+          g: 1,
+          h: '2',
+          i: true
+        },
+        g = _g$h$i.g,
+        h = _g$h$i.h,
+        i = _g$h$i.i;
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`destructuring object-overflow 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      var _a$b$c$d$e$f = {
+          a: 1,
+          b: {
+            b1: '2'
+          },
+          c: {
+            c1: true,
+            c2: null,
+            c3: undefined
+          },
+          d: {
+            d1: {
+              d2: function() {}
+            }
+          },
+          e: Error,
+          f: WebAssembly
+        },
+        a = _a$b$c$d$e$f.a,
+        b = _a$b$c$d$e$f.b,
+        c = _a$b$c$d$e$f.c;
+      var _a$b$c$d$e$f2 = {
+          a: 1,
+          b: {
+            b1: '2'
+          },
+          c: {
+            c1: true,
+            c2: null,
+            c3: undefined
+          },
+          d: {
+            d1: {
+              d2: function() {}
+            }
+          },
+          e: Error,
+          f: WebAssembly
+        },
+        d = _a$b$c$d$e$f2.d,
+        e = _a$b$c$d$e$f2.e,
+        f = _a$b$c$d$e$f2.f;
+      var _a$b$c$d$e$f3 = {
+          a: 1,
+          b: {
+            b1: '2'
+          },
+          c: {
+            c1: true,
+            c2: null,
+            c3: undefined
+          },
+          d: {
+            d1: {
+              d2: function() {}
+            }
+          },
+          e: Error,
+          f: WebAssembly
+        },
+        g = _a$b$c$d$e$f3.g,
+        h = _a$b$c$d$e$f3.h,
+        i = _a$b$c$d$e$f3.i;
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`destructuring object-rest-basic 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      function _udf_objectWithoutProperties(source, excluded) {
+        if (source == null) return {};
+        var target = _udf_objectWithoutPropertiesLoose(source, excluded);
+        var key, i;
+        if (Object.getOwnPropertySymbols) {
+          var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+          for (i = 0; i < sourceSymbolKeys.length; i++) {
+            key = sourceSymbolKeys[i];
+            if (excluded.indexOf(key) >= 0) continue;
+            if (!Object.prototype.propertyEnumerable.call(source, key)) continue;
+            target[key] = source[key];
+          }
+        }
+        return target;
+      }
+
+      function _udf_objectWithoutPropertiesLoose(source, excluded) {
+        if (source == null) return {};
+        var target = {};
+        var sourceKeys = Object.keys(source);
+        var key, i;
+        for (i = 0; i < sourceKeys.length; i++) {
+          key = sourceKeys[i];
+          if (excluded.indexOf(key) >= 0) continue;
+          target[key] = source[key];
+        }
+        return target;
+      }
+
+      var _a$b$c$d$e$f$g$h = {
+          a: 1,
+          b: '2',
+          c: true,
+          d: null,
+          e: undefined,
+          f: function() {},
+          g: Error,
+          h: WebAssembly
+        },
+        a = _a$b$c$d$e$f$g$h.a,
+        b = _a$b$c$d$e$f$g$h.b,
+        x = _udf_objectWithoutProperties(_a$b$c$d$e$f$g$h, [\\"a\\", \\"b\\"]);
+
+      var _a$b$c$d$e$f$g$h2 = {
+          a: 1,
+          b: '2',
+          c: true,
+          d: null,
+          e: undefined,
+          f: function() {},
+          g: Error,
+          h: WebAssembly
+        },
+        d = _a$b$c$d$e$f$g$h2.d,
+        e = _a$b$c$d$e$f$g$h2.e,
+        y = _udf_objectWithoutProperties(_a$b$c$d$e$f$g$h2, [\\"d\\", \\"e\\"]);
+
+      var _a$b$c$d$e$f$g$h3 = {
+          a: 1,
+          b: '2',
+          c: true,
+          d: null,
+          e: undefined,
+          f: function() {},
+          g: Error,
+          h: WebAssembly
+        },
+        m = _a$b$c$d$e$f$g$h3.m,
+        n = _a$b$c$d$e$f$g$h3.n,
+        z = _udf_objectWithoutProperties(_a$b$c$d$e$f$g$h3, [\\"m\\", \\"n\\"]);
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`destructuring object-rest-nested 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      function _udf_objectWithoutProperties(source, excluded) {
+        if (source == null) return {};
+        var target = _udf_objectWithoutPropertiesLoose(source, excluded);
+        var key, i;
+        if (Object.getOwnPropertySymbols) {
+          var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+          for (i = 0; i < sourceSymbolKeys.length; i++) {
+            key = sourceSymbolKeys[i];
+            if (excluded.indexOf(key) >= 0) continue;
+            if (!Object.prototype.propertyEnumerable.call(source, key)) continue;
+            target[key] = source[key];
+          }
+        }
+        return target;
+      }
+
+      function _udf_objectWithoutPropertiesLoose(source, excluded) {
+        if (source == null) return {};
+        var target = {};
+        var sourceKeys = Object.keys(source);
+        var key, i;
+        for (i = 0; i < sourceKeys.length; i++) {
+          key = sourceKeys[i];
+          if (excluded.indexOf(key) >= 0) continue;
+          target[key] = source[key];
+        }
+        return target;
+      }
+
+      var _a$b$c$d$e$f = {
+          a: 1,
+          b: {
+            b1: '2'
+          },
+          c: {
+            c1: true,
+            c2: null,
+            c3: undefined
+          },
+          d: {
+            d1: {
+              d2: function() {}
+            }
+          },
+          e: Error,
+          f: WebAssembly
+        },
+        a = _a$b$c$d$e$f.a,
+        b = _a$b$c$d$e$f.b,
+        c = _a$b$c$d$e$f.c,
+        d = _udf_objectWithoutProperties(_a$b$c$d$e$f, [\\"a\\", \\"b\\", \\"c\\"]);
+
+      var _a$b$c$d$e$f2 = {
+          a: 1,
+          b: {
+            b1: '2'
+          },
+          c: {
+            c1: true,
+            c2: null,
+            c3: undefined
+          },
+          d: {
+            d1: {
+              d2: function() {}
+            }
+          },
+          e: Error,
+          f: WebAssembly
+        },
+        e = _a$b$c$d$e$f2.e,
+        f = _a$b$c$d$e$f2.f,
+        g = _a$b$c$d$e$f2.g,
+        h = _udf_objectWithoutProperties(_a$b$c$d$e$f2, [\\"e\\", \\"f\\", \\"g\\"]);
+
+      var _a$b$c$d$e$f3 = {
+          a: 1,
+          b: {
+            b1: '2'
+          },
+          c: {
+            c1: true,
+            c2: null,
+            c3: undefined
+          },
+          d: {
+            d1: {
+              d2: function() {}
+            }
+          },
+          e: Error,
+          f: WebAssembly
+        },
+        i = _a$b$c$d$e$f3.i,
+        j = _a$b$c$d$e$f3.j,
+        k = _a$b$c$d$e$f3.k,
+        l = _udf_objectWithoutProperties(_a$b$c$d$e$f3, [\\"i\\", \\"j\\", \\"k\\"]);
+    },
+    {},
+  ]
+})"
+`;
+
+exports[`destructuring(err) call-expression-array-init-mix 1`] = `
+"(function(modules) {
+  function require(id) {
+    const [fn, mapping] = modules[id];
+
+    function localRequire(name) {
+      return require(mapping[name]);
+    }
+
+    const module = {
+      exports: {}
+    };
+
+    fn(localRequire, module, module.exports);
+
+    return module.exports;
+  }
+
+  require(0)
+})({
+  0: [
+    function(require, module, exports) {
+      function _udf_slicedToArray(arr, i) {
+        return _udf_arrayWithHoles(arr) || _udf_iterableToArrayLimit(arr, i) || _udf_unsupportedIterableToArray(arr, i) || _udf_nonIterableRest();
+      }
+
+      function _udf_nonIterableRest() {
+        throw new TypeError(\\"Invalid attempt to destructure non-iterable instance.\\\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.\\");
+      }
+
+      function _udf_unsupportedIterableToArray(o, minLen) {
+        if (!o) return;
+        if (typeof o === \\"string\\") return _udf_arrayLikeToArray(o, minLen);
+        var n = Object.prototype.toString.call(o).slice(8, -1);
+        if (n === \\"Object\\" && o.constructor) n = o.constructor.name;
+        if (n === \\"Map\\" || n === \\"Set\\") return Array.from(o);
+        if (n === \\"Arguments\\" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _udf_arrayLikeToArray(o, minLen);
+      }
+
+      function _udf_arrayLikeToArray(arr, len) {
+        if (len == null || len > arr.length) len = arr.length;
+        for (var i = 0, arr2 = new Array(len); i < len; i++) {
+          arr2[i] = arr[i];
+        }
+        return arr2;
+      }
+
+      function _udf_iterableToArrayLimit(arr, i) {
+        if (typeof Symbol === \\"undefined\\" || !(Symbol.iterator in Object(arr))) return;
+        var _arr = [];
+        var _n = true;
+        var _d = false;
+        var _e = undefined;
+        try {
+          for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+            _arr.push(_s.value);
+            if (i && _arr.length === i) break;
+          }
+        } catch (err) {
+          _d = true;
+          _e = err;
+        } finally {
+          try {
+            if (!_n && _i[\\"return\\"] != null) _i[\\"return\\"]();
+          } finally {
+            if (_d) throw _e;
+          }
+        }
+        return _arr;
+      }
+
+      function _udf_arrayWithHoles(arr) {
+        if (Array.isArray(arr)) return arr;
+      }
+
+      function f() {
+        return [1, 2];
+      }
+
+      ;
+
+      var _f = f(),
+        _f2 = _udf_slicedToArray(_f, 2),
+        a = _f2[0],
+        b = _f2[1];
+
+      function g() {
+        return {
+          c: 1,
+          d: 1
+        };
+      }
+
+      ;
+
+      var _g = g(),
+        _g2 = _udf_slicedToArray(_g, 2),
+        c = _g2[0],
+        d = _g2[1];
+    },
+    {},
+  ]
+})"
+`;

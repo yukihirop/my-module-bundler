@@ -2,8 +2,8 @@
 
 import fs from 'fs';
 import path from 'path';
-import * as babylon from 'babylon';
 import { default as traverse } from '@babel/traverse';
+import * as parser from '@babel/parser';
 import { transformFromAstSync } from '@babel/core';
 import { mainTemplate, moduleTemlate } from './template';
 import { js as beautify } from 'js-beautify';
@@ -29,7 +29,7 @@ class Bunlder {
    */
   private createAsset(filename: string): AssetType {
     const content = fs.readFileSync(filename, 'utf-8');
-    const ast: any = babylon.parse(content, {
+    const ast: any = parser.parse(content, {
       sourceType: 'module',
     });
 

@@ -19,21 +19,21 @@
 })({
   0: [
     function(require, module, exports) {
-      function _typeof2(obj) {
+      function _udf_typeof(obj) {
+        "babel-udf-helpers - udf_typeof";
         if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-          _typeof2 = function _typeof2(obj) {
+          _udf_typeof = function(obj) {
             return typeof obj;
           };
         } else {
-          _typeof2 = function _typeof2(obj) {
+          _udf_typeof = function(obj) {
             return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
           };
         }
-
-        return _typeof2(obj);
+        return _udf_typeof(obj);
       }
 
-      (typeof Array === "undefined" ? "undefined" : _typeof2(Array)) === {};
+      (typeof Array === "undefined" ? "undefined" : _udf_typeof(Array)) === {};
 
       function _typeof(obj) {}
     },

@@ -31,13 +31,13 @@
         }
       });
 
-      var _a = _interopRequireDefault(require("./a.js"));
-
-      function _interopRequireDefault(obj) {
+      function _udf_interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : {
           default: obj
         };
       }
+
+      var _a = _udf_interopRequireDefault(require("./a.js"));
     },
     {
       "./a.js": 1

@@ -1,2 +1,2 @@
 typeof Array === {}
-var _typeof = function (obj) { }
+var _udf_typeof = function (obj) { }

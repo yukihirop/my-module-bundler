@@ -551,13 +551,13 @@ exports[`modules-commonjs interop export-from-default-as 1`] = `
         }
       });
 
-      var _a = _interopRequireDefault(require(\\"./a.js\\"));
-
-      function _interopRequireDefault(obj) {
+      function _udf_interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : {
           default: obj
         };
       }
+
+      var _a = _udf_interopRequireDefault(require(\\"./a.js\\"));
     },
     {
       \\"./a.js\\": 1
@@ -1208,43 +1208,26 @@ exports[`modules-commonjs interop import-as-mix 1`] = `
     function(require, module, exports) {
       \\"use strict\\";
 
-      var _a = _interopRequireWildcard(require(\\"./a.js\\"));
+      var _a = _udf_interopRequireWildcard(require(\\"./a.js\\"));
 
-      function _getRequireWildcardCache() {
-        if (typeof WeakMap !== \\"function\\") return null;
-        var cache = new WeakMap();
-
-        _getRequireWildcardCache = function() {
-          return cache;
-        };
-
-        return cache;
-      }
-
-      function _interopRequireWildcard(obj) {
+      function _udf_interopRequireWildcard(obj) {
         if (obj && obj.__esModule) {
           return obj;
         }
-
         if (obj === null || typeof obj !== \\"object\\" && typeof obj !== \\"function\\") {
           return {
             default: obj
           };
         }
-
-        var cache = _getRequireWildcardCache();
-
+        var cache = _udf_getRequireWildcardCache();
         if (cache && cache.has(obj)) {
           return cache.get(obj);
         }
-
         var newObj = {};
         var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
-
         for (var key in obj) {
           if (Object.prototype.hasOwnProperty.call(obj, key)) {
             var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
-
             if (desc && (desc.get || desc.set)) {
               Object.defineProperty(newObj, key, desc);
             } else {
@@ -1252,14 +1235,20 @@ exports[`modules-commonjs interop import-as-mix 1`] = `
             }
           }
         }
-
         newObj.default = obj;
-
         if (cache) {
           cache.set(obj, newObj);
         }
-
         return newObj;
+      }
+
+      function _udf_getRequireWildcardCache() {
+        if (typeof WeakMap !== \\"function\\") return null;
+        var cache = new WeakMap();
+        _udf_getRequireWildcardCache = function() {
+          return cache;
+        };
+        return cache;
       }
 
       _a.default;
@@ -1348,9 +1337,9 @@ exports[`modules-commonjs interop import-default-as 1`] = `
     function(require, module, exports) {
       \\"use strict\\";
 
-      var _a = _interopRequireDefault(require(\\"./a.js\\"));
+      var _a = _udf_interopRequireDefault(require(\\"./a.js\\"));
 
-      function _interopRequireDefault(obj) {
+      function _udf_interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : {
           default: obj
         };
@@ -1398,9 +1387,9 @@ exports[`modules-commonjs interop import-default-literal 1`] = `
     function(require, module, exports) {
       \\"use strict\\";
 
-      var _a = _interopRequireDefault(require(\\"./a.js\\"));
+      var _a = _udf_interopRequireDefault(require(\\"./a.js\\"));
 
-      function _interopRequireDefault(obj) {
+      function _udf_interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : {
           default: obj
         };
@@ -1698,43 +1687,26 @@ exports[`modules-commonjs interop import-wildcard-as 1`] = `
     function(require, module, exports) {
       \\"use strict\\";
 
-      var d = _interopRequireWildcard(require(\\"./a.js\\"));
+      var d = _udf_interopRequireWildcard(require(\\"./a.js\\"));
 
-      function _getRequireWildcardCache() {
-        if (typeof WeakMap !== \\"function\\") return null;
-        var cache = new WeakMap();
-
-        _getRequireWildcardCache = function() {
-          return cache;
-        };
-
-        return cache;
-      }
-
-      function _interopRequireWildcard(obj) {
+      function _udf_interopRequireWildcard(obj) {
         if (obj && obj.__esModule) {
           return obj;
         }
-
         if (obj === null || typeof obj !== \\"object\\" && typeof obj !== \\"function\\") {
           return {
             default: obj
           };
         }
-
-        var cache = _getRequireWildcardCache();
-
+        var cache = _udf_getRequireWildcardCache();
         if (cache && cache.has(obj)) {
           return cache.get(obj);
         }
-
         var newObj = {};
         var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
-
         for (var key in obj) {
           if (Object.prototype.hasOwnProperty.call(obj, key)) {
             var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
-
             if (desc && (desc.get || desc.set)) {
               Object.defineProperty(newObj, key, desc);
             } else {
@@ -1742,14 +1714,20 @@ exports[`modules-commonjs interop import-wildcard-as 1`] = `
             }
           }
         }
-
         newObj.default = obj;
-
         if (cache) {
           cache.set(obj, newObj);
         }
-
         return newObj;
+      }
+
+      function _udf_getRequireWildcardCache() {
+        if (typeof WeakMap !== \\"function\\") return null;
+        var cache = new WeakMap();
+        _udf_getRequireWildcardCache = function() {
+          return cache;
+        };
+        return cache;
       }
 
       d;
@@ -1800,43 +1778,26 @@ exports[`modules-commonjs interop import-wildcard-as-hoist 1`] = `
     function(require, module, exports) {
       \\"use strict\\";
 
-      var d = _interopRequireWildcard(require(\\"./a.js\\"));
+      var d = _udf_interopRequireWildcard(require(\\"./a.js\\"));
 
-      function _getRequireWildcardCache() {
-        if (typeof WeakMap !== \\"function\\") return null;
-        var cache = new WeakMap();
-
-        _getRequireWildcardCache = function() {
-          return cache;
-        };
-
-        return cache;
-      }
-
-      function _interopRequireWildcard(obj) {
+      function _udf_interopRequireWildcard(obj) {
         if (obj && obj.__esModule) {
           return obj;
         }
-
         if (obj === null || typeof obj !== \\"object\\" && typeof obj !== \\"function\\") {
           return {
             default: obj
           };
         }
-
-        var cache = _getRequireWildcardCache();
-
+        var cache = _udf_getRequireWildcardCache();
         if (cache && cache.has(obj)) {
           return cache.get(obj);
         }
-
         var newObj = {};
         var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
-
         for (var key in obj) {
           if (Object.prototype.hasOwnProperty.call(obj, key)) {
             var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
-
             if (desc && (desc.get || desc.set)) {
               Object.defineProperty(newObj, key, desc);
             } else {
@@ -1844,14 +1805,20 @@ exports[`modules-commonjs interop import-wildcard-as-hoist 1`] = `
             }
           }
         }
-
         newObj.default = obj;
-
         if (cache) {
           cache.set(obj, newObj);
         }
-
         return newObj;
+      }
+
+      function _udf_getRequireWildcardCache() {
+        if (typeof WeakMap !== \\"function\\") return null;
+        var cache = new WeakMap();
+        _udf_getRequireWildcardCache = function() {
+          return cache;
+        };
+        return cache;
       }
 
       d;
@@ -2036,15 +2003,14 @@ exports[`modules-commonjs misc(throw error) import-global-variable-throw-ae 1`] 
     function(require, module, exports) {
       \\"use strict\\";
 
-      var _a = _interopRequireDefault(require(\\"./a.js\\"));
+      var _a = _udf_interopRequireDefault(require(\\"./a.js\\"));
 
-      function _interopRequireDefault(obj) {
+      function _udf_interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : {
           default: obj
         };
       }
 
-      // ae = array expressiohn
       [b] = ([1, 2], function() {
         throw new Error('\\"' + \\"b\\" + '\\" is read-only.');
       }());
@@ -2089,9 +2055,9 @@ exports[`modules-commonjs misc(throw error) import-global-variable-throw-bs 1`] 
     function(require, module, exports) {
       \\"use strict\\";
 
-      var _a = _interopRequireDefault(require(\\"./a.js\\"));
+      var _a = _udf_interopRequireDefault(require(\\"./a.js\\"));
 
-      function _interopRequireDefault(obj) {
+      function _udf_interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : {
           default: obj
         };
@@ -2152,16 +2118,14 @@ exports[`modules-commonjs misc(throw error) import-global-variable-throw-bs-ls 1
     function(require, module, exports) {
       \\"use strict\\";
 
-      var _a = _interopRequireDefault(require(\\"./a.js\\"));
+      var _a = _udf_interopRequireDefault(require(\\"./a.js\\"));
 
-      function _interopRequireDefault(obj) {
+      function _udf_interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : {
           default: obj
         };
       }
 
-      // bs = block statement
-      // ls = labeled statement
       ({
         prop: b
       } = ({
@@ -2211,15 +2175,14 @@ exports[`modules-commonjs misc(throw error) import-global-variable-throw-id 1`] 
     function(require, module, exports) {
       \\"use strict\\";
 
-      var _a = _interopRequireDefault(require(\\"./a.js\\"));
+      var _a = _udf_interopRequireDefault(require(\\"./a.js\\"));
 
-      function _interopRequireDefault(obj) {
+      function _udf_interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : {
           default: obj
         };
       }
 
-      // id = identifier
       b = (1, function() {
         throw new Error('\\"' + \\"b\\" + '\\" is read-only.');
       }());

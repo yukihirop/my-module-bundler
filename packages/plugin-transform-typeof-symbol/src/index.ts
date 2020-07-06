@@ -2,55 +2,47 @@ import { NodePath } from '@babel/traverse';
 
 import { BabelTypes } from './types';
 import {
-  _interopTypeofStatement,
   typeofforGlobalObjectStatement,
   LazyEvaluateStatement,
-  COMPATIBILITY_TYPEOF,
 } from './statement';
+import { useDangerousUDFHelpers } from 'babel-udf-helpers'
+import helpers from './helpers'
 
 export default function ({ types: t }: BabelTypes) {
   return {
     name: 'transform-typeof-symbol',
     pre(state) {
-      this.isTypeof = false;
-      this.typeofFuncName = COMPATIBILITY_TYPEOF;
+      useDangerousUDFHelpers(this, { helpers })
       this.LazyEvaluateStatement = new LazyEvaluateStatement(this);
     },
     post({ path }) {
-      const { typeofFuncName } = this;
       this.LazyEvaluateStatement.replaceWith();
-      if (this.isTypeof) path.node['body'].unshift(_interopTypeofStatement(typeofFuncName));
     },
     visitor: {
-      Program(path: NodePath) {
-        const isExist_TypeofFunc =
-          path.node['body'].filter((node) => {
-            return (
-              (node.type === 'VariableDeclaration' &&
-                node.declarations &&
-                (node.declarations[0].id.name === COMPATIBILITY_TYPEOF ||
-                  node.declarations[0].init.id.name === COMPATIBILITY_TYPEOF)) ||
-              (node.type === 'FunctionDeclaration' &&
-                node.id &&
-                node.id.name === COMPATIBILITY_TYPEOF)
-            );
-          }).length > 0;
-        if (isExist_TypeofFunc) this.typeofFuncName = `${COMPATIBILITY_TYPEOF}2`;
-      },
       UnaryExpression(path: NodePath) {
-        const { typeofFuncName } = this;
+        let isUnderHelper = path.findParent(path => {
+          if (path.isFunction()) {
+            return (
+              // @ts-ignore
+              path.get("body.directives.0")?.node.value.value ==="babel-udf-helpers - udf_typeof"
+            );
+          }
+        });
+
+        if (isUnderHelper) return;
+        
         const nodeOperator = path.node['operator'];
         if (nodeOperator === 'typeof') {
-          this.isTypeof = true;
+          const typeofHelper = this.addUDFHelper("udf_typeof");
           const arg = path.node['argument'];
           const isBuiltinGlobalObject = this.LazyEvaluateStatement.isBuiltinGlobalObject(arg);
 
           let statement;
           if (isBuiltinGlobalObject) {
-            statement = typeofforGlobalObjectStatement(typeofFuncName, arg.name);
+            statement = typeofforGlobalObjectStatement(typeofHelper.name, arg.name);
             this.LazyEvaluateStatement.push({ path, statement });
           } else {
-            statement = t.callExpression(t.identifier(typeofFuncName), [arg]);
+            statement = t.callExpression(t.identifier(typeofHelper.name), [arg]);
             path.replaceWith(statement);
           }
         }

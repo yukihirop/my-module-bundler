@@ -9,12 +9,15 @@ import {
   ExportsVoid0Statement,
   LazyEvaluateStatement,
 } from './statement';
-import { isInStrictMode } from './helper';
+import { isInStrictMode } from './util';
+import { useDangerousUDFHelpers } from 'babel-udf-helpers'
+import helpers from './helpers'
 
 export default function ({ types: t }: BabelTypes) {
   return {
     name: 'transform-modules-commonjs',
     pre(state) {
+      useDangerousUDFHelpers(this, { helpers })
       this.IsESModule = false;
       this.importedMap = new Map();
       this.beforeStatements = [] as t.Statement[];

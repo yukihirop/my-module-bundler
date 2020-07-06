@@ -6,9 +6,6 @@ import { basename } from 'path';
 import { TraverserThisType, MapValueType, PluginOptionsType } from '../../../types';
 import {
   buildRequireStatement,
-  _interopRequireDefault,
-  _interopRequireWildcard,
-  _getRequireWildcardCache,
 } from '../../../statement';
 import {
   judgeRequireType,
@@ -18,7 +15,7 @@ import {
   TYPE_WILDCARD,
   TYPE_OTHER,
   REQUIRE,
-} from '../../../helper';
+} from '../../../util';
 
 export default class DeclarationTraverser extends BaseTraverser {
   public traverserThis: TraverserThisType;
@@ -81,7 +78,9 @@ export default class DeclarationTraverser extends BaseTraverser {
             traverserThis.beforeStatements.push(statement);
           } else {
             statement = buildRequireStatement(moduleName, sourceName, requireType, false);
-            traverserThis.beforeStatements.push(statement, _interopRequireDefault);
+            traverserThis.beforeStatements.push(statement);
+             // @ts-ignore
+            traverserThis.addUDFHelper("udf_interopRequireDefault");
           }
           break;
         // e.g.)
@@ -103,11 +102,11 @@ export default class DeclarationTraverser extends BaseTraverser {
             traverserThis.beforeStatements.push(statement);
           } else {
             statement = buildRequireStatement(localName, sourceName, requireType, false);
-            traverserThis.beforeStatements.push(
-              statement,
-              _getRequireWildcardCache,
-              _interopRequireWildcard
-            );
+            // @ts-ignore
+            traverserThis.addUDFHelper("udf_getRequireWildcardCache");
+            // @ts-ignore
+            traverserThis.addUDFHelper("udf_interopRequireWildcard");
+            traverserThis.beforeStatements.push(statement);
           }
           break;
       }

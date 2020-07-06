@@ -5,7 +5,7 @@ import * as t from '@babel/types';
 
 import { buildExportsStatement } from '../../statement';
 
-import { functionize } from '../../helper';
+import { functionize } from '../../util';
 
 export default class DefaultDeclarationTraverser extends BaseTraverser {
   public traverserThis: TraverserThisType;

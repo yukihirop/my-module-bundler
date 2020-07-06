@@ -3,7 +3,7 @@ import BaseTraverser from '../BaseTraverser';
 import { basename } from 'path';
 
 import { buildRequireStatement, buildDefinePropertyExportsStatement } from '../../statement';
-import { REQUIRE } from '../../helper';
+import { REQUIRE } from '../../util';
 
 export default class AllDeclarationTraverser extends BaseTraverser {
   public sourceName: string;

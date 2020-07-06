@@ -9,10 +9,9 @@ import {
   buildExportsStatement,
   buildDefinePropertyExportNamedStatement,
   buildRequireStatement,
-  _interopRequireDefault,
 } from '../../statement';
 
-import { judgeRequireType, INTEROP_REQUIRE_DEFAULT, REQUIRE, ES_MODULE } from '../../helper';
+import { judgeRequireType, REQUIRE, ES_MODULE, INTEROP_REQUIRE_DEFAULT } from '../../util';
 
 export default class NamedDeclarationTraverser extends BaseTraverser {
   public traverserThis: TraverserThisType;
@@ -116,7 +115,8 @@ export default class NamedDeclarationTraverser extends BaseTraverser {
         requireStatement = buildRequireStatement(moduleName, sourceName, REQUIRE, true);
       } else {
         requireStatement = buildRequireStatement(moduleName, sourceName, requireType, true);
-        if (requireType === INTEROP_REQUIRE_DEFAULT) afterStatements.push(_interopRequireDefault);
+        // @ts-ignore
+        if (requireType === INTEROP_REQUIRE_DEFAULT) traverserThis.addUDFHelper("udf_interopRequireDefault");
       }
 
       path.replaceWith(requireStatement);

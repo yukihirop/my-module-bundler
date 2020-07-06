@@ -21,9 +21,9 @@
     function(require, module, exports) {
       "use strict";
 
-      var _a = _interopRequireDefault(require("./a.js"));
+      var _a = _udf_interopRequireDefault(require("./a.js"));
 
-      function _interopRequireDefault(obj) {
+      function _udf_interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : {
           default: obj
         };

@@ -21,15 +21,14 @@
     function(require, module, exports) {
       "use strict";
 
-      var _a = _interopRequireDefault(require("./a.js"));
+      var _a = _udf_interopRequireDefault(require("./a.js"));
 
-      function _interopRequireDefault(obj) {
+      function _udf_interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : {
           default: obj
         };
       }
 
-      // ae = array expressiohn
       [b] = ([1, 2], function() {
         throw new Error('"' + "b" + '" is read-only.');
       }());

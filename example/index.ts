@@ -17,7 +17,7 @@ const options: t.OptionsType | undefined = isExistFile(settingPath)
 if (options === undefined) {
   throw new Error('".mmbrc" file is not found.')
 } else {
-  if (options && !options["plugins"]) {
+  if (options && !(options["plugins"] || options["presets"])) {
     throw new Error("Plugin is not set.")
   }
 }

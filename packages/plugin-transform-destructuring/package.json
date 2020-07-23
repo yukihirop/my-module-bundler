@@ -28,7 +28,7 @@
     "@babel/core": "^7.10.3",
     "@babel/template": "^7.10.3",
     "@babel/traverse": "^7.10.3",
-    "@babel/types": "^7.10.3",
+    "@babel/types": "^7.10.5",
     "@types/babel-types": "^7.0.7",
     "@types/babel__core": "^7.1.9",
     "@types/babel__template": "^7.0.2",

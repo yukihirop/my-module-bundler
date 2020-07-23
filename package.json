@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "lerna run ts-node",
-    "build": "tsc -b packages/bundler packages/plugin-transform-arrow-functions packages/plugin-transform-modules-commonjs packages/plugin-transform-typeof-symbol packages/plugin-transform-destructuring",
+    "clean": "rimraf packages/**/lib",
+    "build": "yarn clean && tsc -b packages/bundler packages/plugin-transform-arrow-functions packages/plugin-transform-modules-commonjs packages/plugin-transform-typeof-symbol packages/plugin-transform-destructuring packages/preset-my",
     "bundler:dev": "yarn build && ts-node example/index.ts",
     "bundler:dev:debug": "yarn build && node --inspect -r ts-node/register example/index.ts",
     "bundler:build": "tsc -p packages/bundler",
@@ -16,6 +17,7 @@
   "devDependencies": {
     "jest": "^26.0.1",
     "prettier": "^2.0.5",
+    "rimraf": "^3.0.2",
     "typescript": "^3.9.5"
   },
   "workspaces": [

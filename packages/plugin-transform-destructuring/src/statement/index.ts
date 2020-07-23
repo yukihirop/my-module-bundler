@@ -1,2 +1,2 @@
-import LazyEvaluateStatement from './class/LazyEvaluateStatement'
-export { LazyEvaluateStatement }
+import LazyEvaluateStatement from './class/LazyEvaluateStatement';
+export { LazyEvaluateStatement };

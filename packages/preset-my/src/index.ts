@@ -1,5 +1,5 @@
-import * as p from './availablePlugin'
-import { BabelTypes } from './types'
+import * as p from './availablePlugin';
+import { BabelTypes } from './types';
 
 export default function ({ types: t }: BabelTypes) {
   return {
@@ -7,7 +7,7 @@ export default function ({ types: t }: BabelTypes) {
       p.transformArrowFunctions,
       p.transformDestructuring,
       p.transformModuleCommonjs,
-      p.transformTypeofSymbol
-    ].filter(Boolean)
-  }
+      p.transformTypeofSymbol,
+    ].filter(Boolean),
+  };
 }

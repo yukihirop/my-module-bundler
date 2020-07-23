@@ -1,7 +1,7 @@
-import { helper } from 'babel-udf-helpers'
+import { helper } from 'babel-udf-helpers';
 
 const helpers = Object.create(null);
-export default helpers
+export default helpers;
 
 helpers.udf_toArray = helper`
   import udf_arrayWithHoles from 'udf_arrayWithHoles'
@@ -24,7 +24,7 @@ helpers.udf_iterableToArray = helper`
   export default function _udf_iterableToArray(iter) {
     if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
   }
-`
+`;
 
 helpers.udf_unsupportedIterableToArray = helper`
   import udf_arrayLikeToArray from 'udf_arrayLikeToArray'

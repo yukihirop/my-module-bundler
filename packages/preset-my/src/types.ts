@@ -1,5 +1,5 @@
-import * as t from '@babel/types'
+import * as t from '@babel/types';
 
 export type BabelTypes = {
-  types: typeof t
-}
+  types: typeof t;
+};

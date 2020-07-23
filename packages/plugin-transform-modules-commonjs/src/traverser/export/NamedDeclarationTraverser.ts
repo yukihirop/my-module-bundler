@@ -116,7 +116,8 @@ export default class NamedDeclarationTraverser extends BaseTraverser {
       } else {
         requireStatement = buildRequireStatement(moduleName, sourceName, requireType, true);
         // @ts-ignore
-        if (requireType === INTEROP_REQUIRE_DEFAULT) traverserThis.addUDFHelper("udf_interopRequireDefault");
+        if (requireType === INTEROP_REQUIRE_DEFAULT)
+          traverserThis.addUDFHelper('udf_interopRequireDefault');
       }
 
       path.replaceWith(requireStatement);

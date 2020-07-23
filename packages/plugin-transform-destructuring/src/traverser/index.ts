@@ -4,5 +4,5 @@ import Dest_CallExpressionTraverser from './destructuring/CallExpressionTraverse
 export {
   Dest_ArrayExpressionTraverser,
   Dest_ObjectExpressionTraverser,
-  Dest_CallExpressionTraverser
-}
+  Dest_CallExpressionTraverser,
+};

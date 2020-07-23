@@ -1,18 +1,15 @@
 import { NodePath } from '@babel/traverse';
 
 import { BabelTypes } from './types';
-import {
-  typeofforGlobalObjectStatement,
-  LazyEvaluateStatement,
-} from './statement';
-import { useDangerousUDFHelpers } from 'babel-udf-helpers'
-import helpers from './helpers'
+import { typeofforGlobalObjectStatement, LazyEvaluateStatement } from './statement';
+import { useDangerousUDFHelpers } from 'babel-udf-helpers';
+import helpers from './helpers';
 
 export default function ({ types: t }: BabelTypes) {
   return {
     name: 'transform-typeof-symbol',
     pre(state) {
-      useDangerousUDFHelpers(this, { helpers })
+      useDangerousUDFHelpers(this, { helpers });
       this.LazyEvaluateStatement = new LazyEvaluateStatement(this);
     },
     post({ path }) {
@@ -20,20 +17,20 @@ export default function ({ types: t }: BabelTypes) {
     },
     visitor: {
       UnaryExpression(path: NodePath) {
-        let isUnderHelper = path.findParent(path => {
+        let isUnderHelper = path.findParent((path) => {
           if (path.isFunction()) {
             return (
               // @ts-ignore
-              path.get("body.directives.0")?.node.value.value ==="babel-udf-helpers - udf_typeof"
+              path.get('body.directives.0')?.node.value.value === 'babel-udf-helpers - udf_typeof'
             );
           }
         });
 
         if (isUnderHelper) return;
-        
+
         const nodeOperator = path.node['operator'];
         if (nodeOperator === 'typeof') {
-          const typeofHelper = this.addUDFHelper("udf_typeof");
+          const typeofHelper = this.addUDFHelper('udf_typeof');
           const arg = path.node['argument'];
           const isBuiltinGlobalObject = this.LazyEvaluateStatement.isBuiltinGlobalObject(arg);
 

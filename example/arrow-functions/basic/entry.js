@@ -5,23 +5,23 @@
 // bodyType: BlockStatement
 var a = () => { };
 // bodyType: Identifier
-var a = (b) => b;
+var b = (b) => b;
 // bodyType: CallExpression
-var b = (b) => console.log(b);
+var c = (b) => console.log(b);
 // bodyType: BinaryExpresion
-var c = (a, b) => a + b;
+var d = (a, b) => a + b;
 
 
 /**
  * FunctionDeclaration
  */
-function a() {
+function f() {
   // bodyType: BlockStatement
   var a = () => { }
   // bodyType: Identifier
-  var a = (b) => b;
+  var b = (b) => b;
   // bodyType: CallExpression
-  var b = (b) => console.log(b);
+  var c = (b) => console.log(b);
   // bodyType: BinaryExpresion
-  var c = (a, b) => a + b;
+  var d = (a, b) => a + b;
 }

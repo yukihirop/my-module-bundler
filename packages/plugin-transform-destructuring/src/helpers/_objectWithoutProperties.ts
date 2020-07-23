@@ -1,4 +1,4 @@
-import { helper } from '../helperImpl'
+import { helper } from 'babel-udf-helpers';
 
 const helpers = Object.create(null);
 export default helpers;
@@ -62,5 +62,3 @@ helpers.udf_iterableToArrayLimit = helper`
     return _arr; 
   }
 `;
-
-

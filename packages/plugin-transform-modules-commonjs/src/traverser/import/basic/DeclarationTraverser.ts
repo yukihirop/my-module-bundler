@@ -4,9 +4,7 @@ import BaseTraverser from '../../BaseTraverser';
 import { basename } from 'path';
 
 import { TraverserThisType, MapValueType, PluginOptionsType } from '../../../types';
-import {
-  buildRequireStatement,
-} from '../../../statement';
+import { buildRequireStatement } from '../../../statement';
 import {
   judgeRequireType,
   judgeImportOrExportType,
@@ -79,8 +77,8 @@ export default class DeclarationTraverser extends BaseTraverser {
           } else {
             statement = buildRequireStatement(moduleName, sourceName, requireType, false);
             traverserThis.beforeStatements.push(statement);
-             // @ts-ignore
-            traverserThis.addUDFHelper("udf_interopRequireDefault");
+            // @ts-ignore
+            traverserThis.addUDFHelper('udf_interopRequireDefault');
           }
           break;
         // e.g.)
@@ -103,9 +101,9 @@ export default class DeclarationTraverser extends BaseTraverser {
           } else {
             statement = buildRequireStatement(localName, sourceName, requireType, false);
             // @ts-ignore
-            traverserThis.addUDFHelper("udf_getRequireWildcardCache");
+            traverserThis.addUDFHelper('udf_getRequireWildcardCache');
             // @ts-ignore
-            traverserThis.addUDFHelper("udf_interopRequireWildcard");
+            traverserThis.addUDFHelper('udf_interopRequireWildcard');
             traverserThis.beforeStatements.push(statement);
           }
           break;

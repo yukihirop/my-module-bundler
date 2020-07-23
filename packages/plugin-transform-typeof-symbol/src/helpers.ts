@@ -1,7 +1,7 @@
-import { helper } from 'babel-udf-helpers'
+import { helper } from 'babel-udf-helpers';
 
-const helpers = Object.create(null)
-export default helpers
+const helpers = Object.create(null);
+export default helpers;
 
 helpers.udf_typeof = helper`
   export default function _udf_typeof(obj){

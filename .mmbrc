@@ -2,7 +2,5 @@ const path = require('path');
 
 module.exports =
 {
-  "plugins": [
-    [path.resolve(__dirname, "packages/plugin-transform-destructuring")],
-  ]
+  "presets": [path.resolve(__dirname, "packages/preset-my")]
 }
